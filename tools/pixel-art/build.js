@@ -329,6 +329,70 @@ function buildAvatar() {
     + Object.entries(by).map(([k, d]) => `<path class="${map[k]}" d="${d.join('')}"/>`).join('') + '</svg>';
 }
 
+/* ───────────── sky: drifting clouds, birds by day, bats by night, stars ───────────── */
+// Rows may differ in length; the canvas takes the widest row.
+function spriteSvg(rows, cls, scale) {
+  const spr = sprite(rows), W = Math.max(...spr.map(r => r.length)), H = spr.length;
+  const cv = Canvas(W, H); stamp(cv, spr, 0, 0);
+  return `<svg class="${cls}" viewBox="0 0 ${W} ${H}" width="${W * scale}" height="${H * scale}" shape-rendering="crispEdges" aria-hidden="true">${toPaths(cv, 'k-')}</svg>`;
+}
+// Two animation frames in one SVG: <g class="f1"> and <g class="f2"> (CSS flips between them).
+function flyerSvg(frames, cls, scale) {
+  const sprs = frames.map(sprite);
+  const W = Math.max(...sprs.map(s => Math.max(...s.map(r => r.length)))), H = Math.max(...sprs.map(s => s.length));
+  const groups = sprs.map((spr, i) => { const cv = Canvas(W, H); stamp(cv, spr, 0, 0); return `<g class="f${i + 1}">${toPaths(cv, 'k-')}</g>`; }).join('');
+  return `<svg class="${cls}" viewBox="0 0 ${W} ${H}" width="${W * scale}" height="${H * scale}" shape-rendering="crispEdges" aria-hidden="true">${groups}</svg>`;
+}
+const SKY_SPRITES = {
+  cloudL: [
+    '...........UUUU...............',
+    '........UUUUUUUUU......UUU....',
+    '......UUUUUUUUUUUUU..UUUUUUU..',
+    '...UUUUUUUUUUUUUUUUUUUUUUUUUU.',
+    '.UUUUUUUUUUUUUUUUUUUUUUUUUUUUU',
+    'UUUUUUUUUUUUUUUUUUUUUUUUUUUUUU',
+    'uUUUUUUUUUUUUUUUUUUUUUUUUUUUUu',
+    '.uuuuuuuuuuuuuuuuuuuuuuuuuuuu.',
+  ],
+  cloudM: [
+    '......UUUUU.........',
+    '...UUUUUUUUUU.UUU...',
+    '.UUUUUUUUUUUUUUUUUU.',
+    'UUUUUUUUUUUUUUUUUUUU',
+    'uUUUUUUUUUUUUUUUUUUu',
+    '.uuuuuuuuuuuuuuuuuu.',
+  ],
+  cloudS: S.cloudA.map(r => r.join('')),
+  // a distant gull: wings up, then wings down
+  bird: [
+    ['K.......K', '.KK...KK.', '...KKK...', '....K....'],
+    ['.........', '....K....', '.KKKKKKK.', 'K.......K'],
+  ],
+  bat: [
+    ['K.........K', '.KK.K.K.KK.', '..KKKKKKK..', '....KKK....', '.....K.....'],
+    ['....K.K....', '...KKKKK...', '.KKKKKKKKK.', 'K.K.....K.K', '...........'],
+  ],
+};
+function buildSky() {
+  // clouds: [sprite, top (vh), left (vw), drift seconds, start offset 0..1]
+  const clouds = [
+    ['cloudL', 9, 8, 240, 0.10], ['cloudM', 22, 62, 200, 0.55], ['cloudS', 38, 30, 170, 0.80],
+    ['cloudM', 56, 84, 220, 0.30], ['cloudS', 70, 12, 190, 0.65],
+  ].map(([k, top, left, dur, off], i) =>
+    `<div class="cloud cloud-${i + 1}" style="--top:${top}vh; --left:${left}vw; --dur:${dur}s; --off:${off}">${spriteSvg(SKY_SPRITES[k], 'cloud-art', 4)}</div>`).join('');
+  // stars: deterministic scatter in the upper two thirds; about a third of them twinkle
+  seed = 101;
+  const small = [], twinkle = [];
+  for (let i = 0; i < 46; i++) {
+    const x = (2 + rnd() * 96).toFixed(1), y = (2 + rnd() * 64).toFixed(1), big = rnd() > .8;
+    (i % 3 === 0 ? twinkle : small).push(`${x}vw ${y}vh 0 ${big ? '1px' : '0'} var(--star)`);
+  }
+  const templates = `<template id="tpl-bird">${flyerSvg(SKY_SPRITES.bird, 'flyer-art', 4)}</template>`
+    + `<template id="tpl-bat">${flyerSvg(SKY_SPRITES.bat, 'flyer-art', 4)}</template>`;
+  return `<div class="sky" id="sky" aria-hidden="true"><div class="stars" style="box-shadow:${small.join(',')}"></div>`
+    + `<div class="stars stars-twinkle" style="box-shadow:${twinkle.join(',')}"></div>${clouds}<div class="flyers" id="sky-flyers"></div></div>${templates}`;
+}
+
 /* ───────────── stepped pixel frames (border-image) ───────────── */
 // 8×8 units of 2px: pixel-rounded rectangle with a 1-unit outline. Slice = 3 units (6px).
 function frame(outline, fill) {
@@ -378,6 +442,7 @@ const farm = buildFarm();
 const blocks = {
   farm: ['html', farm.svg],
   avatar: ['html', buildAvatar()],
+  sky: ['html', buildSky()],
   farmcss: ['css', farmCss()],
   'frames-light': ['css', frameVars(THEME.light, false)],
   'frames-dark': ['css', frameVars(THEME.dark, true)],

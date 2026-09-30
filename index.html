@@ -44,10 +44,16 @@
       --text:  #3a2f24;
       --dim:   #5b5044;
       --wheat: #efc24e;   /* the one accent */
-      --wheat-ink: #83580f;
-      --leaf:  #2f6b2a;
+      --wheat-ink: #74500d;   /* darker than the button wheat so labels pass 4.5:1 on the bluest sky band */
+      --leaf:  #2a6126;
       --leaf-dot: #4f9a3c;
-      --focus: #2f6b2a;
+      --focus: #2a6126;
+
+      /* sky: stepped bands from zenith to the misty horizon (the page colour) */
+      --sky-1: #b9ddf0; --sky-2: #c3e2f1; --sky-3: #cde6f1; --sky-4: #d7ebf1; --sky-5: #e2eff0;
+      --cloud: #ffffff; --cloud-sh: #dce8ec;
+      --flyer: #3d4a5c;
+      --star: transparent;
       --on-wheat: #2e2419;
       --btn-drop: #b98d2e;
       --btn2-drop: #c9d0c6;
@@ -94,6 +100,11 @@
       --btn-drop: #0f1522;
       --btn2-drop: #0f1522;
       --dither: rgba(0, 0, 0, .35);
+
+      --sky-1: #0e1526; --sky-2: #111a2f; --sky-3: #141e36; --sky-4: #17223b; --sky-5: #192540;
+      --cloud: #2f3e5b; --cloud-sh: #283550;
+      --flyer: #5a6b8c;
+      --star: #fff3b8;
 
       /*gen:frames-dark*/
       --fr-panel: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' shape-rendering='crispEdges'%3E%3Cpath fill='%23223047' d='M4 2h8v2h-8zM2 4h12v2h-12zM2 6h12v2h-12zM2 8h12v2h-12zM2 10h12v2h-12zM4 12h8v2h-8z'/%3E%3Cpath fill='%23eef0e4' d='M4 0h8v2h-8zM2 2h2v2h-2zM12 2h2v2h-2zM0 4h2v2h-2zM14 4h2v2h-2zM0 6h2v2h-2zM14 6h2v2h-2zM0 8h2v2h-2zM14 8h2v2h-2zM0 10h2v2h-2zM14 10h2v2h-2zM2 12h2v2h-2zM12 12h2v2h-2zM4 14h8v2h-8z'/%3E%3C/svg%3E");
@@ -197,10 +208,46 @@
     #scroll-progress { position: fixed; top: 0; left: 0; z-index: 200; height: 4px; width: 0%; background: var(--wheat); }
     .game-wrapper { position: relative; z-index: 2; }
 
+    /* ─── Sky: fixed behind everything. Stepped bands with 4px dithered seams (no smooth gradients),
+       a few slow clouds that move in whole pixels, and the odd flock of birds (bats at night) ─── */
+    .sky {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
+      background:
+        repeating-conic-gradient(var(--sky-2) 0 25%, transparent 0 50%) 0 calc(14vh - 8px) / 8px 8px repeat-x,
+        repeating-conic-gradient(var(--sky-3) 0 25%, transparent 0 50%) 0 calc(30vh - 8px) / 8px 8px repeat-x,
+        repeating-conic-gradient(var(--sky-4) 0 25%, transparent 0 50%) 0 calc(48vh - 8px) / 8px 8px repeat-x,
+        repeating-conic-gradient(var(--sky-5) 0 25%, transparent 0 50%) 0 calc(66vh - 8px) / 8px 8px repeat-x,
+        repeating-conic-gradient(var(--page) 0 25%, transparent 0 50%) 0 calc(84vh - 8px) / 8px 8px repeat-x,
+        linear-gradient(to bottom, var(--sky-1) 0 14vh, var(--sky-2) 14vh 30vh, var(--sky-3) 30vh 48vh,
+          var(--sky-4) 48vh 66vh, var(--sky-5) 66vh 84vh, var(--page) 84vh);
+    }
+    .cloud { position: absolute; top: var(--top); left: var(--left); }
+    .cloud-art { display: block; }
+    .sky .k-uu { fill: var(--cloud); }
+    .sky .k-u { fill: var(--cloud-sh); }
+    /* drift left to right across the whole width, starting part-way along; steps keep the pixels whole */
+    .cloud { animation: drift var(--dur) steps(900) calc(var(--dur) * var(--off) * -1) infinite; }
+    @keyframes drift {
+      from { transform: translateX(calc(-1 * var(--left) - 160px)); }
+      to   { transform: translateX(calc(100vw - var(--left) + 40px)); }
+    }
+    .stars { position: absolute; left: 0; top: 0; width: 2px; height: 2px; }
+    .stars-twinkle { animation: twinkle 3.2s steps(1) infinite; }
+    @keyframes twinkle { 50% { opacity: .2; } }
+    .flyers { position: absolute; inset: 0; }
+    .flyer { position: absolute; left: 0; top: 0; }
+    .flyer-art { display: block; }
+    .flyer .k-uk { fill: var(--flyer); }
+    .flyer .f1, .flyer .f2 { animation: var(--flap, .4s) step-end infinite; }
+    .flyer .f1 { animation-name: flapA; }
+    .flyer .f2 { animation-name: flapB; opacity: 0; }
+    @keyframes flapA { 0% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 0; } }
+    @keyframes flapB { 0% { opacity: 0; } 50% { opacity: 1; } 100% { opacity: 1; } }
+
     /* ─── Top bar ─── */
     .hud-bar {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100; height: 64px;
-      background: var(--page); padding: 0 var(--s5);
+      background: var(--sky-1); padding: 0 var(--s5);
       display: flex; align-items: center; justify-content: space-between; gap: var(--s4);
     }
     .hud-bar::after { content: ''; position: absolute; left: 0; right: 0; top: 100%; height: 4px; opacity: 0;
@@ -384,7 +431,7 @@
     @keyframes toastTimer { from { width: 100%; } to { width: 0%; } }
 
     /* ─── Footer ─── */
-    footer { position: relative; margin-top: var(--s9); padding: calc(var(--s5) + 16px) var(--s5) var(--s6); display: flex; flex-direction: column; align-items: center; gap: var(--s3); color: var(--dim); text-align: center; font-size: 15px; line-height: 24px; }
+    footer { position: relative; background: var(--page); margin-top: var(--s9); padding: calc(var(--s5) + 16px) var(--s5) var(--s6); display: flex; flex-direction: column; align-items: center; gap: var(--s3); color: var(--dim); text-align: center; font-size: 15px; line-height: 24px; }
     footer::before { content: ''; position: absolute; left: 0; right: 0; top: 0; height: 16px;
       background:
         linear-gradient(var(--f-ul), var(--f-ul)) 0 0 / 100% 4px no-repeat,
@@ -444,7 +491,7 @@
       .hud-right { flex-shrink: 0; gap: var(--s1); }
       .hud-level { display: none; }
       .hud-nav { display: none; }
-      .hud-nav.open { display: flex; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: var(--page); padding: var(--s2) var(--s3) var(--s3); }
+      .hud-nav.open { display: flex; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: var(--sky-1); padding: var(--s2) var(--s3) var(--s3); }
       .hud-nav.open a { padding: var(--s2); }
       .hud-nav.open::after { content: ''; position: absolute; left: 0; right: 0; top: 100%; height: 4px;
         background: repeating-conic-gradient(var(--dither) 0 25%, transparent 0 50%) 0 0 / 4px 4px; }
@@ -474,13 +521,13 @@
     }
 
     /* ─── Professional view: the same page without the game layer ─── */
-    .pro #loading-screen, .pro #click-burst, .pro .toast { display: none !important; }
+    .pro #loading-screen, .pro #click-burst, .pro .toast, .pro .flyers { display: none !important; }
     .pro *, .pro *::before, .pro *::after { animation: none !important; transition: none !important; }
 
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto !important; }
       *, *::before, *::after { animation: none !important; transition: none !important; }
-      #click-burst { display: none !important; }
+      #click-burst, .flyers { display: none !important; }
     }
   </style>
   <noscript><style>#loading-screen { display: none; } .farm .st { animation: none !important; }</style></noscript>
@@ -489,6 +536,8 @@
 
 <!-- Pixel icons: pixelarticons by Gerrit Halfmann (MIT License), plus a LinkedIn mark drawn on the same grid -->
 <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true"><symbol id="i-briefcase" viewBox="0 0 24 24"><path d="M8 3h8v4h6v14H2V7h6V3zm2 4h4V5h-4v2zM4 9v10h16V9H4z"/></symbol><symbol id="i-download" viewBox="0 0 24 24"><path d="M13 17V3h-2v10H9v-2H7v2h2v2h2v2h2zm8 2v-4h-2v4H5v-4H3v6h18v-2zm-8-6v2h2v-2h2v-2h-2v2h-2z"/></symbol><symbol id="i-volume-x" viewBox="0 0 24 24"><path d="M13 2h-2v2H9v2H7v2H3v8h4v2h2v2h2v2h2V2zM9 18v-2H7v-2H5v-4h2V8h2V6h2v12H9zm10-6.777h-2v-2h-2v2h2v2h-2v2h2v-2h2v2h2v-2h-2v-2zm0 0h2v-2h-2v2z"/></symbol><symbol id="i-volume-3" viewBox="0 0 24 24"><path d="M11 2H9v2H7v2H5v2H1v8h4v2h2v2h2v2h2V2zM7 18v-2H5v-2H3v-4h2V8h2V6h2v12H7zm6-8h2v4h-2v-4zm8-6h-2V2h-6v2h6v2h2v12h-2v2h-6v2h6v-2h2v-2h2V6h-2V4zm-2 4h-2V6h-4v2h4v8h-4v2h4v-2h2V8z"/></symbol><symbol id="i-sun" viewBox="0 0 24 24"><path d="M13 3h-2v2h2V3zm4 2h2v2h-2V5zm-6 6h2v2h-2v-2zm-8 0h2v2H3v-2zm18 0h-2v2h2v-2zM5 5h2v2H5V5zm14 14h-2v-2h2v2zm-8 2h2v-2h-2v2zm-4-2H5v-2h2v2zM9 7h6v2H9V7zm0 8H7V9h2v6zm0 0v2h6v-2h2V9h-2v6H9z"/></symbol><symbol id="i-moon" viewBox="0 0 24 24"><path d="M6 2h8v2h-2v2h-2V4H6V2ZM4 6V4h2v2H4Zm0 10H2V6h2v10Zm2 2H4v-2h2v2Zm2 2H6v-2h2v2Zm10 0v2H8v-2h10Zm2-2v2h-2v-2h2Zm-2-4h2v4h2v-8h-2v2h-2v2Zm-6 0v2h6v-2h-6Zm-2-2h2v2h-2v-2Zm0 0V6H8v6h2Z"/></symbol><symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16v2H4V6zm0 5h16v2H4v-2zm16 5H4v2h16v-2z"/></symbol><symbol id="i-close" viewBox="0 0 24 24"><path d="M5 5h2v2H5V5zm4 4H7V7h2v2zm2 2H9V9h2v2zm2 0h-2v2H9v2H7v2H5v2h2v-2h2v-2h2v-2h2v2h2v2h2v2h2v-2h-2v-2h-2v-2h-2v-2zm2-2v2h-2V9h2zm2-2v2h-2V7h2zm0 0V5h2v2h-2z"/></symbol><symbol id="i-mail" viewBox="0 0 24 24"><path d="M22 4H2v16h20V4zM4 18V6h16v12H4zM8 8H6v2h2v2h2v2h4v-2h2v-2h2V8h-2v2h-2v2h-4v-2H8V8z"/></symbol><symbol id="i-folder" viewBox="0 0 24 24"><path d="M4 4h8v2h10v14H2V4h2zm16 4H10V6H4v12h16V8z"/></symbol><symbol id="i-gamepad" viewBox="0 0 24 24"><path d="M2 5h20v14H2V5zm18 12V7H4v10h16zM8 9h2v2h2v2h-2v2H8v-2H6v-2h2V9zm6 0h2v2h-2V9zm4 4h-2v2h2v-2z"/></symbol><symbol id="i-check" viewBox="0 0 24 24"><path d="M18 6h2v2h-2V6zm-2 4V8h2v2h-2zm-2 2v-2h2v2h-2zm-2 2h2v-2h-2v2zm-2 2h2v-2h-2v2zm-2 0v2h2v-2H8zm-2-2h2v2H6v-2zm0 0H4v-2h2v2z"/></symbol><symbol id="i-edit" viewBox="0 0 24 24"><path d="M18 2h-2v2h-2v2h-2v2h-2v2H8v2H6v2H4v2H2v6h6v-2h2v-2h2v-2h2v-2h2v-2h2v-2h2V8h2V6h-2V4h-2V2zm0 8h-2v2h-2v2h-2v2h-2v2H8v-2H6v-2h2v-2h2v-2h2V8h2V6h2v2h2v2zM6 16H4v4h4v-2H6v-2z"/></symbol><symbol id="i-hourglass" viewBox="0 0 24 24"><path d="M18 2H6v6h2v2h2v4H8v2H6v6h12v-6h-2v-2h-2v-4h2V8h2V2zm-2 6h-2v2h-4V8H8V4h8v4zm-2 6v2h2v4H8v-4h2v-2h4z"/></symbol><symbol id="i-article" viewBox="0 0 24 24"><path d="M5 3H3v18h18V3H5zm14 2v14H5V5h14zm-2 2H7v2h10V7zM7 11h10v2H7v-2zm7 4H7v2h7v-2z"/></symbol><symbol id="i-bullseye" viewBox="0 0 24 24"><path d="M18 2H6v2H4v2H2v12h2v2h2v2h12v-2h2v-2h2V6h-2V4h-2V2zm0 2v2h2v12h-2v2H6v-2H4V6h2V4h12zm-8 6h4v4h-4v-4zM8 6h8v2H8V6zm0 10H6V8h2v8zm8 0v2H8v-2h8zm0 0h2V8h-2v8z"/></symbol><symbol id="i-paint-bucket" viewBox="0 0 24 24"><path d="M8 3h8v2H8V3zm0 2H6v4H4v12h16V9h-2V5h-2v4H8V5zm8 6h2v8H6v-8h2v6h2v-4h2v2h2v-2h2v-2z"/></symbol><symbol id="i-analytics" viewBox="0 0 24 24"><path d="M3 3h18v18H3V3zm16 2H5v14h14V5zM7 12h2v5H7v-5zm10-5h-2v10h2V7zm-6 3h2v2h-2v-2zm2 4h-2v3h2v-3z"/></symbol><symbol id="i-book-open" viewBox="0 0 24 24"><path d="M3 3h8v2H3v12h8V5h2v12h8V5h-8V3h10v16H13v2h-2v-2H1V3h2zm16 7h-4v2h4v-2zm-4-3h4v2h-4V7zm2 6h-2v2h2v-2z"/></symbol><symbol id="i-zap" viewBox="0 0 24 24"><path d="M12 1h2v8h8v4h-2v-2h-8V5h-2V3h2V1zM8 7V5h2v2H8zM6 9V7h2v2H6zm-2 2V9h2v2H4zm10 8v2h-2v2h-2v-8H2v-4h2v2h8v6h2zm2-2v2h-2v-2h2zm2-2v2h-2v-2h2zm0 0h2v-2h-2v2z"/></symbol><symbol id="i-trophy" viewBox="0 0 24 24"><path d="M16 3H6v2H2v10h6V5h8v10h6V5h-4V3h-2zm4 4v6h-2V7h2zM6 13H4V7h2v6zm12 2H6v2h12v-2zm-7 2h2v2h3v2H8v-2h3v-2z"/></symbol><symbol id="i-loader" viewBox="0 0 24 24"><path d="M13 2h-2v6h2V2zm0 14h-2v6h2v-6zm9-5v2h-6v-2h6zM8 13v-2H2v2h6zm7-6h2v2h-2V7zm4-2h-2v2h2V5zM9 7H7v2h2V7zM5 5h2v2H5V5zm10 12h2v2h2v-2h-2v-2h-2v2zm-8 0v-2h2v2H7v2H5v-2h2z"/></symbol><symbol id="i-device-phone" viewBox="0 0 24 24"><path d="M6 3h12v18H6V3zm10 16V5h-2v2h-4V5H8v14h8zm-5-4h2v2h-2v-2z"/></symbol><symbol id="i-github" viewBox="0 0 24 24"><path d="M5 2h4v2H7v2H5V2Zm0 10H3V6h2v6Zm2 2H5v-2h2v2Zm2 2v-2H7v2H3v-2H1v2h2v2h4v4h2v-4h2v-2H9Zm0 0v2H7v-2h2Zm6-12v2H9V4h6Zm4 2h-2V4h-2V2h4v4Zm0 6V6h2v6h-2Zm-2 2v-2h2v2h-2Zm-2 2v-2h2v2h-2Zm0 2h-2v-2h2v2Zm0 0h2v4h-2v-4Z"/></symbol><symbol id="i-pin" viewBox="0 0 24 24"><path d="M7 2h10v2H7V2zM5 6V4h2v2H5zm0 8H3V6h2v8zm2 2H5v-2h2v2zm2 2H7v-2h2v2zm2 2H9v-2h2v2zm2 0v2h-2v-2h2zm2-2v2h-2v-2h2zm2-2v2h-2v-2h2zm2-2v2h-2v-2h2zm0-8h2v8h-2V6zm0 0V4h-2v2h2zm-5 2h-4v4h4V8z"/></symbol><symbol id="i-code" viewBox="0 0 24 24"><path d="M8 5h2v2H8V5zM6 7h2v2H6V7zM4 9h2v2H4V9zm-2 2h2v2H2v-2zm2 2h2v2H4v-2zm2 2h2v2H6v-2zm2 2h2v2H8v-2zm8-12h-2v2h2V5zm2 2h-2v2h2V7zm2 2h-2v2h2V9zm2 2h-2v2h2v-2zm-2 2h-2v2h2v-2zm-2 2h-2v2h2v-2zm-2 2h-2v2h2v-2z"/></symbol><symbol id="i-server" viewBox="0 0 24 24"><path d="M3 3h18v18H3V3zm2 2v6h14V5H5zm14 8H5v6h14v-6zM7 7h2v2H7V7zm2 8H7v2h2v-2z"/></symbol><symbol id="i-sliders" viewBox="0 0 24 24"><path d="M17 4h2v10h-2V4zm0 12h-2v2h2v2h2v-2h2v-2h-4zm-4-6h-2v10h2V10zm-8 2H3v2h2v6h2v-6h2v-2H5zm8-8h-2v2H9v2h6V6h-2V4zM5 4h2v6H5V4z"/></symbol><symbol id="i-external-link" viewBox="0 0 24 24"><path d="M21 11V3h-8v2h4v2h-2v2h-2v2h-2v2H9v2h2v-2h2v-2h2V9h2V7h2v4h2zM11 5H3v16h16v-8h-2v6H5V7h6V5z"/></symbol><symbol id="i-user" viewBox="0 0 24 24"><path d="M15 2H9v2H7v6h2V4h6V2zm0 8H9v2h6v-2zm0-6h2v6h-2V4zM4 16h2v-2h12v2H6v4h12v-4h2v6H4v-6z"/></symbol><symbol id="i-linkedin" viewBox="0 0 24 24"><path d="M3 3h18v2h-18zM3 19h18v2h-18zM3 5h2v14h-2zM19 5h2v14h-2zM7 7h2v2h-2zM7 11h2v6h-2zM11 11h2v6h-2zM13 11h3v2h-3zM15 13h2v4h-2z"/></symbol></svg>
+
+<!--gen:sky--><div class="sky" id="sky" aria-hidden="true"><div class="stars" style="box-shadow:33.1vw 53.8vh 0 0 var(--star),74.1vw 38.2vh 0 0 var(--star),91.0vw 33.5vh 0 0 var(--star),50.0vw 52.3vh 0 0 var(--star),36.9vw 33.1vh 0 1px var(--star),46.4vw 16.1vh 0 0 var(--star),92.5vw 64.8vh 0 0 var(--star),78.2vw 24.0vh 0 0 var(--star),88.3vw 62.9vh 0 0 var(--star),96.9vw 7.7vh 0 1px var(--star),54.2vw 7.0vh 0 0 var(--star),26.1vw 3.0vh 0 0 var(--star),65.7vw 55.1vh 0 0 var(--star),37.5vw 63.2vh 0 0 var(--star),86.5vw 12.5vh 0 0 var(--star),45.1vw 38.6vh 0 0 var(--star),89.3vw 4.5vh 0 0 var(--star),89.6vw 52.6vh 0 0 var(--star),68.5vw 39.4vh 0 0 var(--star),27.6vw 62.5vh 0 0 var(--star),82.7vw 47.0vh 0 0 var(--star),61.5vw 65.5vh 0 0 var(--star),2.8vw 2.7vh 0 0 var(--star),72.8vw 4.8vh 0 0 var(--star),57.4vw 2.8vh 0 1px var(--star),12.5vw 4.9vh 0 0 var(--star),20.2vw 48.9vh 0 0 var(--star),83.0vw 47.7vh 0 0 var(--star),8.9vw 39.5vh 0 1px var(--star),19.6vw 54.2vh 0 1px var(--star)"></div><div class="stars stars-twinkle" style="box-shadow:2.1vw 20.3vh 0 0 var(--star),40.8vw 49.0vh 0 0 var(--star),71.6vw 50.1vh 0 0 var(--star),6.4vw 3.0vh 0 1px var(--star),88.1vw 27.4vh 0 0 var(--star),34.8vw 52.9vh 0 0 var(--star),29.4vw 54.3vh 0 0 var(--star),23.3vw 43.7vh 0 1px var(--star),96.6vw 20.9vh 0 0 var(--star),65.5vw 40.6vh 0 0 var(--star),55.1vw 62.1vh 0 0 var(--star),93.7vw 19.1vh 0 0 var(--star),96.0vw 24.2vh 0 0 var(--star),48.8vw 13.9vh 0 0 var(--star),71.9vw 16.8vh 0 0 var(--star),17.4vw 32.3vh 0 1px var(--star)"></div><div class="cloud cloud-1" style="--top:9vh; --left:8vw; --dur:240s; --off:0.1"><svg class="cloud-art" viewBox="0 0 30 8" width="120" height="32" shape-rendering="crispEdges" aria-hidden="true"><path class="k-uu" d="M11 0h4v1h-4zM8 1h9v1h-9zM23 1h3v1h-3zM6 2h13v1h-13zM21 2h7v1h-7zM3 3h26v1h-26zM1 4h29v1h-29zM0 5h30v1h-30zM1 6h28v1h-28z"/><path class="k-u" d="M0 6h1v1h-1zM29 6h1v1h-1zM1 7h28v1h-28z"/></svg></div><div class="cloud cloud-2" style="--top:22vh; --left:62vw; --dur:200s; --off:0.55"><svg class="cloud-art" viewBox="0 0 20 6" width="80" height="24" shape-rendering="crispEdges" aria-hidden="true"><path class="k-uu" d="M6 0h5v1h-5zM3 1h10v1h-10zM14 1h3v1h-3zM1 2h18v1h-18zM0 3h20v1h-20zM1 4h18v1h-18z"/><path class="k-u" d="M0 4h1v1h-1zM19 4h1v1h-1zM1 5h18v1h-18z"/></svg></div><div class="cloud cloud-3" style="--top:38vh; --left:30vw; --dur:170s; --off:0.8"><svg class="cloud-art" viewBox="0 0 14 5" width="56" height="20" shape-rendering="crispEdges" aria-hidden="true"><path class="k-uu" d="M4 0h3v1h-3zM2 1h7v1h-7zM10 1h2v1h-2zM1 2h12v1h-12zM1 3h12v1h-12z"/><path class="k-u" d="M0 3h1v1h-1zM13 3h1v1h-1zM1 4h12v1h-12z"/></svg></div><div class="cloud cloud-4" style="--top:56vh; --left:84vw; --dur:220s; --off:0.3"><svg class="cloud-art" viewBox="0 0 20 6" width="80" height="24" shape-rendering="crispEdges" aria-hidden="true"><path class="k-uu" d="M6 0h5v1h-5zM3 1h10v1h-10zM14 1h3v1h-3zM1 2h18v1h-18zM0 3h20v1h-20zM1 4h18v1h-18z"/><path class="k-u" d="M0 4h1v1h-1zM19 4h1v1h-1zM1 5h18v1h-18z"/></svg></div><div class="cloud cloud-5" style="--top:70vh; --left:12vw; --dur:190s; --off:0.65"><svg class="cloud-art" viewBox="0 0 14 5" width="56" height="20" shape-rendering="crispEdges" aria-hidden="true"><path class="k-uu" d="M4 0h3v1h-3zM2 1h7v1h-7zM10 1h2v1h-2zM1 2h12v1h-12zM1 3h12v1h-12z"/><path class="k-u" d="M0 3h1v1h-1zM13 3h1v1h-1zM1 4h12v1h-12z"/></svg></div><div class="flyers" id="sky-flyers"></div></div><template id="tpl-bird"><svg class="flyer-art" viewBox="0 0 9 4" width="36" height="16" shape-rendering="crispEdges" aria-hidden="true"><g class="f1"><path class="k-uk" d="M0 0h1v1h-1zM8 0h1v1h-1zM1 1h2v1h-2zM6 1h2v1h-2zM3 2h3v1h-3zM4 3h1v1h-1z"/></g><g class="f2"><path class="k-uk" d="M4 1h1v1h-1zM1 2h7v1h-7zM0 3h1v1h-1zM8 3h1v1h-1z"/></g></svg></template><template id="tpl-bat"><svg class="flyer-art" viewBox="0 0 11 5" width="44" height="20" shape-rendering="crispEdges" aria-hidden="true"><g class="f1"><path class="k-uk" d="M0 0h1v1h-1zM10 0h1v1h-1zM1 1h2v1h-2zM4 1h1v1h-1zM6 1h1v1h-1zM8 1h2v1h-2zM2 2h7v1h-7zM4 3h3v1h-3zM5 4h1v1h-1z"/></g><g class="f2"><path class="k-uk" d="M4 0h1v1h-1zM6 0h1v1h-1zM3 1h5v1h-5zM1 2h9v1h-9zM0 3h1v1h-1zM2 3h1v1h-1zM8 3h1v1h-1zM10 3h1v1h-1z"/></g></svg></template><!--/gen:sky-->
 
 <!-- Loading screen -->
 <div id="loading-screen">
@@ -902,6 +951,51 @@ function setIcon(host, name) {
     requestAnimationFrame(animate);
   }
   animate();
+})();
+
+// ─── SKY: now and then a small flock crosses (bats at night) ───
+(function() {
+  const layer = document.getElementById('sky-flyers');
+  if (!layer || !layer.animate) return;
+  const root = document.documentElement;
+  const still = () => document.hidden || root.classList.contains('pro') ||
+    matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const snap = v => Math.round(v / 4) * 4;              // stay on the 4px pixel grid
+
+  function flock() {
+    const night = root.getAttribute('data-theme') === 'dark';
+    const tpl = document.getElementById(night ? 'tpl-bat' : 'tpl-bird');
+    const count = 1 + Math.floor(Math.random() * 3);     // 1–3 flyers
+    const ltr = Math.random() < .5;
+    const w = innerWidth, y0 = innerHeight * (.06 + Math.random() * .42);
+    const duration = (night ? 11000 : 16000) + Math.random() * 9000;
+    for (let i = 0; i < count; i++) {
+      const el = document.createElement('div');
+      el.className = 'flyer';
+      el.style.setProperty('--flap', ((night ? .22 : .38) + Math.random() * .12).toFixed(2) + 's');
+      el.appendChild(tpl.content.cloneNode(true));
+      layer.appendChild(el);
+      // a loose V: followers trail behind and slightly above/below the leader
+      const lag = i * (44 + Math.random() * 28);
+      const dy = i === 0 ? 0 : (i % 2 ? 1 : -1) * (14 + Math.random() * 12);
+      const x0 = ltr ? -80 - lag : w + 20 + lag;
+      const x1 = ltr ? w + 20 + (count - i) * 44 : -80 - (count - i) * 44;
+      const bob = 6 + Math.random() * 10, waves = 2 + Math.random() * 2;
+      const frames = [], n = 10;
+      for (let k = 0; k <= n; k++) {
+        const t = k / n;
+        const x = snap(x0 + (x1 - x0) * t), y = snap(y0 + dy + Math.sin(t * Math.PI * waves) * bob);
+        // each segment moves in whole 4px steps, like a sprite
+        frames.push({ transform: `translate(${x}px, ${y}px)`, easing: `steps(${Math.max(1, Math.round(Math.abs(x1 - x0) / n / 4))})` });
+      }
+      el.animate(frames, { duration, delay: i * 120, fill: 'backwards' }).onfinish = () => el.remove();
+    }
+  }
+  function loop() {
+    if (!still() && layer.childElementCount < 6) flock();
+    setTimeout(loop, 6000 + Math.random() * 10000);
+  }
+  setTimeout(loop, 3500);                               // first flock shortly after the loader
 })();
 
 // ─── TYPED TEXT ───────────────────────────────────────
