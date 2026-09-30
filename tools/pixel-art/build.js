@@ -368,11 +368,79 @@ const SKY_SPRITES = {
     ['K.......K', '.KK...KK.', '...KKK...', '....K....'],
     ['.........', '....K....', '.KKKKKKK.', 'K.......K'],
   ],
-  bat: [
-    ['K.........K', '.KK.K.K.KK.', '..KKKKKKK..', '....KKK....', '.....K.....'],
-    ['....K.K....', '...KKKKK...', '.KKKKKKKKK.', 'K.K.....K.K', '...........'],
-  ],
 };
+
+// Paths with literal fills (for sprites that are drawn once per theme).
+function fillSvg(cv, pal, cls, scale, inner = '') {
+  return `<svg class="${cls}" viewBox="0 0 ${cv.w} ${cv.h}" width="${cv.w * scale}" height="${cv.h * scale}" shape-rendering="crispEdges" aria-hidden="true">${inner || fillPaths(cv, pal).replace(/'/g, '"')}</svg>`;
+}
+// The sun: a round core with a highlight, and rays that alternate between two lengths.
+function buildSun() {
+  const N = 23, c = 11, cv = Canvas(N, N), f1 = Canvas(N, N), f2 = Canvas(N, N);
+  for (let y = 0; y < N; y++) for (let x = 0; x < N; x++) {
+    const r = Math.hypot(x - c, y - c);
+    if (r <= 6.2) put(cv, x, y, r > 5.1 ? 'so' : ((x - c + 2.5) ** 2 + (y - c + 2.5) ** 2 < 5 ? 'sh' : 'sc'));
+  }
+  const ray = (cvs, len0, len1, diag) => {
+    for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) for (let t = len0; t <= len1; t++) { put(cvs, c + dx * t, c + dy * t, 'so'); }
+    for (const [dx, dy] of [[1, 1], [-1, 1], [1, -1], [-1, -1]]) for (let t = diag[0]; t <= diag[1]; t++) put(cvs, c + dx * t, c + dy * t, 'so');
+  };
+  ray(f1, 8, 11, [6, 7]);        // long straight rays, short diagonals
+  ray(f2, 8, 9, [6, 8]);         // short straight rays, long diagonals
+  const pal = { sc: '#ffd84d', so: '#f5a623', sh: '#fff1a8' };
+  const g = (cvs) => fillPaths(cvs, pal).replace(/'/g, '"');
+  return fillSvg(cv, pal, 'sun-art', 4, `${g(cv)}<g class="f1">${g(f1)}</g><g class="f2">${g(f2)}</g>`);
+}
+// The moon: a crescent with a soft dithered glow.
+function buildMoon() {
+  const N = 26, c = 13, cv = Canvas(N, N);
+  for (let y = 0; y < N; y++) for (let x = 0; x < N; x++) {
+    const r = Math.hypot(x - c, y - c), cut = Math.hypot(x - c - 4.2, y - c + 3.2);
+    if (r <= 7.4 && cut > 6.6) put(cv, x, y, cut < 7.6 ? 'md' : 'mo');
+    else if (r <= 11.5 && r > 7.4 && cut > 6.6 && (x + y) % 2 === 0) put(cv, x, y, r < 9.5 ? 'mg' : 'mg2');
+  }
+  put(cv, c - 4, c + 2, 'md'); put(cv, c - 2, c + 4, 'md');        // two small craters
+  return fillSvg(cv, { mo: '#f6f0d4', md: '#d9cfa4', mg: 'rgba(255,243,184,.28)', mg2: 'rgba(255,243,184,.12)' }, 'moon-art', 4);
+}
+// A sparkle star (night): a plus with a bright centre.
+function buildSparkle() {
+  const cv = Canvas(7, 7);
+  for (let t = 1; t <= 3; t++) for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) put(cv, 3 + dx * t, 3 + dy * t, t === 3 ? 'a2' : 'a1');
+  put(cv, 3, 3, 'a0');
+  return fillSvg(cv, { a0: '#ffffff', a1: '#fff3b8', a2: '#c9bf86' }, 'sparkle-art', 4);
+}
+
+/* ───────────── a little house, standing on the land at the bottom of the page ───────────── */
+const HOUSE_DAY = {
+  R: '#c8553d', Rs: '#b24833', Rd: '#983b2a', Rh: '#e07a5c', rd: '#6e2a1f',     // roof, eave
+  S: '#a0503c', Sc: '#5d2e24',                                                   // chimney
+  W: '#f4e6c8', Wd: '#dcc9a3', B: '#9b958a',                                     // walls, stone base
+  D: '#74482c', Dk: '#efc24e', T: '#8a5b34',                                     // door, knob, frames
+  G: '#bfe6f7', Gh: '#ffffff', L: DAY.L, P: '#ee93bf', Y: '#f4cf57',            // glass, flower boxes
+};
+const HOUSE_NIGHT = Object.fromEntries(Object.entries(HOUSE_DAY).map(([k, c]) => [k, nightify(c, 0.38)]));
+Object.assign(HOUSE_NIGHT, { G: '#ffd257', Gh: '#fff3b8', Dk: '#ffd257' });      // lamps are on at night
+function buildHouse() {
+  const W = 30, H = 25, cv = Canvas(W, H);
+  const rect = (x0, y0, x1, y1, k) => { for (let y = y0; y <= y1; y++) for (let x = x0; x <= x1; x++) put(cv, x, y, k); };
+  rect(19, 1, 21, 7, 'S'); rect(18, 0, 22, 0, 'Sc');                             // chimney
+  for (let y = 2; y <= 10; y++) {                                                 // roof: one step out per row
+    const a = 14 - (y - 2), b = 15 + (y - 2);
+    for (let x = a; x <= b; x++) put(cv, x, y, x === a || x === a + 1 ? 'Rh' : (x > 15 ? (y % 2 ? 'Rd' : 'Rs') : (y % 2 ? 'R' : 'Rs')));
+  }
+  rect(3, 11, 26, 11, 'rd');                                                      // eave
+  rect(4, 12, 25, 22, 'W'); rect(25, 12, 25, 22, 'Wd'); rect(4, 12, 25, 12, 'Wd');  // walls with shade
+  rect(3, 23, 26, 24, 'B');                                                       // stone base
+  rect(13, 15, 16, 22, 'D'); put(cv, 13, 15, 'W'); put(cv, 16, 15, 'W'); put(cv, 15, 19, 'Dk');   // door
+  for (const x0 of [6, 19]) {                                                     // two windows with a cross
+    rect(x0, 14, x0 + 4, 18, 'T'); rect(x0 + 1, 15, x0 + 3, 17, 'G');
+    put(cv, x0 + 2, 15, 'T'); put(cv, x0 + 2, 16, 'T'); put(cv, x0 + 2, 17, 'T'); rect(x0 + 1, 16, x0 + 3, 16, 'T');
+    put(cv, x0 + 1, 15, 'Gh');
+    rect(x0, 19, x0 + 4, 19, 'L'); put(cv, x0 + 1, 19, 'P'); put(cv, x0 + 3, 19, 'Y'); // flower box
+  }
+  return fillSvg(cv, HOUSE_DAY, 'house-art house-day', 4) + fillSvg(cv, HOUSE_NIGHT, 'house-art house-night', 4)
+    + '<span class="smoke"><i></i><i></i><i></i></span>';
+}
 function buildSky() {
   // clouds: [sprite, top (vh), left (vw), drift seconds, start offset 0..1]
   const clouds = [
@@ -387,10 +455,105 @@ function buildSky() {
     const x = (2 + rnd() * 96).toFixed(1), y = (2 + rnd() * 64).toFixed(1), big = rnd() > .8;
     (i % 3 === 0 ? twinkle : small).push(`${x}vw ${y}vh 0 ${big ? '1px' : '0'} var(--star)`);
   }
-  const templates = `<template id="tpl-bird">${flyerSvg(SKY_SPRITES.bird, 'flyer-art', 4)}</template>`
-    + `<template id="tpl-bat">${flyerSvg(SKY_SPRITES.bat, 'flyer-art', 4)}</template>`;
+  // a few larger sparkle stars (night only), each twinkling on its own beat
+  const sparkles = [[14, 16, 0], [41, 9, 1.1], [57, 31, 2.3], [81, 20, 0.6], [30, 44, 1.7], [90, 52, 2.9]]
+    .map(([x, y, d]) => `<span class="sparkle" style="left:${x}vw; top:${y}vh; animation-delay:-${d}s">${buildSparkle()}</span>`).join('');
+  const templates = `<template id="tpl-bird">${flyerSvg(SKY_SPRITES.bird, 'flyer-art', 4)}</template>`;
   return `<div class="sky" id="sky" aria-hidden="true"><div class="stars" style="box-shadow:${small.join(',')}"></div>`
-    + `<div class="stars stars-twinkle" style="box-shadow:${twinkle.join(',')}"></div>${clouds}<div class="flyers" id="sky-flyers"></div></div>${templates}`;
+    + `<div class="stars stars-twinkle" style="box-shadow:${twinkle.join(',')}"></div>${sparkles}`
+    + `<div class="sun">${buildSun()}</div><div class="moon">${buildMoon()}</div>`
+    + `${clouds}<div class="flyers" id="sky-flyers"></div></div>${templates}`;
+}
+
+/* ───────────── land: the ground the page ends on ─────────────
+   Three horizontally tiling layers (far hills, near fields, front ground) with different
+   widths, so the repeat is hard to spot. Each becomes an SVG data URI in a CSS variable. */
+const LAND_DAY = {
+  F: '#a9d69c', Fh: '#c3e6b7', Fd: '#94c78a',            // far hills (hazier, bluer green)
+  g: DAY.g, l: DAY.l, d: DAY.d,                          // near fields and front grass
+  t: DAY.t, f: DAY.f, c2: DAY.c2, c3: DAY.c3,            // soil, furrows, stones
+  w: DAY.w, W: DAY.W, v: DAY.v,                          // fence and trunks
+  '1': DAY['1'], '2': DAY['2'], '3': DAY['3'],           // tree canopy
+  L: DAY.L, D: DAY.D, k: DAY.k,                          // bushes and stems
+  C: '#ffffff', Y: '#f4cf57', pk: '#ee93bf',             // flowers
+};
+const LAND_NIGHT = Object.fromEntries(Object.entries(LAND_DAY).map(([k, c]) => [k, NIGHT[k] || nightify(c, k.startsWith('F') ? 0.5 : 0.3)]));
+
+const TAU = Math.PI * 2;
+function fillPaths(cv, pal) {
+  const byKey = {};
+  for (let y = 0; y < cv.h; y++) {
+    let x = 0;
+    while (x < cv.w) {
+      const k = cv.px[y][x];
+      if (!k) { x++; continue; }
+      let e = x; while (e + 1 < cv.w && cv.px[y][e + 1] === k) e++;
+      (byKey[k] = byKey[k] || []).push(`M${x} ${y}h${e - x + 1}v1h-${e - x + 1}z`);
+      x = e + 1;
+    }
+  }
+  return Object.entries(byKey).map(([k, d]) => `<path fill='${pal[k]}' d='${d.join('')}'/>`).join('');
+}
+function tileUri(cv, pal) {
+  const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='${cv.w}' height='${cv.h}' shape-rendering='crispEdges'>${fillPaths(cv, pal)}</svg>`;
+  return `url("data:image/svg+xml,${svg.replace(/#/g, '%23').replace(/</g, '%3C').replace(/>/g, '%3E')}")`;
+}
+function landFar() {                                      // 96 x 30, periodic in x
+  const W = 96, H = 30, cv = Canvas(W, H);
+  for (let x = 0; x < W; x++) {
+    const h = Math.round(15 + 6 * Math.sin(TAU * x / W) + 3.5 * Math.sin(2 * TAU * x / W + 1.3) + 1.5 * Math.sin(3 * TAU * x / W + 0.4));
+    for (let y = H - h; y < H; y++) put(cv, x, y, y === H - h ? 'Fh' : ((x * 7 + y * 3) % 19 === 0 && y > H - h + 2 ? 'Fd' : 'F'));
+  }
+  return cv;
+}
+function landNear() {                                     // 136 x 24, periodic in x, one tree
+  const W = 136, H = 24, cv = Canvas(W, H), top = [];
+  for (let x = 0; x < W; x++) {
+    const h = Math.round(11 + 4.5 * Math.sin(TAU * x / W + 0.6) + 2.5 * Math.sin(2 * TAU * x / W + 2.1));
+    top[x] = H - h;
+    for (let y = H - h; y < H; y++) put(cv, x, y, y === H - h ? 'l' : ((x * 5 + y * 2) % 13 === 0 && y > H - h + 2 ? 'd' : 'g'));
+  }
+  // a small tree on the rise
+  const tx = 96, ty = top[tx];
+  for (let y = ty - 5; y < ty + 1; y++) { put(cv, tx, y, 'w'); put(cv, tx + 1, y, 'W'); }
+  for (let y = ty - 14; y <= ty - 4; y++) for (let x = tx - 6; x <= tx + 7; x++) {
+    const dx = (x - tx - 0.5) / 6.6, dy = (y - (ty - 9)) / 5.4, r = dx * dx + dy * dy;
+    if (r > 1 || (r > 0.82 && (x + y) % 3 === 0)) continue;
+    put(cv, x, y, dx + dy > 0.5 ? '2' : (dx + dy < -0.55 ? '3' : '1'));
+  }
+  return cv;
+}
+function landGround() {                                   // 160 x 20: grass edge, fence, flowers, soil
+  const W = 160, H = 20, cv = Canvas(W, H), G = 6;
+  seed = 211;
+  for (let x = 0; x < W; x++) {
+    put(cv, x, G, 'l'); put(cv, x, G + 1, 'g'); put(cv, x, G + 2, (x % 3 === 0) ? 'd' : 'g');
+    for (let y = G + 3; y < H; y++) put(cv, x, y, 't');
+    // furrows: dashed darker rows
+    for (const fy of [G + 6, G + 10]) if ((x + fy) % 6 < 4) put(cv, x, fy, 'f');
+  }
+  // stones in the soil
+  for (let i = 0; i < 9; i++) { const x = Math.floor(rnd() * (W - 2)), y = G + 4 + Math.floor(rnd() * 8); put(cv, x, y, 'c3'); put(cv, x + 1, y, 'c2'); }
+  // grass tufts above the edge
+  for (let i = 0; i < 22; i++) { const x = Math.floor(rnd() * W); put(cv, x, G - 1, 'g'); if (rnd() > .5) put(cv, x + 1, G - 2, 'd'); }
+  // a short fence
+  for (let x = 18; x <= 66; x++) { put(cv, x, G - 4, 'v'); put(cv, x, G - 2, 'v'); }
+  for (let x = 18; x <= 66; x += 8) for (let y = G - 6; y < G; y++) { put(cv, x, y, 'w'); put(cv, x + 1, y, 'W'); }
+  // a bush
+  for (let y = G - 5; y < G; y++) for (let x = 108; x <= 118; x++) {
+    const dx = (x - 113) / 5.6, dy = (y - (G - 1)) / 5, r = dx * dx + dy * dy;
+    if (r <= 1) put(cv, x, y, dx + dy > 0.3 ? 'D' : (r < 0.35 && dx < 0 ? 'k' : 'L'));
+  }
+  // flowers: a stem and a bloom
+  [[8, 'C'], [80, 'Y'], [90, 'pk'], [131, 'C'], [142, 'Y'], [151, 'pk'], [74, 'C']].forEach(([x, c]) => { put(cv, x, G - 1, 'L'); put(cv, x, G - 2, c); });
+  return cv;
+}
+function landVars(pal) {
+  return [
+    `--land-far: ${tileUri(landFar(), pal)};`,
+    `--land-near: ${tileUri(landNear(), pal)};`,
+    `--land-ground: ${tileUri(landGround(), pal)};`,
+  ].join('\n      ');
 }
 
 /* ───────────── stepped pixel frames (border-image) ───────────── */
@@ -407,7 +570,7 @@ function frame(outline, fill) {
 }
 
 const THEME = {
-  light: { page: '#eef3ef', panel: '#fbfcf8', ink: '#2e2419', line: '#c9d0c6', tint: '#e2e9e1', wheat: '#efc24e', wheatHi: '#f6d77f' },
+  light: { page: '#d8ecf6', panel: '#fbfcf8', ink: '#2e2419', line: '#a9c8d8', tint: '#e3f1f8', wheat: '#efc24e', wheatHi: '#f6d77f' },
   dark:  { page: '#1a2436', panel: '#223047', ink: '#eef0e4', line: '#3c4b64', tint: '#2a3a54', wheat: '#efc24e', wheatHi: '#f6d77f' },
 };
 function frameVars(t, dark) {
@@ -443,6 +606,9 @@ const blocks = {
   farm: ['html', farm.svg],
   avatar: ['html', buildAvatar()],
   sky: ['html', buildSky()],
+  house: ['html', buildHouse()],
+  'land-light': ['css', landVars(LAND_DAY)],
+  'land-dark': ['css', landVars(LAND_NIGHT)],
   farmcss: ['css', farmCss()],
   'frames-light': ['css', frameVars(THEME.light, false)],
   'frames-dark': ['css', frameVars(THEME.dark, true)],
