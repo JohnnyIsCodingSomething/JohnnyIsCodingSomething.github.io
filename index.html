@@ -388,6 +388,7 @@
     .project-grid .project { border: 0; border-image: none; padding: var(--s4) 0 0; background: var(--rule-dots); }
     .project h3 { font: 30px/32px var(--f-px); color: var(--ink); margin-top: var(--s2); }
     .project-featured h3 { font-size: 40px; line-height: 40px; }
+    .project-link { margin-top: var(--s3); font: 20px/24px var(--f-px); }
     .project-type { color: var(--dim); margin-bottom: var(--s3); font-size: 16px; line-height: 24px; }
     .project-status { display: inline-flex; align-items: center; gap: var(--s2); font: 20px/24px var(--f-px); color: var(--wheat-ink); }
     .project-status.done { color: var(--leaf); }
@@ -667,7 +668,7 @@
         <aside class="char-card frame" aria-label="Profile summary">
           <div class="char-portrait"><!--gen:avatar--><svg class="avatar" viewBox="0 0 16 16" width="64" height="64" shape-rendering="crispEdges" role="img" aria-label="Pixel-art portrait of Jonathan: black hair, dark-rimmed rectangular glasses, maroon collared shirt"><path class="av-hair" d="M4 1h8v1h-8zM3 2h2v1h-2zM7 2h6v1h-6zM2 3h2v1h-2zM5 3h9v1h-9zM2 4h2v1h-2zM5 4h5v1h-5zM11 4h3v1h-3zM2 5h1v1h-1zM13 5h1v1h-1z"/><path class="av-hair-hi" d="M5 2h2v1h-2zM4 3h1v1h-1z"/><path class="av-skin" d="M4 4h1v1h-1zM10 4h1v1h-1zM3 5h10v1h-10zM7 6h2v1h-2zM1 7h1v1h-1zM14 7h1v1h-1zM1 8h1v1h-1zM7 8h2v1h-2zM14 8h1v1h-1zM7 9h2v1h-2zM2 10h12v1h-12zM3 11h4v1h-4zM9 11h4v1h-4zM4 12h8v1h-8zM6 13h4v1h-4zM7 14h2v1h-2z"/><path class="av-rim" d="M2 6h5v1h-5zM9 6h5v1h-5zM2 7h1v1h-1zM6 7h4v1h-4zM13 7h1v1h-1zM2 8h1v1h-1zM6 8h1v1h-1zM9 8h1v1h-1zM13 8h1v1h-1zM2 9h5v1h-5zM9 9h5v1h-5z"/><path class="av-lens" d="M3 7h1v1h-1zM5 7h1v1h-1zM10 7h1v1h-1zM12 7h1v1h-1zM3 8h1v1h-1zM5 8h1v1h-1zM10 8h1v1h-1zM12 8h1v1h-1z"/><path class="av-eye" d="M4 7h1v1h-1zM11 7h1v1h-1zM4 8h1v1h-1zM11 8h1v1h-1z"/><path class="av-mouth" d="M7 11h2v1h-2z"/><path class="av-top" d="M3 13h1v1h-1zM12 13h1v1h-1zM1 14h5v1h-5zM10 14h5v1h-5zM0 15h7v1h-7zM9 15h7v1h-7z"/><path class="av-collar" d="M4 13h2v1h-2zM10 13h2v1h-2zM6 14h1v1h-1zM9 14h1v1h-1zM7 15h2v1h-2z"/></svg><!--/gen:avatar--></div>
           <div class="char-body">
-            <div class="char-title">CS student, aspiring game developer</div>
+            <div class="char-title">CS student, indie game developer</div>
           </div>
           <dl class="char-info">
             <div class="char-info-row"><dt class="label">Role</dt><dd class="value">Full-stack dev</dd></div>
@@ -686,13 +687,13 @@
       <div class="section-head"><h2 class="section-title">About</h2></div>
       <div class="about-grid">
         <div class="about-bio">
-          <p>Computer Science student at Bina Nusantara University with hands-on experience across full-stack development, graphic design, and applied machine learning, and is building a first indie game in Godot.</p>
-          <p>Builds software end-to-end — from an indie game in active development to published research — and is looking to bring that same drive into a company internship placement.</p>
+          <p>Computer Science student at Bina Nusantara University with hands-on experience across full-stack development, graphic design, and applied machine learning, and has released an indie game, Close Enough Colony, built in Godot.</p>
+          <p>Builds software end-to-end — from a released indie game to published research — and is looking to bring that same drive into a company internship placement.</p>
         </div>
         <div class="about-focus">
           <h3>Focus areas</h3>
           <ul class="chip-list">
-            <li>Game development (learning)</li>
+            <li>Game development</li>
             <li>Full-stack development</li>
             <li>Machine learning</li>
             <li>Graphic design</li>
@@ -736,14 +737,14 @@
 
       <div class="project-grid">
         <article class="project">
-          <span class="project-status"><svg class="px" aria-hidden="true"><use href="#i-edit"/></svg> In development</span>
-          <h3>Bad Impression</h3>
-          <div class="project-type">Indie game in Godot 4.3</div>
-          <p>A top-down farmyard idle/incremental game, still in development, planned for release on itch.io.</p>
+          <span class="project-status done"><svg class="px" aria-hidden="true"><use href="#i-check"/></svg> Released</span>
+          <h3>Close Enough Colony</h3>
+          <div class="project-type">Indie idle game in Godot 4.7, playable in the browser</div>
+          <p>A cozy idle colony sim where a scarecrow foreman runs the colony while you're away. Designed, built and released on itch.io: 8 critter types with terrain bonuses, scouting for new land, buildings and critter training, up to 12 hours of offline progress with a foreman report on return, a guided tutorial, and browser autosave.</p>
           <div class="inv-tags">
-            <span class="inv-tag">Godot</span><span class="inv-tag">GDScript</span>
-            <span class="inv-tag">Pixel art</span><span class="inv-tag">itch.io</span>
+            <span class="inv-tag">Godot</span><span class="inv-tag">HTML5</span><span class="inv-tag">itch.io</span>
           </div>
+          <p class="project-link"><a href="https://bonebit.itch.io/close-enough-colony" target="_blank" rel="noopener noreferrer">Play it on itch.io</a></p>
         </article>
         <article class="project">
           <span class="project-status done"><svg class="px" aria-hidden="true"><use href="#i-check"/></svg> Completed</span>
@@ -786,11 +787,16 @@
           <span class="skill-chip">ChromaDB</span>
           <span class="skill-chip">ML frameworks</span>
         </dd>
+        <dt>Design</dt>
+        <dd>
+          <span class="skill-chip">Figma</span>
+          <span class="skill-chip">Canva</span>
+          <span class="skill-chip">Print &amp; merchandise design</span>
+        </dd>
         <dt>Other</dt>
         <dd>
           <span class="skill-chip">Android AR (ARCore)</span>
           <span class="skill-chip">LaTeX</span>
-          <span class="skill-chip">Graphic design</span>
         </dd>
       </dl>
     </div>
@@ -803,7 +809,7 @@
       <div class="achievements-grid">
         <div class="achievement"><div class="achievement-icon"><svg class="px" aria-hidden="true"><use href="#i-article"/></svg></div><div class="achievement-info"><h3>First publication</h3><p>Published an IEEE research paper on waste classification</p><div class="achievement-xp">+1000 XP</div></div></div>
         <div class="achievement"><div class="achievement-icon"><svg class="px" aria-hidden="true"><use href="#i-bullseye"/></svg></div><div class="achievement-info"><h3>Sharp shooter</h3><p>Achieved 94% accuracy on TrashNet image classification</p><div class="achievement-xp">+800 XP</div></div></div>
-        <div class="achievement"><div class="achievement-icon"><svg class="px" aria-hidden="true"><use href="#i-gamepad"/></svg></div><div class="achievement-info"><h3>Game creator</h3><p>Started developing an indie game in Godot 4.3</p><div class="achievement-xp">+500 XP</div></div></div>
+        <div class="achievement"><div class="achievement-icon"><svg class="px" aria-hidden="true"><use href="#i-gamepad"/></svg></div><div class="achievement-info"><h3>Game creator</h3><p>Released Close Enough Colony, an idle game made in Godot, on itch.io</p><div class="achievement-xp">+500 XP</div></div></div>
         <div class="achievement"><div class="achievement-icon"><svg class="px" aria-hidden="true"><use href="#i-paint-bucket"/></svg></div><div class="achievement-info"><h3>Artisan's mark</h3><p>Completed a design internship at Giant Palace studio</p><div class="achievement-xp">+500 XP</div></div></div>
         <div class="achievement"><div class="achievement-icon"><svg class="px" aria-hidden="true"><use href="#i-analytics"/></svg></div><div class="achievement-info"><h3>Bio explorer</h3><p>Completed a meta-analysis in computational biology</p><div class="achievement-xp">+750 XP</div></div></div>
         <div class="achievement"><div class="achievement-icon"><svg class="px" aria-hidden="true"><use href="#i-book-open"/></svg></div><div class="achievement-info"><h3>Knowledge seeker</h3><p>Pursuing B.S. in Computer Science at BINUS University</p><div class="achievement-xp">+600 XP</div></div></div>
@@ -851,7 +857,7 @@
       <a class="big-mail" href="mailto:jonathan.richard8899@gmail.com">jonathan.richard8899@gmail.com</a>
       <div class="comms-grid">
         <a href="tel:+6285249722777" class="comm-card"><div class="comm-icon"><svg class="px" aria-hidden="true"><use href="#i-device-phone"/></svg></div><div><div class="comm-label">Phone</div><div class="comm-value">085249722777</div></div></a>
-        <a href="https://www.linkedin.com/in/jonathan-richard" target="_blank" rel="noopener noreferrer" class="comm-card"><div class="comm-icon"><svg class="px" aria-hidden="true"><use href="#i-linkedin"/></svg></div><div><div class="comm-label">LinkedIn</div><div class="comm-value">jonathan-richard</div></div></a>
+        <a href="https://www.linkedin.com/in/jonathan-richard-2b72b1326" target="_blank" rel="noopener noreferrer" class="comm-card"><div class="comm-icon"><svg class="px" aria-hidden="true"><use href="#i-linkedin"/></svg></div><div><div class="comm-label">LinkedIn</div><div class="comm-value">jonathan-richard-2b72b1326</div></div></a>
         <a href="https://github.com/JohnnyIsCodingSomething" target="_blank" rel="noopener noreferrer" class="comm-card"><div class="comm-icon"><svg class="px" aria-hidden="true"><use href="#i-github"/></svg></div><div><div class="comm-label">GitHub</div><div class="comm-value">JohnnyIsCodingSomething</div></div></a>
         <div class="comm-card"><div class="comm-icon"><svg class="px" aria-hidden="true"><use href="#i-pin"/></svg></div><div><div class="comm-label">Location</div><div class="comm-value">Gading Serpong, Tangerang</div></div></div>
       </div>
@@ -897,7 +903,7 @@
   const tips = [
     'Tilling the soil…',
     'Jonathan has published an IEEE research paper',
-    'Bad Impression is built with Godot 4.3',
+    'Close Enough Colony is playable on itch.io',
     'The waste classifier reached 94% accuracy',
     'Watering the beds…',
     'Feeding the chicken…',
@@ -1055,7 +1061,7 @@ function setIcon(host, name) {
   const el = document.getElementById('typed-text');
   const strings = [
     'Computer science student',
-    'Aspiring game developer',
+    'Indie game developer',
     'Machine learning researcher',
     'Full-stack developer',
     'Graphic designer',
