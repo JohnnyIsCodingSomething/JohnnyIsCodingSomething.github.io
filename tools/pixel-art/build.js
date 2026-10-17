@@ -22,6 +22,7 @@ const DAY = {
   X: '#3b3437', A: '#fbe7a6',                         // lantern metal, lantern glass (unlit)
   U: '#ffffff', u: '#dce8ec',                         // cloud
   Z: '#fff6c9', z: '#f2d77a',                         // night-only: stars / glow
+  s: '#e0bd60', T: '#3f7d5a',                         // scarecrow straw, scarecrow coat
 };
 // Night: pull every colour toward a blue dusk, keep a few lit things bright.
 const NIGHT_BASE = [0x1b, 0x2a, 0x46];
@@ -31,7 +32,7 @@ const nightify = (c, k = 0.5) => toHex(hex(c).map((v, i) => v * (1 - k) * 0.95 +
 const NIGHT = {};
 for (const [key, c] of Object.entries(DAY)) NIGHT[key] = nightify(c);
 // Crops, grass and soil keep more of their colour at night so the beds still read (moonlit, not muddy).
-for (const key of ['g', 'd', 'l', 't', 'f', 'p', 'P', 'Y', 'y', 'O', 'o', 'L', 'D', 'k', '1', '2', '3', 'C', 'c', 'R', 'b', 'M', 'm', 'n', 'S', 'E'])
+for (const key of ['g', 'd', 'l', 't', 'f', 'p', 'P', 'Y', 'y', 'O', 'o', 'L', 'D', 'k', '1', '2', '3', 'C', 'c', 'R', 'b', 'M', 'm', 'n', 'S', 'E', 's', 'T'])
   NIGHT[key] = nightify(DAY[key], 0.3);
 Object.assign(NIGHT, { A: '#ffd257', Z: '#fff3b8', z: '#6d7d4c', U: '#34445f', u: '#2c3a55', H: '#141318', h: '#2c2a33', K: '#101014', e: '#101014' });
 
@@ -126,6 +127,28 @@ const S = {
     '.uuuuuuu.',
   ]),
   tuft: sprite(['d.d', '.d.']),
+  // a scarecrow watching the beds, and a few little animals
+  scarecrow: sprite([
+    '....s....',
+    '...sss...',
+    '..sssss..',
+    '...vvv...',
+    '...KvK...',
+    'WWWTTTWWW',
+    's.TTTTT.s',
+    '..TTTTT..',
+    '..TsTsT..',
+    '...TTT...',
+    '....W....',
+    '....W....',
+    '....W....',
+    '....W....',
+    '...WWW...',
+  ]),
+  crow:   sprite(['.KK..', 'KKKb.', '.KKK.', '..K..']),
+  duck:   sprite(['..YY.', '..KYO', 'YYYY.', '.YYY.', '.O.O.']),
+  cat:    sprite(['O.O...', 'OKO...', 'OOOOO.', '.OOOOo', '.o.o..']),
+  bunny:  sprite(['C.C.', 'C.C.', 'CCC.', 'CKCC', '.CCC', '.c.c']),
 };
 
 /* ───────────── the island ───────────── */
@@ -245,6 +268,17 @@ function buildFarm() {
   put(base, LX + 1, LY + 10, 'd'); put(base, LX + 3, LY + 10, 'd'); put(base, LX + 4, LY + 9, 'd'); // shadow
   stamp(base, S.lantern, LX, LY);
 
+  // scarecrow beside the beds, with a crow on its arm
+  for (let x = 39; x <= 47; x++) if (x % 2 === 1) put(base, x, 36, 'd');   // shadow
+  stamp(base, S.scarecrow, 39, 21);
+  stamp(base, S.crow, 46, 22);
+
+  // little animals: a duck under the tree, a cat by the lantern, a bunny below the beds
+  for (let x = 18; x <= 22; x++) if (x % 2 === 0) put(base, x, 40, 'd');
+  stamp(base, S.duck, 18, 35);
+  stamp(base, S.cat, 42, 50);
+  stamp(base, S.bunny, 68, 53);
+
   // chicken
   for (let x = 13; x <= 20; x++) if ((x) % 2 === 0) put(base, x, 51, 'd'); // shadow
   stamp(base, S.chicken, 13, 45);
@@ -254,7 +288,7 @@ function buildFarm() {
   stamp(base, S.player, 28, 26);
 
   // flowers
-  [[12, 38], [16, 41], [44, 53], [60, 56], [84, 56], [9, 47], [41, 20], [90, 12]].forEach(([x, y]) => { if (inside(x, y)) { put(base, x, y, 'C'); if (inside(x, y + 1)) put(base, x, y + 1, 'L'); } });
+  [[12, 38], [16, 41], [53, 55], [60, 56], [84, 56], [9, 47], [41, 20], [90, 12]].forEach(([x, y]) => { if (inside(x, y)) { put(base, x, y, 'C'); if (inside(x, y + 1)) put(base, x, y + 1, 'L'); } });
 
   // clouds (sky decoration)
   stamp(base, S.cloudA, 88, 2);
@@ -288,7 +322,7 @@ function buildFarm() {
   [[4, 9], [30, 3], [60, 5], [74, 1], [100, 30], [2, 30], [99, 50], [3, 60], [100, 66]].forEach(([x, y]) => put(night, x, y, 'Z'));   // stars
   [[60, 21], [84, 30], [70, 38], [56, 46]].forEach(([x, y]) => put(night, x, y, 'Z'));                                               // fireflies
 
-  const svg = `<svg class="farm" viewBox="0 0 ${W} ${H}" width="${W * 5}" height="${H * 5}" shape-rendering="crispEdges" role="img" aria-label="Pixel-art farm: a small floating island with a fence, a tree, a chicken, four tilled beds of wheat, cabbage and pumpkins, and Jonathan standing on the path.">`
+  const svg = `<svg class="farm" viewBox="0 0 ${W} ${H}" width="${W * 5}" height="${H * 5}" shape-rendering="crispEdges" role="img" aria-label="Pixel-art farm: a small floating island with a fence, a tree, a scarecrow with a crow on its arm, a chicken, a duck, a cat, a bunny, four tilled beds of wheat, cabbage and pumpkins, and Jonathan standing on the path.">`
     + `<g class="base">${toPaths(base)}</g><g class="crops">${crops}</g><g class="night-only">${toPaths(night)}</g></svg>`;
   return { svg, W, H };
 }
