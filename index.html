@@ -3,17 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Jonathan Richard — Computer Science student</title>
-  <meta name="description" content="Jonathan Richard, Computer Science student at BINUS University (semester 5), seeking an internship. Projects, skills and CV." />
+  <title>Jonathan Richard — Computer Science Student</title>
+  <meta name="description" content="Jonathan Richard, Computer Science student at BINUS University (Semester 5), seeking an internship. Projects, skills, and CV." />
   <meta name="author" content="Jonathan Richard" />
   <meta name="theme-color" content="#a6d3ee" />
   <link rel="canonical" href="https://johnnyiscodingsomething.github.io/" />
   <meta property="og:url" content="https://johnnyiscodingsomething.github.io/" />
   <meta property="og:type" content="profile" />
-  <meta property="og:title" content="Jonathan Richard — Computer Science student" />
+  <meta property="og:title" content="Jonathan Richard — Computer Science Student" />
   <meta property="og:description" content="BINUS University CS student seeking an internship. Projects, skills and CV." />
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Jonathan Richard — Computer Science student" />
+  <meta name="twitter:title" content="Jonathan Richard — Computer Science Student" />
   <meta name="twitter:description" content="BINUS University CS student seeking an internship." />
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Cpath fill='%23eef3ef' d='M0 0h16v16H0z'/%3E%3Cpath fill='%239a6843' d='M1 11h14v3H1z'/%3E%3Cpath fill='%2374482c' d='M1 14h14v1H1z'/%3E%3Cpath fill='%232f6f2c' d='M7 5h2v6H7z'/%3E%3Cpath fill='%234f9a3c' d='M2 3h3v1h1v1h1v2H5V6H4V5H3V4H2zM11 2h3v1h-1v2h-1v1h-1v1H9V5h1V3h1z'/%3E%3C/svg%3E" />
 
@@ -387,13 +387,20 @@
     /* ─── Projects ─── */
     .project { padding: var(--s4); border: 6px solid transparent; border-image: var(--fr-soft) 6 fill / 6px / 0 stretch; }
     .project-featured { border-image-source: var(--fr-panel); margin-bottom: var(--s4); padding: var(--s5); }
-    .project-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s6); align-items: start; }
+    .project-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s5); align-items: stretch; }
     .project p + p { margin-top: var(--s3); }
+    /* project screenshots: framed like the other panels; pixel art stays crisp */
+    .project-shot { display: block; width: 100%; height: auto; margin-bottom: var(--s3); border: 6px solid transparent; border-image: var(--fr-soft) 6 / 6px / 0 stretch; }
+    .project-shot.pixel { image-rendering: pixelated; }
+    .shot-link { display: block; background: none; text-decoration: none; }
+    .shot-link:hover { background: none; }
+    .shot-link:hover .project-shot { border-image-source: var(--fr-panel); }
     .project-group { font: 20px/24px var(--f-px); color: var(--dim); margin-bottom: var(--s2); }
     .project-grid + .project-group { margin-top: var(--s7); }
     /* odd number of visible awards: the last one spans the row (until the Konami card appears) */
     .achievements-grid:has(.secret-achievement[style*="none"]) > .achievement:nth-last-child(2):nth-child(odd) { grid-column: 1 / -1; }
-    .project-grid .project { border: 0; border-image: none; padding: var(--s4) 0 0; background: var(--rule-dots); }
+    /* each project sits in its own pixel-framed box, like the profile card */
+    .project-grid .project { border: 6px solid transparent; border-image: var(--fr-panel) 6 fill / 6px / 0 stretch; padding: var(--s4); background: none; }
     .project h4 { font: 30px/32px var(--f-px); color: var(--ink); margin-top: var(--s2); }
     .project-featured h3 { font-size: 40px; line-height: 40px; }
     .project-link { margin-top: var(--s3); font: 20px/24px var(--f-px); }
@@ -561,7 +568,7 @@
       .sparkle-art { width: 21px; height: 21px; }
       footer::before { background-size: 480px 60px, 408px 72px, 288px 90px; background-position: left 0 bottom 0, left -225px bottom 33px, left -45px bottom 48px; }
       .big-mail { font-size: 30px; line-height: 40px; }
-      .project, .project-featured { padding: var(--s3); }
+      .project, .project-featured, .project-grid .project { padding: var(--s3); }
       .hud-tools { gap: 0; }
       .hud-icon-btn, .hamburger { width: 36px; height: 36px; }
       .btn-game { flex: 1 1 auto; justify-content: center; }
@@ -593,7 +600,7 @@
 
 <!-- Loading screen -->
 <div id="loading-screen">
-  <div class="load-title">Planting seeds</div>
+  <div class="load-title">Planting Seeds</div>
   <div class="load-bar-outer">
     <div class="load-bar-inner" id="loadBar"></div>
   </div>
@@ -608,7 +615,7 @@
 <div class="toast" id="toast" aria-live="polite">
   <div class="toast-icon"><svg class="px" aria-hidden="true"><use href="#i-trophy"/></svg></div>
   <div class="toast-text">
-    <div class="toast-title">Achievement unlocked</div>
+    <div class="toast-title">Achievement Unlocked</div>
     <div class="toast-desc" id="toastDesc">Welcome!</div>
   </div>
   <div class="toast-progress" id="toastProgress"></div>
@@ -623,7 +630,7 @@
       <span class="hud-level">Semester 5</span>
       <div class="hud-xp">
         <div class="hud-xp-bar"><div class="hud-xp-fill" id="hudXp"></div></div>
-        <div class="hud-xp-text">Semester 5 in progress</div>
+        <div class="hud-xp-text">Semester 5 In Progress</div>
       </div>
     </div>
 
@@ -638,10 +645,10 @@
         <li><a href="#contact">Contact</a></li>
       </ul></nav>
       <div class="hud-tools">
-        <button class="hud-icon-btn" id="hud-pro-btn" title="Professional view (minimal effects)" aria-label="Toggle professional view"><svg class="px" aria-hidden="true"><use href="#i-briefcase"/></svg></button>
+        <button class="hud-icon-btn" id="hud-pro-btn" title="Professional View (Minimal Effects)" aria-label="Toggle professional view"><svg class="px" aria-hidden="true"><use href="#i-briefcase"/></svg></button>
         <button class="hud-icon-btn" id="hud-download-btn" title="Download CV" aria-label="Download CV"><svg class="px" aria-hidden="true"><use href="#i-download"/></svg></button>
-        <button class="hud-icon-btn" id="hud-sound-btn" title="Toggle sound" aria-label="Toggle sound"><svg class="px" aria-hidden="true"><use href="#i-volume-x"/></svg></button>
-        <button class="hud-icon-btn" id="hud-theme-btn" title="Toggle theme" aria-label="Toggle theme"><svg class="px" aria-hidden="true"><use href="#i-sun"/></svg></button>
+        <button class="hud-icon-btn" id="hud-sound-btn" title="Toggle Sound" aria-label="Toggle sound"><svg class="px" aria-hidden="true"><use href="#i-volume-x"/></svg></button>
+        <button class="hud-icon-btn" id="hud-theme-btn" title="Toggle Theme" aria-label="Toggle theme"><svg class="px" aria-hidden="true"><use href="#i-sun"/></svg></button>
       </div>
       <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false" aria-controls="navLinks">
         <svg class="px" aria-hidden="true"><use href="#i-menu"/></svg>
@@ -655,21 +662,21 @@
   <section class="hero" id="hero">
     <div class="hero-grid">
       <div class="hero-copy">
-        <p class="hero-status"><span class="status-dot"></span> Open to internships</p>
+        <p class="hero-status"><span class="status-dot"></span> Open to Internships</p>
         <h1 class="hero-name"><span>Jonathan</span> <span>Richard</span></h1>
         <p class="hero-roles">Game Developer · Full-Stack · AI Apps</p>
-        <div class="hero-class"><span id="typed-text">Computer science student</span><span class="typed-cursor"></span></div>
+        <div class="hero-class"><span id="typed-text">Computer Science Student</span><span class="typed-cursor"></span></div>
         <p class="hero-desc">
           Computer Science student at BINUS University (Semester 5) building software end-to-end —
           from indie games to published ML research. Seeking an internship in software development.
         </p>
         <div class="hero-actions">
-          <a href="#contact" class="btn-game btn-primary-g"><svg class="px" aria-hidden="true"><use href="#i-mail"/></svg> Get in touch</a>
-          <a href="#projects" class="btn-game btn-outline-g"><svg class="px" aria-hidden="true"><use href="#i-folder"/></svg> See projects</a>
+          <a href="#contact" class="btn-game btn-primary-g"><svg class="px" aria-hidden="true"><use href="#i-mail"/></svg> Get in Touch</a>
+          <a href="#projects" class="btn-game btn-outline-g"><svg class="px" aria-hidden="true"><use href="#i-folder"/></svg> See Projects</a>
           <button id="btn-hero-download" class="btn-game btn-outline-g"><svg class="px" aria-hidden="true"><use href="#i-download"/></svg> Download CV</button>
         </div>
         <div id="minigame-container" style="display: none; margin-top: 24px;">
-          <button id="btn-play-minigame" class="btn-game btn-primary-g"><svg class="px" aria-hidden="true"><use href="#i-gamepad"/></svg> Play mini-game</button>
+          <button id="btn-play-minigame" class="btn-game btn-primary-g"><svg class="px" aria-hidden="true"><use href="#i-gamepad"/></svg> Play Mini-Game</button>
         </div>
       </div>
 
@@ -678,10 +685,10 @@
         <aside class="char-card frame" aria-label="Profile summary">
           <div class="char-portrait"><!--gen:avatar--><svg class="avatar" viewBox="0 0 16 16" width="64" height="64" shape-rendering="crispEdges" role="img" aria-label="Pixel-art portrait of Jonathan: black hair, dark-rimmed rectangular glasses, maroon collared shirt"><path class="av-hair" d="M4 1h8v1h-8zM3 2h2v1h-2zM7 2h6v1h-6zM2 3h2v1h-2zM5 3h9v1h-9zM2 4h2v1h-2zM5 4h5v1h-5zM11 4h3v1h-3zM2 5h1v1h-1zM13 5h1v1h-1z"/><path class="av-hair-hi" d="M5 2h2v1h-2zM4 3h1v1h-1z"/><path class="av-skin" d="M4 4h1v1h-1zM10 4h1v1h-1zM3 5h10v1h-10zM7 6h2v1h-2zM1 7h1v1h-1zM14 7h1v1h-1zM1 8h1v1h-1zM7 8h2v1h-2zM14 8h1v1h-1zM7 9h2v1h-2zM2 10h12v1h-12zM3 11h4v1h-4zM9 11h4v1h-4zM4 12h8v1h-8zM6 13h4v1h-4zM7 14h2v1h-2z"/><path class="av-rim" d="M2 6h5v1h-5zM9 6h5v1h-5zM2 7h1v1h-1zM6 7h4v1h-4zM13 7h1v1h-1zM2 8h1v1h-1zM6 8h1v1h-1zM9 8h1v1h-1zM13 8h1v1h-1zM2 9h5v1h-5zM9 9h5v1h-5z"/><path class="av-lens" d="M3 7h1v1h-1zM5 7h1v1h-1zM10 7h1v1h-1zM12 7h1v1h-1zM3 8h1v1h-1zM5 8h1v1h-1zM10 8h1v1h-1zM12 8h1v1h-1z"/><path class="av-eye" d="M4 7h1v1h-1zM11 7h1v1h-1zM4 8h1v1h-1zM11 8h1v1h-1z"/><path class="av-mouth" d="M7 11h2v1h-2z"/><path class="av-top" d="M3 13h1v1h-1zM12 13h1v1h-1zM1 14h5v1h-5zM10 14h5v1h-5zM0 15h7v1h-7zM9 15h7v1h-7z"/><path class="av-collar" d="M4 13h2v1h-2zM10 13h2v1h-2zM6 14h1v1h-1zM9 14h1v1h-1zM7 15h2v1h-2z"/></svg><!--/gen:avatar--></div>
           <div class="char-body">
-            <div class="char-title">CS student, indie game developer</div>
+            <div class="char-title">CS Student, Indie Game Developer</div>
           </div>
           <dl class="char-info">
-            <div class="char-info-row"><dt class="label">Role</dt><dd class="value">Full-stack dev</dd></div>
+            <div class="char-info-row"><dt class="label">Role</dt><dd class="value">Full-Stack Dev</dd></div>
             <div class="char-info-row"><dt class="label">Base</dt><dd class="value">Gading Serpong</dd></div>
             <div class="char-info-row"><dt class="label">School</dt><dd class="value">BINUS University</dd></div>
             <div class="char-info-row"><dt class="label">Semester</dt><dd class="value">5</dd></div>
@@ -697,16 +704,16 @@
       <div class="section-head"><h2 class="section-title">About</h2></div>
       <div class="about-grid">
         <div class="about-bio">
-          <p>Computer Science student at Bina Nusantara University with hands-on experience across full-stack development, graphic design, and applied machine learning, and has released an indie game, Close Enough Colony, built in Godot.</p>
-          <p>Builds software end-to-end — from a released indie game to published research — and is looking to bring that same drive into a company internship placement.</p>
+          <p>Computer Science student at Bina Nusantara University with hands-on experience across full-stack development, graphic design, and applied machine learning, and the developer of Close Enough Colony, an indie game built in Godot.</p>
+          <p>Jonathan builds software end-to-end — from a released indie game to published research — and is looking to bring that same drive to an internship.</p>
         </div>
         <div class="about-focus">
-          <h3>Focus areas</h3>
+          <h3>Focus Areas</h3>
           <ul class="chip-list">
-            <li>Game development</li>
-            <li>Full-stack development</li>
-            <li>Machine learning</li>
-            <li>Graphic design</li>
+            <li>Game Development</li>
+            <li>Full-Stack Development</li>
+            <li>Machine Learning</li>
+            <li>Graphic Design</li>
             <li>Research</li>
           </ul>
         </div>
@@ -732,65 +739,70 @@
   <!-- Projects -->
   <section id="projects">
     <div class="container reveal">
-      <div class="section-head"><h2 class="section-title">Projects and research</h2></div>
+      <div class="section-head"><h2 class="section-title">Projects and Research</h2></div>
 
-      <h3 class="project-group">Personal projects</h3>
+      <h3 class="project-group">Personal Projects</h3>
       <div class="project-grid">
         <article class="project">
-          <span class="project-status"><svg class="px" aria-hidden="true"><use href="#i-edit"/></svg> In development</span>
+          <a class="shot-link" href="assets/projects/lily-architecture.png" target="_blank" rel="noopener" title="Open Full Size"><img class="project-shot" src="assets/projects/lily-architecture.png" width="820" height="620" loading="lazy" alt="Diagram of how Lily works: voice (faster-whisper) and screen (vision + OCR) go into Lily core (Ollama LLM, ChromaDB memory, 2K-token prompt budget, sandboxed skills), which speaks with Kokoro TTS and drives an animated avatar, and shares one reply pipeline with the desktop app, Discord, a Minecraft bot, and a phone web app"></a>
+          <span class="project-status"><svg class="px" aria-hidden="true"><use href="#i-edit"/></svg> In Development</span>
           <h4>Lily</h4>
           <div class="project-type">Local AI assistant running on a 4&nbsp;GB&nbsp;GPU</div>
-          <p>A local LLM assistant (Ollama) with semantic memory in ChromaDB, voice in and out (faster-whisper, Kokoro TTS), screen understanding (vision model + OCR) and an animated desktop avatar. One reply pipeline is shared by the desktop app, Discord, a Minecraft bot (HTTP bridge) and a phone web app (FastAPI with SSE streaming and swappable LLM backends).</p>
+          <p>A local LLM assistant (Ollama) with semantic memory in ChromaDB, voice in and out (faster-whisper, Kokoro TTS), screen understanding (vision model + OCR), and an animated desktop avatar. One reply pipeline is shared by the desktop app, Discord, a Minecraft bot (HTTP bridge), and a phone web app (FastAPI with SSE streaming and swappable LLM backends).</p>
           <p>Under the hood: prompt budgeting to fit a 2K-token context, sandboxed self-written skills (AST checks, isolated tests, rollback), and 160+ test files.</p>
           <div class="inv-tags">
             <span class="inv-tag">Python</span><span class="inv-tag">Ollama</span><span class="inv-tag">ChromaDB</span><span class="inv-tag">FastAPI</span>
           </div>
         </article>
         <article class="project">
+          <a class="shot-link" href="assets/projects/close-enough-colony.png" target="_blank" rel="noopener" title="Open Full Size"><img class="project-shot pixel" src="assets/projects/close-enough-colony.png" width="630" height="500" loading="lazy" alt="Close Enough Colony: a meadow with ponds, critters, and the scarecrow foreman, surrounded by fog tiles marked with question marks"></a>
           <span class="project-status done"><svg class="px" aria-hidden="true"><use href="#i-check"/></svg> Released</span>
           <h4>Close Enough Colony</h4>
           <div class="project-type">Indie idle game in Godot 4.7, playable in the browser</div>
-          <p>A cozy idle colony sim where a scarecrow foreman runs the colony while you're away. Designed, built and released on itch.io: 8 critter types with terrain bonuses, scouting for new land, buildings and critter training, up to 12 hours of offline progress with a foreman report on return, a guided tutorial, and browser autosave.</p>
+          <p>A cozy idle colony sim where a scarecrow foreman runs the colony while you're away. Designed, built, and released on itch.io: 8 critter types with terrain bonuses, scouting for new land, buildings and critter training, up to 12 hours of offline progress with a foreman report on return, a guided tutorial, and browser autosave.</p>
           <div class="inv-tags">
             <span class="inv-tag">Godot</span><span class="inv-tag">HTML5</span><span class="inv-tag">itch.io</span>
           </div>
-          <p class="project-link"><a href="https://bonebit.itch.io/close-enough-colony" target="_blank" rel="noopener noreferrer">Play it on itch.io</a></p>
+          <p class="project-link"><a href="https://bonebit.itch.io/close-enough-colony" target="_blank" rel="noopener noreferrer">Play It on itch.io</a></p>
         </article>
       </div>
 
-      <h3 class="project-group">Course projects</h3>
+      <h3 class="project-group">Course Projects</h3>
       <div class="project-grid">
         <article class="project">
+          <a class="shot-link" href="assets/projects/waste-classification.jpg" target="_blank" rel="noopener" title="Open Full Size"><img class="project-shot" src="assets/projects/waste-classification.jpg" width="948" height="570" loading="lazy" alt="Sample TrashNet images for the six waste classes (cardboard, glass, metal, paper, plastic, trash) above a chart of per-class F1 scores for the EfficientNet-B0 model on the test set, weighted average 0.93"></a>
           <span class="project-status done"><svg class="px" aria-hidden="true"><use href="#i-check"/></svg> Published</span>
           <h4>Waste Classification System</h4>
           <div class="project-type">Machine learning, COMP6696 group research</div>
           <p>Trained an EfficientNet-B0 image classifier on TrashNet reaching 94% accuracy; published as an IEEE paper with a research poster.</p>
           <div class="inv-tags">
             <span class="inv-tag">Python</span><span class="inv-tag">EfficientNet</span>
-            <span class="inv-tag">IEEE</span><span class="inv-tag">94% accuracy</span>
+            <span class="inv-tag">IEEE</span><span class="inv-tag">94% Accuracy</span>
           </div>
         </article>
         <article class="project">
+          <a class="shot-link" href="assets/projects/dna-classification-review.png" target="_blank" rel="noopener" title="Open Full Size"><img class="project-shot" src="assets/projects/dna-classification-review.png" width="948" height="570" loading="lazy" alt="Title of the paper Machine Learning for DNA Sequence Classification: A Comprehensive Review, above its Table I comparing SVM, Random Forest, Naive Bayes, CNN, LSTM/RNN, and DNABERT by representation, scalability, and accuracy"></a>
           <span class="project-status done"><svg class="px" aria-hidden="true"><use href="#i-check"/></svg> Completed</span>
-          <h4>SII as a Prognostic Marker in DLBCL</h4>
-          <div class="project-type">Systematic review and meta-analysis</div>
-          <p><em>An Accessible CBC-Derived Prognostic Marker for Diffuse Large B-Cell Lymphoma.</em> Assessed pretreatment SII as a low-cost prognostic marker in DLBCL.</p>
+          <h4>ML for DNA Sequence Classification</h4>
+          <div class="project-type">Literature review, Computational Biology course (team of 3, first author)</div>
+          <p>A systematic review of machine learning for classifying DNA sequences: 200+ candidate papers (2015–2024) screened down to 13 primary sources, comparing classical methods (SVM, Random Forest, Naive Bayes) with deep learning (CNN, LSTM, DNABERT) and sequence encodings (k-mer, one-hot, embeddings). CNN and Transformer-based models came out most accurate; class imbalance, interpretability, and cross-species generalization remain open challenges.</p>
           <div class="inv-tags">
-            <span class="inv-tag">Research</span><span class="inv-tag">Biology</span>
-            <span class="inv-tag">Meta-analysis</span>
+            <span class="inv-tag">Machine Learning</span><span class="inv-tag">Bioinformatics</span><span class="inv-tag">DNABERT</span><span class="inv-tag">Literature Review</span>
           </div>
         </article>
         <article class="project">
+          <a class="shot-link" href="assets/projects/chi-matcha.jpg" target="_blank" rel="noopener" title="Open Full Size"><img class="project-shot" src="assets/projects/chi-matcha.jpg" width="948" height="570" loading="lazy" alt="Chi Matcha app design in Figma: the sign-in screen, the home screen with a café photo and Menu and Stores buttons, and the menu of matcha drinks with prices"></a>
           <span class="project-status done"><svg class="px" aria-hidden="true"><use href="#i-check"/></svg> Completed</span>
           <h4>Chi Matcha</h4>
           <div class="project-type">Android ordering app, User Experience course (team of 3)</div>
-          <p>A mobile ordering app for a matcha café, taken from wireframes in Figma to a working Android app in Java: login and registration with validation, a home page with an image carousel, menu browsing with item details, orders customised by ice and sweetness level, and a branch location page.</p>
+          <p>A mobile ordering app for a matcha café, taken from wireframes in Figma to a working Android app in Java: login and registration with validation, a home page with an image carousel, menu browsing with item details, orders customized by ice and sweetness level, and a branch location page.</p>
           <div class="inv-tags">
-            <span class="inv-tag">Figma</span><span class="inv-tag">Android Studio</span><span class="inv-tag">Java</span><span class="inv-tag">UX design</span>
+            <span class="inv-tag">Figma</span><span class="inv-tag">Android Studio</span><span class="inv-tag">Java</span><span class="inv-tag">UX Design</span>
           </div>
-          <p class="project-link"><a href="https://github.com/JohnnyIsCodingSomething/UX-AOL-ChiMatcha" target="_blank" rel="noopener noreferrer">View code on GitHub</a></p>
+          <p class="project-link"><a href="https://github.com/JohnnyIsCodingSomething/UX-AOL-ChiMatcha" target="_blank" rel="noopener noreferrer">View Code on GitHub</a></p>
         </article>
         <article class="project">
+          <a class="shot-link" href="assets/projects/spojefy.jpg" target="_blank" rel="noopener" title="Open Full Size"><img class="project-shot" src="assets/projects/spojefy.jpg" width="948" height="570" loading="lazy" alt="Spojefy home page: a featured-artist banner with a Play Now button above a row of five song cards"></a>
           <span class="project-status done"><svg class="px" aria-hidden="true"><use href="#i-check"/></svg> Completed</span>
           <h4>Spojefy</h4>
           <div class="project-type">Music streaming web app, Multimedia Systems course (team project)</div>
@@ -798,7 +810,7 @@
           <div class="inv-tags">
             <span class="inv-tag">Vue.js</span><span class="inv-tag">ImageKit CDN</span><span class="inv-tag">Multimedia</span>
           </div>
-          <p class="project-link"><a href="https://github.com/darrenkumala/Spojefy" target="_blank" rel="noopener noreferrer">View code on GitHub</a></p>
+          <p class="project-link"><a href="https://github.com/darrenkumala/Spojefy" target="_blank" rel="noopener noreferrer">View Code on GitHub</a></p>
         </article>
       </div>
     </div>
@@ -809,7 +821,7 @@
     <div class="container reveal">
       <div class="section-head"><h2 class="section-title">Skills</h2></div>
       <dl class="skill-groups">
-        <dt>Languages and frameworks</dt>
+        <dt>Languages and Frameworks</dt>
         <dd>
           <span class="skill-chip">Python</span>
           <span class="skill-chip">JavaScript</span>
@@ -820,7 +832,7 @@
           <span class="skill-chip">Vue.js</span>
           <span class="skill-chip">FastAPI</span>
         </dd>
-        <dt>Game engines</dt>
+        <dt>Game Engines</dt>
         <dd>
           <span class="skill-chip">Godot</span>
           <span class="skill-chip">Unity</span>
@@ -829,13 +841,13 @@
         <dd>
           <span class="skill-chip">MariaDB / MySQL</span>
           <span class="skill-chip">ChromaDB</span>
-          <span class="skill-chip">ML frameworks</span>
+          <span class="skill-chip">ML Frameworks</span>
         </dd>
         <dt>Design</dt>
         <dd>
           <span class="skill-chip">Figma</span>
           <span class="skill-chip">Canva</span>
-          <span class="skill-chip">Print &amp; merchandise design</span>
+          <span class="skill-chip">Print &amp; Merchandise Design</span>
         </dd>
         <dt>Other</dt>
         <dd>
@@ -849,16 +861,15 @@
   <!-- Awards -->
   <section id="achievements">
     <div class="container reveal">
-      <div class="section-head"><h2 class="section-title">Awards and milestones</h2></div>
+      <div class="section-head"><h2 class="section-title">Awards and Milestones</h2></div>
       <div class="achievements-grid">
-        <div class="achievement"><div class="achievement-icon"><svg class="px" aria-hidden="true"><use href="#i-article"/></svg></div><div class="achievement-info"><h3>First publication</h3><p>Published an IEEE research paper on waste classification</p><div class="achievement-xp">+1000 XP</div></div></div>
-        <div class="achievement"><div class="achievement-icon"><svg class="px" aria-hidden="true"><use href="#i-bullseye"/></svg></div><div class="achievement-info"><h3>Sharp shooter</h3><p>Achieved 94% accuracy on TrashNet image classification</p><div class="achievement-xp">+800 XP</div></div></div>
-        <div class="achievement"><div class="achievement-icon"><svg class="px" aria-hidden="true"><use href="#i-gamepad"/></svg></div><div class="achievement-info"><h3>Game creator</h3><p>Released Close Enough Colony, an idle game made in Godot, on itch.io</p><div class="achievement-xp">+500 XP</div></div></div>
-        <div class="achievement"><div class="achievement-icon"><svg class="px" aria-hidden="true"><use href="#i-server"/></svg></div><div class="achievement-info"><h3>Small GPU, big brain</h3><p>Built Lily, a local AI assistant with memory, voice and vision, on a 4&nbsp;GB&nbsp;GPU</p><div class="achievement-xp">+900 XP</div></div></div>
-        <div class="achievement"><div class="achievement-icon"><svg class="px" aria-hidden="true"><use href="#i-paint-bucket"/></svg></div><div class="achievement-info"><h3>Artisan's mark</h3><p>Completed a design internship at Giant Palace studio</p><div class="achievement-xp">+500 XP</div></div></div>
-        <div class="achievement"><div class="achievement-icon"><svg class="px" aria-hidden="true"><use href="#i-analytics"/></svg></div><div class="achievement-info"><h3>Bio explorer</h3><p>Completed a meta-analysis in computational biology</p><div class="achievement-xp">+750 XP</div></div></div>
-        <div class="achievement"><div class="achievement-icon"><svg class="px" aria-hidden="true"><use href="#i-book-open"/></svg></div><div class="achievement-info"><h3>Knowledge seeker</h3><p>Pursuing B.S. in Computer Science at BINUS University</p><div class="achievement-xp">+600 XP</div></div></div>
-        <div class="achievement secret-achievement" style="display: none;"><div class="achievement-icon"><svg class="px" aria-hidden="true"><use href="#i-zap"/></svg></div><div class="achievement-info"><h3>Konami code</h3><p>You found the secret code!</p><div class="achievement-xp">+9999 XP</div></div></div>
+        <div class="achievement"><div class="achievement-icon"><svg class="px" aria-hidden="true"><use href="#i-article"/></svg></div><div class="achievement-info"><h3>First Publication</h3><p>Published an IEEE research paper on waste classification</p><div class="achievement-xp">+1000 XP</div></div></div>
+        <div class="achievement"><div class="achievement-icon"><svg class="px" aria-hidden="true"><use href="#i-bullseye"/></svg></div><div class="achievement-info"><h3>Sharpshooter</h3><p>Achieved 94% accuracy on TrashNet image classification</p><div class="achievement-xp">+800 XP</div></div></div>
+        <div class="achievement"><div class="achievement-icon"><svg class="px" aria-hidden="true"><use href="#i-gamepad"/></svg></div><div class="achievement-info"><h3>Game Creator</h3><p>Released Close Enough Colony, an idle game made in Godot, on itch.io</p><div class="achievement-xp">+500 XP</div></div></div>
+        <div class="achievement"><div class="achievement-icon"><svg class="px" aria-hidden="true"><use href="#i-server"/></svg></div><div class="achievement-info"><h3>Small GPU, Big Brain</h3><p>Built Lily, a local AI assistant with memory, voice, and vision, on a 4&nbsp;GB&nbsp;GPU</p><div class="achievement-xp">+900 XP</div></div></div>
+        <div class="achievement"><div class="achievement-icon"><svg class="px" aria-hidden="true"><use href="#i-paint-bucket"/></svg></div><div class="achievement-info"><h3>Artisan's Mark</h3><p>Completed a design internship at Giant Palace studio</p><div class="achievement-xp">+500 XP</div></div></div>
+        <div class="achievement"><div class="achievement-icon"><svg class="px" aria-hidden="true"><use href="#i-book-open"/></svg></div><div class="achievement-info"><h3>Knowledge Seeker</h3><p>Pursuing B.S. in Computer Science at BINUS University</p><div class="achievement-xp">+600 XP</div></div></div>
+        <div class="achievement secret-achievement" style="display: none;"><div class="achievement-icon"><svg class="px" aria-hidden="true"><use href="#i-zap"/></svg></div><div class="achievement-info"><h3>Konami Code</h3><p>You found the secret code!</p><div class="achievement-xp">+9999 XP</div></div></div>
       </div>
     </div>
   </section>
@@ -869,10 +880,8 @@
       <div class="section-head"><h2 class="section-title">Education</h2></div>
       <div class="level-path">
         <div class="level-node level-current"><div class="level-info"><h3>Bina Nusantara University</h3><div class="degree">B.S. Computer Science</div></div><div class="level-info"><div class="period">2024 – Present, Semester 5</div></div></div>
-        <div class="level-node"><div class="level-info"><h3>SMK Katolik Santa Maria</h3><div class="degree">Pontianak</div></div><div class="level-info"><div class="period">2021 – 2024</div></div></div>
-        <div class="level-node"><div class="level-info"><h3>SMP Katolik Santo Petrus</h3><div class="degree">Pontianak</div></div><div class="level-info"><div class="period">2018 – 2021</div></div></div>
       </div>
-      <div class="coursework-header">Relevant coursework</div>
+      <div class="coursework-header">Relevant Coursework</div>
       <div class="coursework-grid">
         <span class="cw-tag">Artificial Intelligence</span><span class="cw-tag">Object Oriented Programming</span>
         <span class="cw-tag">Data Structures</span><span class="cw-tag">Algorithm Design &amp; Analysis</span>
@@ -882,7 +891,7 @@
         <span class="cw-tag">Multimedia Systems</span><span class="cw-tag">Research Methodology</span>
         <span class="cw-tag">Computational Biology</span>
       </div>
-      <div class="coursework-header"><svg class="px" aria-hidden="true"><use href="#i-hourglass"/></svg> In progress (Semester 5)</div>
+      <div class="coursework-header"><svg class="px" aria-hidden="true"><use href="#i-hourglass"/></svg> In Progress (Semester 5)</div>
       <div class="coursework-grid">
         <span class="cw-tag">Game Programming</span>
         <span class="cw-tag">Web Programming</span>
@@ -917,7 +926,7 @@
     <div class="footer-keys">
       <span>Press <kbd>1</kbd>–<kbd>7</kbd> to jump between sections</span>
       <span>Click anywhere for a burst</span>
-      <span id="konami-hint">Try the Konami code…</span>
+      <span id="konami-hint">Try the Konami Code…</span>
     </div>
   </footer>
 </div>
@@ -928,9 +937,9 @@
     <button id="close-snake" aria-label="Close game"><svg class="px" aria-hidden="true"><use href="#i-close"/></svg></button>
     <div class="snake-score">Score <span id="snake-score">0</span></div>
     <canvas id="snake-canvas" width="400" height="400"></canvas>
-    <div class="snake-help">Swipe, WASD or arrow keys to move. Esc to close.</div>
+    <div class="snake-help">Swipe, WASD, or arrow keys to move. Esc to close.</div>
     <div id="snake-gameover" class="snake-over" style="display:none;">
-      <div class="snake-over-title">Game over</div>
+      <div class="snake-over-title">Game Over</div>
       <p>Score: <span id="snake-final-score">0</span></p>
       <p>Press Space or tap to restart</p>
     </div>
@@ -1105,11 +1114,11 @@ function setIcon(host, name) {
 (function() {
   const el = document.getElementById('typed-text');
   const strings = [
-    'Computer science student',
-    'Indie game developer',
-    'Machine learning researcher',
-    'Full-stack developer',
-    'Graphic designer',
+    'Computer Science Student',
+    'Indie Game Developer',
+    'Machine Learning Researcher',
+    'Full-Stack Developer',
+    'Graphic Designer',
   ];
   // The first line is already in the HTML; start by deleting it. Professional view holds the line still.
   let strIdx = 0, charIdx = strings[0].length, deleting = false;
@@ -1385,7 +1394,7 @@ document.addEventListener('keydown', (e) => {
 
 function triggerKonami() {
   document.body.classList.add('rainbow-mode');
-  showToast('Secret unlocked: you found the Konami code!');
+  showToast('Secret unlocked: you found the Konami Code!');
   AudioSys.play('achievement');
   document.getElementById('minigame-container').style.display = 'block';
   document.querySelector('.secret-achievement').style.display = 'flex';
