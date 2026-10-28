@@ -310,6 +310,7 @@
     .status-dot { width: 8px; height: 8px; background: var(--leaf-dot); display: inline-block; flex: none; }
     .hero-name { font: 120px/104px var(--f-px); font-weight: 400; color: var(--ink); margin-bottom: var(--s4); }
     .hero-name span { display: block; }
+    .hero-roles { font: 30px/32px var(--f-px); color: var(--wheat-ink); margin-bottom: var(--s2); }
     .hero-class { font: 40px/48px var(--f-px); color: var(--dim); min-height: 48px; margin-bottom: var(--s3); }
     .typed-cursor { display: inline-block; width: 16px; height: 4px; background: var(--ink); margin-left: 4px; vertical-align: baseline; animation: blink 1s steps(1) infinite; }
     @keyframes blink { 50% { opacity: 0; } }
@@ -387,8 +388,13 @@
     .project { padding: var(--s4); border: 6px solid transparent; border-image: var(--fr-soft) 6 fill / 6px / 0 stretch; }
     .project-featured { border-image-source: var(--fr-panel); margin-bottom: var(--s4); padding: var(--s5); }
     .project-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s6); align-items: start; }
+    .project p + p { margin-top: var(--s3); }
+    .project-group { font: 20px/24px var(--f-px); color: var(--dim); margin-bottom: var(--s2); }
+    .project-grid + .project-group { margin-top: var(--s7); }
+    /* odd number of visible awards: the last one spans the row (until the Konami card appears) */
+    .achievements-grid:has(.secret-achievement[style*="none"]) > .achievement:nth-last-child(2):nth-child(odd) { grid-column: 1 / -1; }
     .project-grid .project { border: 0; border-image: none; padding: var(--s4) 0 0; background: var(--rule-dots); }
-    .project h3 { font: 30px/32px var(--f-px); color: var(--ink); margin-top: var(--s2); }
+    .project h4 { font: 30px/32px var(--f-px); color: var(--ink); margin-top: var(--s2); }
     .project-featured h3 { font-size: 40px; line-height: 40px; }
     .project-link { margin-top: var(--s3); font: 20px/24px var(--f-px); }
     .project-type { color: var(--dim); margin-bottom: var(--s3); font-size: 16px; line-height: 24px; }
@@ -540,6 +546,7 @@
       .container, .hero-grid { width: calc(100% - 32px); }
       .hero-name { font-size: 80px; line-height: 72px; }
       .hero-class { font-size: 30px; line-height: 36px; min-height: 36px; }
+      .hero-roles { font-size: 20px; line-height: 24px; }
       .farm { width: 312px; height: 228px; }
       .hero-world { justify-self: stretch; }
       .char-card { width: 100%; }
@@ -650,6 +657,7 @@
       <div class="hero-copy">
         <p class="hero-status"><span class="status-dot"></span> Open to internships</p>
         <h1 class="hero-name"><span>Jonathan</span> <span>Richard</span></h1>
+        <p class="hero-roles">Game Developer · Full-Stack · AI Apps</p>
         <div class="hero-class"><span id="typed-text">Computer science student</span><span class="typed-cursor"></span></div>
         <p class="hero-desc">
           Computer Science student at BINUS University (Semester 5) building software end-to-end —
@@ -726,21 +734,21 @@
     <div class="container reveal">
       <div class="section-head"><h2 class="section-title">Projects and research</h2></div>
 
-      <article class="project project-featured">
-        <span class="project-status done"><svg class="px" aria-hidden="true"><use href="#i-check"/></svg> Published</span>
-        <h3>Waste Classification System</h3>
-        <div class="project-type">Machine learning, COMP6696 group research</div>
-        <p>Trained an EfficientNet-B0 image classifier on TrashNet reaching 94% accuracy; published as an IEEE paper with a research poster.</p>
-        <div class="inv-tags">
-          <span class="inv-tag">Python</span><span class="inv-tag">EfficientNet</span>
-          <span class="inv-tag">IEEE</span><span class="inv-tag">94% accuracy</span>
-        </div>
-      </article>
-
+      <h3 class="project-group">Personal projects</h3>
       <div class="project-grid">
         <article class="project">
+          <span class="project-status"><svg class="px" aria-hidden="true"><use href="#i-edit"/></svg> In development</span>
+          <h4>Lily</h4>
+          <div class="project-type">Local AI assistant running on a 4&nbsp;GB&nbsp;GPU</div>
+          <p>A local LLM assistant (Ollama) with semantic memory in ChromaDB, voice in and out (faster-whisper, Kokoro TTS), screen understanding (vision model + OCR) and an animated desktop avatar. One reply pipeline is shared by the desktop app, Discord, a Minecraft bot (HTTP bridge) and a phone web app (FastAPI with SSE streaming and swappable LLM backends).</p>
+          <p>Under the hood: prompt budgeting to fit a 2K-token context, sandboxed self-written skills (AST checks, isolated tests, rollback), and 160+ test files.</p>
+          <div class="inv-tags">
+            <span class="inv-tag">Python</span><span class="inv-tag">Ollama</span><span class="inv-tag">ChromaDB</span><span class="inv-tag">FastAPI</span>
+          </div>
+        </article>
+        <article class="project">
           <span class="project-status done"><svg class="px" aria-hidden="true"><use href="#i-check"/></svg> Released</span>
-          <h3>Close Enough Colony</h3>
+          <h4>Close Enough Colony</h4>
           <div class="project-type">Indie idle game in Godot 4.7, playable in the browser</div>
           <p>A cozy idle colony sim where a scarecrow foreman runs the colony while you're away. Designed, built and released on itch.io: 8 critter types with terrain bonuses, scouting for new land, buildings and critter training, up to 12 hours of offline progress with a foreman report on return, a guided tutorial, and browser autosave.</p>
           <div class="inv-tags">
@@ -748,9 +756,33 @@
           </div>
           <p class="project-link"><a href="https://bonebit.itch.io/close-enough-colony" target="_blank" rel="noopener noreferrer">Play it on itch.io</a></p>
         </article>
+      </div>
+
+      <h3 class="project-group">Course projects</h3>
+      <div class="project-grid">
+        <article class="project">
+          <span class="project-status done"><svg class="px" aria-hidden="true"><use href="#i-check"/></svg> Published</span>
+          <h4>Waste Classification System</h4>
+          <div class="project-type">Machine learning, COMP6696 group research</div>
+          <p>Trained an EfficientNet-B0 image classifier on TrashNet reaching 94% accuracy; published as an IEEE paper with a research poster.</p>
+          <div class="inv-tags">
+            <span class="inv-tag">Python</span><span class="inv-tag">EfficientNet</span>
+            <span class="inv-tag">IEEE</span><span class="inv-tag">94% accuracy</span>
+          </div>
+        </article>
         <article class="project">
           <span class="project-status done"><svg class="px" aria-hidden="true"><use href="#i-check"/></svg> Completed</span>
-          <h3>Chi Matcha</h3>
+          <h4>SII as a Prognostic Marker in DLBCL</h4>
+          <div class="project-type">Systematic review and meta-analysis</div>
+          <p><em>An Accessible CBC-Derived Prognostic Marker for Diffuse Large B-Cell Lymphoma.</em> Assessed pretreatment SII as a low-cost prognostic marker in DLBCL.</p>
+          <div class="inv-tags">
+            <span class="inv-tag">Research</span><span class="inv-tag">Biology</span>
+            <span class="inv-tag">Meta-analysis</span>
+          </div>
+        </article>
+        <article class="project">
+          <span class="project-status done"><svg class="px" aria-hidden="true"><use href="#i-check"/></svg> Completed</span>
+          <h4>Chi Matcha</h4>
           <div class="project-type">Android ordering app, User Experience course (team of 3)</div>
           <p>A mobile ordering app for a matcha café, taken from wireframes in Figma to a working Android app in Java: login and registration with validation, a home page with an image carousel, menu browsing with item details, orders customised by ice and sweetness level, and a branch location page.</p>
           <div class="inv-tags">
@@ -760,22 +792,13 @@
         </article>
         <article class="project">
           <span class="project-status done"><svg class="px" aria-hidden="true"><use href="#i-check"/></svg> Completed</span>
-          <h3>Spojefy</h3>
+          <h4>Spojefy</h4>
           <div class="project-type">Music streaming web app, Multimedia Systems course (team project)</div>
           <p>A music streaming web app built with Vue.js, with media assets delivered through a CDN (ImageKit): a home page with a hero banner and featured songs, song pages with an audio player, a music video list with a video player, and a user profile page with an avatar and a theme toggle.</p>
           <div class="inv-tags">
             <span class="inv-tag">Vue.js</span><span class="inv-tag">ImageKit CDN</span><span class="inv-tag">Multimedia</span>
           </div>
-        </article>
-        <article class="project">
-          <span class="project-status done"><svg class="px" aria-hidden="true"><use href="#i-check"/></svg> Completed</span>
-          <h3>SII as a Prognostic Marker in DLBCL</h3>
-          <div class="project-type">Systematic review and meta-analysis</div>
-          <p><em>An Accessible CBC-Derived Prognostic Marker for Diffuse Large B-Cell Lymphoma.</em> Assessed pretreatment SII as a low-cost prognostic marker in DLBCL.</p>
-          <div class="inv-tags">
-            <span class="inv-tag">Research</span><span class="inv-tag">Biology</span>
-            <span class="inv-tag">Meta-analysis</span>
-          </div>
+          <p class="project-link"><a href="https://github.com/darrenkumala/Spojefy" target="_blank" rel="noopener noreferrer">View code on GitHub</a></p>
         </article>
       </div>
     </div>
@@ -831,6 +854,7 @@
         <div class="achievement"><div class="achievement-icon"><svg class="px" aria-hidden="true"><use href="#i-article"/></svg></div><div class="achievement-info"><h3>First publication</h3><p>Published an IEEE research paper on waste classification</p><div class="achievement-xp">+1000 XP</div></div></div>
         <div class="achievement"><div class="achievement-icon"><svg class="px" aria-hidden="true"><use href="#i-bullseye"/></svg></div><div class="achievement-info"><h3>Sharp shooter</h3><p>Achieved 94% accuracy on TrashNet image classification</p><div class="achievement-xp">+800 XP</div></div></div>
         <div class="achievement"><div class="achievement-icon"><svg class="px" aria-hidden="true"><use href="#i-gamepad"/></svg></div><div class="achievement-info"><h3>Game creator</h3><p>Released Close Enough Colony, an idle game made in Godot, on itch.io</p><div class="achievement-xp">+500 XP</div></div></div>
+        <div class="achievement"><div class="achievement-icon"><svg class="px" aria-hidden="true"><use href="#i-server"/></svg></div><div class="achievement-info"><h3>Small GPU, big brain</h3><p>Built Lily, a local AI assistant with memory, voice and vision, on a 4&nbsp;GB&nbsp;GPU</p><div class="achievement-xp">+900 XP</div></div></div>
         <div class="achievement"><div class="achievement-icon"><svg class="px" aria-hidden="true"><use href="#i-paint-bucket"/></svg></div><div class="achievement-info"><h3>Artisan's mark</h3><p>Completed a design internship at Giant Palace studio</p><div class="achievement-xp">+500 XP</div></div></div>
         <div class="achievement"><div class="achievement-icon"><svg class="px" aria-hidden="true"><use href="#i-analytics"/></svg></div><div class="achievement-info"><h3>Bio explorer</h3><p>Completed a meta-analysis in computational biology</p><div class="achievement-xp">+750 XP</div></div></div>
         <div class="achievement"><div class="achievement-icon"><svg class="px" aria-hidden="true"><use href="#i-book-open"/></svg></div><div class="achievement-info"><h3>Knowledge seeker</h3><p>Pursuing B.S. in Computer Science at BINUS University</p><div class="achievement-xp">+600 XP</div></div></div>
@@ -1335,8 +1359,8 @@ document.getElementById('hud-pro-btn').addEventListener('click', () => {
 // ─── DOWNLOAD CV ─────────────────────────────────────
 function downloadCV() {
   const a = document.createElement('a');
-  a.href = 'Jonathan_Richard_CV.pdf';
-  a.download = 'Jonathan_Richard_CV.pdf';
+  a.href = 'Jonathan_Richard_CV_ATS.pdf';
+  a.download = 'Jonathan_Richard_CV_ATS.pdf';
   a.click();
   AudioSys.play('levelUp');
   showToast('Downloading CV…');
