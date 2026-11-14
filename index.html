@@ -401,6 +401,16 @@
     .shot-link { display: block; background: none; text-decoration: none; }
     .shot-link:hover { background: none; }
     .shot-link:hover .project-shot { border-image-source: var(--fr-panel); }
+    /* ─── Design (UI/UX) ─── */
+    .design-list { display: grid; gap: var(--s5); }
+    .design-list .project { display: grid; grid-template-columns: minmax(0, 340px) minmax(0, 1fr); gap: var(--s4); align-items: start; border-image: var(--fr-panel) 6 fill / 6px / 0 stretch; }
+    .design-list .project-shot { margin-bottom: 0; }
+    .design-card h3 { font: 30px/32px var(--f-px); color: var(--ink); }
+    .design-card .project-type { margin: var(--s1) 0 var(--s3); }
+    .design-screens { font-size: 16px; line-height: 24px; color: var(--dim); }
+    .design-card .inv-tags { margin-top: var(--s3); }
+    .design-cta { margin-top: var(--s3); }
+    @media (max-width: 760px) { .design-list .project { grid-template-columns: 1fr; } }
     .more-projects { margin-top: var(--s5); }
     .more-projects summary { font: 20px/24px var(--f-px); color: var(--dim); cursor: pointer; padding: var(--s2) 0; }
     .more-projects summary:hover, .more-projects[open] summary { color: var(--ink); }
@@ -656,6 +666,7 @@
     <div class="hud-right">
       <nav aria-label="Sections"><ul class="hud-nav" id="navLinks">
         <li><a href="#about">About</a></li>
+        <li><a href="#design">Design</a></li>
         <li><a href="#experience">Experience</a></li>
         <li><a href="#projects">Projects</a></li>
         <li><a href="#skills">Skills</a></li>
@@ -737,6 +748,54 @@
             <li>Research</li>
           </ul>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Design -->
+  <section id="design">
+    <div class="container reveal">
+      <div class="section-head"><h2 class="section-title">Design</h2></div>
+      <div class="design-list">
+        <article class="project design-card">
+          <img class="project-shot" src="assets/design/chi-matcha-screens.jpg" width="948" height="570" loading="lazy" alt="Chi Matcha app design in Figma: the sign-in screen, the home screen with a cafe photo and Menu and Stores buttons, and the menu of matcha drinks with prices">
+          <div class="design-body">
+            <h3>Chi Matcha</h3>
+            <div class="project-type">Mobile cafe ordering app</div>
+            <p>Designed in Figma from wireframes to prototype, then built in Java for Android.</p>
+            <p class="design-screens"><b>Screens: login, register, home, menu, item details with ice and sugar customization, branch page.</b></p>
+            <!-- TODO(role): add your part in this project (screens or components you designed or built) and the team size, if you want to show them -->
+            <!-- TODO(problem): add one sentence on the problem this app solves for its users -->
+            <div class="inv-tags"><span class="inv-tag">Figma</span><span class="inv-tag">UX</span><span class="inv-tag">Android</span></div>
+            <p class="design-cta"><a class="btn-game btn-outline-g" href="https://www.figma.com/design/XXO1QciNuYQYSa0wpI8P0k/User-Experience---AOL-Project---KelompokE" target="_blank" rel="noopener noreferrer" aria-label="View Chi Matcha in Figma (opens in a new tab)"><svg class="px" aria-hidden="true"><use href="#i-external-link"/></svg> View in Figma</a></p>
+          </div>
+        </article>
+        <article class="project design-card">
+          <img class="project-shot" src="assets/design/b-eatery-screens.jpg" width="948" height="570" loading="lazy" alt="B-Eatery home page design in Figma: a photo banner of the BINUS Alam Sutera canteen above Main Dish, Beverage, and Dessert category buttons">
+          <div class="design-body">
+            <h3>B-Eatery</h3>
+            <div class="project-type">Responsive food-court website</div>
+            <p>A food-court website with a hamburger menu and reusable vendor card components.</p>
+            <p class="design-screens"><b>Pages: Home, About, Main Dishes, Beverage, Dessert.</b></p>
+            <!-- TODO(role): add your part in this project and the team size, if you want to show them -->
+            <!-- TODO(problem): add one sentence on the problem this site solves for its users -->
+            <div class="inv-tags"><span class="inv-tag">Figma</span><span class="inv-tag">Web</span><span class="inv-tag">HCI</span></div>
+            <p class="design-cta"><a class="btn-game btn-outline-g" href="https://www.figma.com/design/ZVbmYB6AS1H4I5SGridRQO/hci-kelompok" target="_blank" rel="noopener noreferrer" aria-label="View B-Eatery in Figma (opens in a new tab)"><svg class="px" aria-hidden="true"><use href="#i-external-link"/></svg> View in Figma</a></p>
+          </div>
+        </article>
+        <article class="project design-card">
+          <img class="project-shot" src="assets/design/cryplto-screens.jpg" width="948" height="570" loading="lazy" alt="cryPlto landing page design in Figma: a dark page with the headline Simplify Your Crypto Journey and a Top Coins row for Bitcoin, Ethereum, Binance Coin, and Solana">
+          <div class="design-body">
+            <h3>cryPlto</h3>
+            <div class="project-type">Dark-themed crypto education and trading website</div>
+            <p>A dark-themed website for learning about and trading crypto, with reusable FAQ components.</p>
+            <p class="design-screens"><b>Pages: Homepage, Cryptocurrencies, Learn, Benefits, Sign Up.</b></p>
+            <!-- TODO(role): add your part in this project and the team size, if you want to show them -->
+            <!-- TODO(problem): add one sentence on the problem this site solves for its users -->
+            <div class="inv-tags"><span class="inv-tag">Figma</span><span class="inv-tag">Web</span><span class="inv-tag">HCI</span></div>
+            <p class="design-cta"><a class="btn-game btn-outline-g" href="https://www.figma.com/design/JBIj8DtMzTHsI8AcZ13J5s/Project-Human-and-Computer-Interaction" target="_blank" rel="noopener noreferrer" aria-label="View cryPlto in Figma (opens in a new tab)"><svg class="px" aria-hidden="true"><use href="#i-external-link"/></svg> View in Figma</a></p>
+          </div>
+        </article>
       </div>
     </div>
   </section>
@@ -940,7 +999,7 @@
     <div class="house" aria-hidden="true"><!--gen:house--><svg class="house-art house-day" viewBox="0 0 30 25" width="120" height="100" shape-rendering="crispEdges" aria-hidden="true"><path fill="#5d2e24" d="M18 0h5v1h-5z"/><path fill="#a0503c" d="M19 1h3v1h-3zM19 2h3v1h-3zM19 3h3v1h-3zM19 4h3v1h-3zM19 5h3v1h-3zM20 6h2v1h-2zM21 7h1v1h-1z"/><path fill="#e07a5c" d="M14 2h2v1h-2zM13 3h2v1h-2zM12 4h2v1h-2zM11 5h2v1h-2zM10 6h2v1h-2zM9 7h2v1h-2zM8 8h2v1h-2zM7 9h2v1h-2zM6 10h2v1h-2z"/><path fill="#c8553d" d="M15 3h1v1h-1zM13 5h3v1h-3zM11 7h5v1h-5zM9 9h7v1h-7z"/><path fill="#983b2a" d="M16 3h1v1h-1zM16 5h3v1h-3zM16 7h5v1h-5zM16 9h7v1h-7z"/><path fill="#b24833" d="M14 4h4v1h-4zM12 6h8v1h-8zM10 8h12v1h-12zM8 10h16v1h-16z"/><path fill="#6e2a1f" d="M3 11h24v1h-24z"/><path fill="#dcc9a3" d="M4 12h22v1h-22zM25 13h1v1h-1zM25 14h1v1h-1zM25 15h1v1h-1zM25 16h1v1h-1zM25 17h1v1h-1zM25 18h1v1h-1zM25 19h1v1h-1zM25 20h1v1h-1zM25 21h1v1h-1zM25 22h1v1h-1z"/><path fill="#f4e6c8" d="M4 13h21v1h-21zM4 14h2v1h-2zM11 14h8v1h-8zM24 14h1v1h-1zM4 15h2v1h-2zM11 15h3v1h-3zM16 15h3v1h-3zM24 15h1v1h-1zM4 16h2v1h-2zM11 16h2v1h-2zM17 16h2v1h-2zM24 16h1v1h-1zM4 17h2v1h-2zM11 17h2v1h-2zM17 17h2v1h-2zM24 17h1v1h-1zM4 18h2v1h-2zM11 18h2v1h-2zM17 18h2v1h-2zM24 18h1v1h-1zM4 19h2v1h-2zM11 19h2v1h-2zM17 19h2v1h-2zM24 19h1v1h-1zM4 20h9v1h-9zM17 20h8v1h-8zM4 21h9v1h-9zM17 21h8v1h-8zM4 22h9v1h-9zM17 22h8v1h-8z"/><path fill="#8a5b34" d="M6 14h5v1h-5zM19 14h5v1h-5zM6 15h1v1h-1zM8 15h1v1h-1zM10 15h1v1h-1zM19 15h1v1h-1zM21 15h1v1h-1zM23 15h1v1h-1zM6 16h5v1h-5zM19 16h5v1h-5zM6 17h1v1h-1zM8 17h1v1h-1zM10 17h1v1h-1zM19 17h1v1h-1zM21 17h1v1h-1zM23 17h1v1h-1zM6 18h5v1h-5zM19 18h5v1h-5z"/><path fill="#ffffff" d="M7 15h1v1h-1zM20 15h1v1h-1z"/><path fill="#bfe6f7" d="M9 15h1v1h-1zM22 15h1v1h-1zM7 17h1v1h-1zM9 17h1v1h-1zM20 17h1v1h-1zM22 17h1v1h-1z"/><path fill="#74482c" d="M14 15h2v1h-2zM13 16h4v1h-4zM13 17h4v1h-4zM13 18h4v1h-4zM13 19h2v1h-2zM16 19h1v1h-1zM13 20h4v1h-4zM13 21h4v1h-4zM13 22h4v1h-4z"/><path fill="#4f9a3c" d="M6 19h1v1h-1zM8 19h1v1h-1zM10 19h1v1h-1zM19 19h1v1h-1zM21 19h1v1h-1zM23 19h1v1h-1z"/><path fill="#ee93bf" d="M7 19h1v1h-1zM20 19h1v1h-1z"/><path fill="#f4cf57" d="M9 19h1v1h-1zM22 19h1v1h-1z"/><path fill="#efc24e" d="M15 19h1v1h-1z"/><path fill="#9b958a" d="M3 23h24v1h-24zM3 24h24v1h-24z"/></svg><svg class="house-art house-night" viewBox="0 0 30 25" width="120" height="100" shape-rendering="crispEdges" aria-hidden="true"><path fill="#412b30" d="M18 0h5v1h-5z"/><path fill="#693f3e" d="M19 1h3v1h-3zM19 2h3v1h-3zM19 3h3v1h-3zM19 4h3v1h-3zM19 5h3v1h-3zM20 6h2v1h-2zM21 7h1v1h-1z"/><path fill="#8e5851" d="M14 2h2v1h-2zM13 3h2v1h-2zM12 4h2v1h-2zM11 5h2v1h-2zM10 6h2v1h-2zM9 7h2v1h-2zM8 8h2v1h-2zM7 9h2v1h-2zM6 10h2v1h-2z"/><path fill="#80423f" d="M15 3h1v1h-1zM13 5h3v1h-3zM11 7h5v1h-5zM9 9h7v1h-7z"/><path fill="#643333" d="M16 3h1v1h-1zM16 5h3v1h-3zM16 7h5v1h-5zM16 9h7v1h-7z"/><path fill="#733a39" d="M14 4h4v1h-4zM12 6h8v1h-8zM10 8h12v1h-12zM8 10h16v1h-16z"/><path fill="#4b292d" d="M3 11h24v1h-24z"/><path fill="#8c867b" d="M4 12h22v1h-22zM25 13h1v1h-1zM25 14h1v1h-1zM25 15h1v1h-1zM25 16h1v1h-1zM25 17h1v1h-1zM25 18h1v1h-1zM25 19h1v1h-1zM25 20h1v1h-1zM25 21h1v1h-1zM25 22h1v1h-1z"/><path fill="#9a9790" d="M4 13h21v1h-21zM4 14h2v1h-2zM11 14h8v1h-8zM24 14h1v1h-1zM4 15h2v1h-2zM11 15h3v1h-3zM16 15h3v1h-3zM24 15h1v1h-1zM4 16h2v1h-2zM11 16h2v1h-2zM17 16h2v1h-2zM24 16h1v1h-1zM4 17h2v1h-2zM11 17h2v1h-2zM17 17h2v1h-2zM24 17h1v1h-1zM4 18h2v1h-2zM11 18h2v1h-2zM17 18h2v1h-2zM24 18h1v1h-1zM4 19h2v1h-2zM11 19h2v1h-2zM17 19h2v1h-2zM24 19h1v1h-1zM4 20h9v1h-9zM17 20h8v1h-8zM4 21h9v1h-9zM17 21h8v1h-8zM4 22h9v1h-9zM17 22h8v1h-8z"/><path fill="#5c4639" d="M6 14h5v1h-5zM19 14h5v1h-5zM6 15h1v1h-1zM8 15h1v1h-1zM10 15h1v1h-1zM19 15h1v1h-1zM21 15h1v1h-1zM23 15h1v1h-1zM6 16h5v1h-5zM19 16h5v1h-5zM6 17h1v1h-1zM8 17h1v1h-1zM10 17h1v1h-1zM19 17h1v1h-1zM21 17h1v1h-1zM23 17h1v1h-1zM6 18h5v1h-5zM19 18h5v1h-5z"/><path fill="#fff3b8" d="M7 15h1v1h-1zM20 15h1v1h-1z"/><path fill="#ffd257" d="M9 15h1v1h-1zM22 15h1v1h-1zM7 17h1v1h-1zM9 17h1v1h-1zM20 17h1v1h-1zM22 17h1v1h-1z"/><path fill="#4f3a35" d="M14 15h2v1h-2zM13 16h4v1h-4zM13 17h4v1h-4zM13 18h4v1h-4zM13 19h2v1h-2zM16 19h1v1h-1zM13 20h4v1h-4zM13 21h4v1h-4zM13 22h4v1h-4z"/><path fill="#396b3e" d="M6 19h1v1h-1zM8 19h1v1h-1zM10 19h1v1h-1zM19 19h1v1h-1zM21 19h1v1h-1zM23 19h1v1h-1z"/><path fill="#96678b" d="M7 19h1v1h-1zM20 19h1v1h-1z"/><path fill="#9a8a4e" d="M9 19h1v1h-1zM22 19h1v1h-1z"/><path fill="#ffd257" d="M15 19h1v1h-1z"/><path fill="#66686c" d="M3 23h24v1h-24zM3 24h24v1h-24z"/></svg><span class="smoke"><i></i><i></i><i></i></span><!--/gen:house--></div>
     <div>Designed and built by Jonathan Richard in Tangerang, 2026.</div>
     <div class="footer-keys">
-      <span>Press <kbd>1</kbd>–<kbd>7</kbd> to jump between sections</span>
+      <span>Press <kbd>1</kbd>–<kbd>8</kbd> to jump between sections</span>
       <span>Click anywhere for a burst</span>
       <span id="konami-hint">Try the Konami Code…</span>
     </div>
@@ -1244,9 +1303,9 @@ navLinks.querySelectorAll('a').forEach(link => {
 document.addEventListener('keydown', e => {
   if (e.ctrlKey || e.metaKey || e.altKey || e.shiftKey || e.repeat) return;
   if (typeof snakeModal !== 'undefined' && snakeModal.style.display === 'flex') return;
-  const sections = ['hero','about','experience','projects','skills','achievements','education','contact'];
+  const sections = ['hero','about','design','experience','projects','skills','achievements','education','contact'];
   const num = parseInt(e.key);
-  if (num >= 1 && num <= 7) {
+  if (num >= 1 && num <= 8) {
     e.preventDefault();
     document.getElementById(sections[num])?.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
   }
