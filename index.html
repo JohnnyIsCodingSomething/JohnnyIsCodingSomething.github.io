@@ -417,6 +417,17 @@
     .design-shot.shot-missing .project-shot { display: none; }
     .design-shot.shot-missing .shot-fallback { display: flex; }
     .design-label { display: inline-block; margin-bottom: var(--s1); padding: 0 var(--s1); font: 16px/20px var(--f-px); color: var(--dim); border: 2px solid currentColor; }
+    @media (min-width: 761px) { .design-list .project { grid-template-columns: minmax(0, 54%) minmax(0, 1fr); } }
+    .shot-zoom { display: block; background: none; text-decoration: none; cursor: zoom-in; }
+    .shot-zoom:hover { background: none; }
+    .shot-zoom:hover .project-shot { border-image-source: var(--fr-panel); }
+    .zoom-hint { display: block; margin-top: var(--s1); font-size: 14px; line-height: 20px; color: var(--dim); }
+    .design-shot .project-shot { margin-bottom: 0; }
+    #lightbox { padding: var(--s3); max-width: min(1640px, 96vw); width: auto; max-height: 94vh; margin: auto; color: var(--ink); background: var(--page); border: 6px solid transparent; border-image: var(--fr-panel) 6 fill / 6px / 0 stretch; }
+    #lightbox::backdrop { background: rgba(20, 16, 10, .82); }
+    #lightbox img { display: block; max-width: 100%; max-height: calc(94vh - 130px); width: auto; height: auto; margin: 0 auto; }
+    #lightbox .lb-bar { display: flex; align-items: center; justify-content: space-between; gap: var(--s3); margin-bottom: var(--s2); }
+    #lightbox .lb-caption { font-size: 16px; line-height: 24px; color: var(--dim); }
     .design-fact { font-size: 16px; line-height: 24px; margin-top: var(--s2); }
     .todo { background: var(--wheat); color: #2e2419; padding: 0 var(--s1); outline: 2px dashed #2e2419; outline-offset: 0; }
     .design-code { margin-left: var(--s3); font: 20px/24px var(--f-px); white-space: nowrap; }
@@ -660,6 +671,11 @@
 </div>
 
 <canvas id="click-burst"></canvas>
+
+<dialog id="lightbox" aria-label="Screenshot viewer">
+  <div class="lb-bar"><p class="lb-caption" id="lbCaption"></p><button type="button" class="btn-game btn-outline-g" id="lbClose" aria-label="Close screenshot viewer"><svg class="px" aria-hidden="true"><use href="#i-close"/></svg> Close</button></div>
+  <img id="lbImg" alt="">
+</dialog>
 <div id="scroll-progress"></div>
 
 <!-- Toast -->
@@ -786,7 +802,7 @@
       <div class="design-list">
         <article class="project design-card">
           <div class="design-shot">
-            <img class="project-shot" src="assets/design/cryplto.png" width="948" height="570" loading="lazy" alt="cryPlto landing page design in Figma: a dark page with the headline Simplify Your Crypto Journey and a Top Coins row for Bitcoin, Ethereum, Binance Coin, and Solana" onerror="this.parentNode.classList.add('shot-missing')">
+            <a class="shot-zoom" href="assets/design/cryplto-large.webp" aria-label="Enlarge screenshot of cryPlto"><picture><source srcset="assets/design/cryplto.webp" type="image/webp"><img class="project-shot" src="assets/design/cryplto.png" width="948" height="570" loading="lazy" alt="cryPlto landing page design in Figma: a dark page with the headline Simplify Your Crypto Journey and a Top Coins row for Bitcoin, Ethereum, Binance Coin, and Solana" onerror="this.closest('.design-shot').classList.add('shot-missing')"></picture><span class="zoom-hint" aria-hidden="true">Click to enlarge</span></a>
             <div class="shot-fallback" role="img" aria-label="Screenshot of cryPlto coming soon">Screenshot coming soon</div>
           </div>
           <div class="design-body">
@@ -803,7 +819,7 @@
         </article>
         <article class="project design-card">
           <div class="design-shot">
-            <img class="project-shot" src="assets/design/chi-matcha.png" width="948" height="570" loading="lazy" alt="Chi Matcha app design in Figma: the sign-in screen, the home screen with a cafe photo and Menu and Stores buttons, and the menu of matcha drinks with prices" onerror="this.parentNode.classList.add('shot-missing')">
+            <a class="shot-zoom" href="assets/design/chi-matcha-large.webp" aria-label="Enlarge screenshot of Chi Matcha"><picture><source srcset="assets/design/chi-matcha.webp" type="image/webp"><img class="project-shot" src="assets/design/chi-matcha.png" width="948" height="570" loading="lazy" alt="Chi Matcha app design in Figma: the sign-in screen, the home screen with a cafe photo and Menu and Stores buttons, and the menu of matcha drinks with prices" onerror="this.closest('.design-shot').classList.add('shot-missing')"></picture><span class="zoom-hint" aria-hidden="true">Click to enlarge</span></a>
             <div class="shot-fallback" role="img" aria-label="Screenshot of Chi Matcha coming soon">Screenshot coming soon</div>
           </div>
           <div class="design-body">
@@ -820,7 +836,7 @@
         </article>
         <article class="project design-card">
           <div class="design-shot">
-            <img class="project-shot" src="assets/design/b-eatery.png" width="948" height="570" loading="lazy" alt="B-Eatery home page design in Figma: a photo banner of a food court above Main Dish, Beverage, and Dessert category buttons" onerror="this.parentNode.classList.add('shot-missing')">
+            <a class="shot-zoom" href="assets/design/b-eatery-large.webp" aria-label="Enlarge screenshot of B-Eatery"><picture><source srcset="assets/design/b-eatery.webp" type="image/webp"><img class="project-shot" src="assets/design/b-eatery.png" width="948" height="570" loading="lazy" alt="B-Eatery home page design in Figma: a photo banner of a food court above Main Dish, Beverage, and Dessert category buttons" onerror="this.closest('.design-shot').classList.add('shot-missing')"></picture><span class="zoom-hint" aria-hidden="true">Click to enlarge</span></a>
             <div class="shot-fallback" role="img" aria-label="Screenshot of B-Eatery coming soon">Screenshot coming soon</div>
           </div>
           <div class="design-body">
@@ -1347,6 +1363,7 @@ navLinks.querySelectorAll('a').forEach(link => {
 document.addEventListener('keydown', e => {
   if (e.ctrlKey || e.metaKey || e.altKey || e.shiftKey || e.repeat) return;
   if (typeof snakeModal !== 'undefined' && snakeModal.style.display === 'flex') return;
+  if (document.querySelector('dialog[open]')) return;
   const sections = ['hero','about','design','experience','projects','skills','achievements','education','contact'];
   const num = parseInt(e.key);
   if (num >= 1 && num <= 8) {
@@ -1484,6 +1501,30 @@ document.getElementById('hud-pro-btn').addEventListener('click', () => {
   if (on) { AudioSys.muted = true; applySoundState(); }
   showToast(on ? 'Professional view on' : 'Game view on', 'View Changed');
 });
+
+// ─── DESIGN SCREENSHOT LIGHTBOX ──────────────────────
+(function() {
+  const box = document.getElementById('lightbox');
+  if (!box || typeof box.showModal !== 'function') return;   // without <dialog>, the link simply opens the image
+  const img = document.getElementById('lbImg');
+  const cap = document.getElementById('lbCaption');
+  let opener = null;
+  document.querySelectorAll('a.shot-zoom').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      opener = a;
+      const thumb = a.querySelector('img');
+      img.src = a.getAttribute('href');
+      img.alt = thumb ? thumb.alt : '';
+      cap.textContent = (a.getAttribute('aria-label') || '').replace('Enlarge screenshot of ', '');
+      box.showModal();
+      document.getElementById('lbClose').focus();
+    });
+  });
+  document.getElementById('lbClose').addEventListener('click', () => box.close());
+  box.addEventListener('click', e => { if (e.target === box) box.close(); });   // click on the dark backdrop
+  box.addEventListener('close', () => { img.removeAttribute('src'); if (opener) opener.focus(); });
+})();
 
 // ─── aria-pressed on the toggle buttons ──────────────
 (function() {
