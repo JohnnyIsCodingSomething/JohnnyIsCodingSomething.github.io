@@ -411,6 +411,20 @@
     .design-card .inv-tags { margin-top: var(--s3); }
     .design-cta { margin-top: var(--s3); }
     @media (max-width: 760px) { .design-list .project { grid-template-columns: 1fr; } }
+    .design-shot { position: relative; }
+    .shot-fallback { display: none; align-items: center; justify-content: center; aspect-ratio: 948 / 570; text-align: center; padding: var(--s3); color: var(--dim); font: 20px/24px var(--f-px); border: 6px solid transparent; border-image: var(--fr-soft) 6 fill / 6px / 0 stretch; }
+    .design-shot.shot-missing .project-shot { display: none; }
+    .design-shot.shot-missing .shot-fallback { display: flex; }
+    .design-label { display: inline-block; margin-bottom: var(--s1); padding: 0 var(--s1); font: 16px/20px var(--f-px); color: var(--dim); border: 2px solid currentColor; }
+    .design-fact { font-size: 16px; line-height: 24px; margin-top: var(--s2); }
+    .todo { background: var(--wheat); color: #2e2419; padding: 0 var(--s1); outline: 2px dashed #2e2419; outline-offset: 0; }
+    .design-code { margin-left: var(--s3); font: 20px/24px var(--f-px); white-space: nowrap; }
+    .design-note { margin-top: var(--s4); color: var(--dim); font-size: 16px; line-height: 24px; }
+    .design-pointer { margin-top: var(--s4); font-size: 16px; line-height: 24px; color: var(--dim); }
+    .metric-note { font-size: 14px; line-height: 20px; color: var(--dim); margin-top: var(--s2); }
+    .hud-design { display: none; font: 20px/24px var(--f-px); color: #2e2419; background: var(--wheat); text-decoration: none; padding: var(--s1) var(--s2); white-space: nowrap; }
+    .hud-design:hover { background: var(--wheat); color: #2e2419; }
+    .load-skip { margin-top: var(--s3); }
     .more-projects { margin-top: var(--s5); }
     .more-projects summary { font: 20px/24px var(--f-px); color: var(--dim); cursor: pointer; padding: var(--s2) 0; }
     .more-projects summary:hover, .more-projects[open] summary { color: var(--ink); }
@@ -568,6 +582,7 @@
       .hud-right { flex-shrink: 0; gap: var(--s1); }
       .hud-level { display: none; }
       .hud-nav { display: none; }
+      .hud-design { display: block; }
       .hud-nav.open { display: flex; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: var(--sky-1); padding: var(--s2) var(--s3) var(--s3); }
       .hud-nav.open a { padding: var(--s2); }
       .hud-nav.open::after { content: ''; position: absolute; left: 0; right: 0; top: 100%; height: 4px;
@@ -598,10 +613,15 @@
       .big-mail { font-size: 30px; line-height: 40px; }
       .project, .project-featured, .project-grid .project { padding: var(--s3); }
       .hud-tools { gap: 0; }
-      .hud-icon-btn, .hamburger { width: 36px; height: 36px; }
+      .hud-icon-btn, .hamburger { width: 32px; height: 32px; }
+      .hud-surname { display: none; }
+      .hud-design { padding: var(--s1); }
       .btn-game { flex: 1 1 auto; justify-content: center; }
     }
 
+    @media (max-width: 340px) {
+      .hud-player { display: none; }
+    }
     @media (max-width: 380px) {
       .big-mail { font-size: 20px; line-height: 28px; }
       .hero-name { font-size: 60px; line-height: 56px; }
@@ -635,6 +655,7 @@
   </div>
   <div class="load-percent" id="loadPercent">0%</div>
   <div class="load-tips" id="loadTip">Tilling the soil…</div>
+  <button type="button" class="btn-game btn-outline-g load-skip" id="loadSkip">Skip</button>
 </div>
 
 <canvas id="click-burst"></canvas>
@@ -655,7 +676,7 @@
   <!-- Top bar -->
   <header class="hud-bar">
     <div class="hud-left">
-      <span class="hud-player">Jonathan Richard</span>
+      <span class="hud-player">Jonathan<span class="hud-surname"> Richard</span></span>
       <span class="hud-level">Semester 5</span>
       <div class="hud-xp">
         <div class="hud-xp-bar"><div class="hud-xp-fill" id="hudXp"></div></div>
@@ -674,6 +695,7 @@
         <li><a href="#education">Education</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul></nav>
+      <a class="hud-design" href="#design">Design</a>
       <div class="hud-tools">
         <button class="hud-icon-btn" id="hud-pro-btn" aria-pressed="false" title="Professional View (Minimal Effects)" aria-label="Toggle professional view"><svg class="px" aria-hidden="true"><use href="#i-briefcase"/></svg></button>
         <button class="hud-icon-btn" id="hud-download-btn" title="Download CV" aria-label="Download CV"><svg class="px" aria-hidden="true"><use href="#i-download"/></svg></button>
@@ -694,17 +716,18 @@
       <div class="hero-copy">
         <p class="hero-status"><span class="status-dot"></span> Open to Internships</p>
         <h1 class="hero-name"><span>Jonathan</span> <span>Richard</span></h1>
-        <p class="hero-roles">Aspiring Game Developer · Full-Stack Web &amp; AI Apps · UI/UX &amp; Graphic Design</p>
+        <p class="hero-roles">UI/UX Design · Aspiring Game Developer · Full-Stack Web &amp; AI Apps</p>
         <div class="hero-class"><span id="typed-text">Computer Science Student</span><span class="typed-cursor"></span></div>
         <p class="hero-desc">
           Computer Science student at BINUS University (Semester 5) building software end to end,
-          from a released indie game to applied ML research. Seeking an internship in game or software development.
+          from a released indie game to applied ML research. Seeking an internship in UI/UX design, game, or software development.
         </p>
         <div class="hero-actions">
-          <a href="#contact" class="btn-game btn-primary-g"><svg class="px" aria-hidden="true"><use href="#i-mail"/></svg> Get in Touch</a>
+          <a href="#design" class="btn-game btn-primary-g"><svg class="px" aria-hidden="true"><use href="#i-paint-bucket"/></svg> See Design Work</a>
+          <a href="#contact" class="btn-game btn-outline-g"><svg class="px" aria-hidden="true"><use href="#i-mail"/></svg> Get in Touch</a>
           <a href="#projects" class="btn-game btn-outline-g"><svg class="px" aria-hidden="true"><use href="#i-folder"/></svg> See Projects</a>
           <a href="https://bonebit.itch.io/close-enough-colony" target="_blank" rel="noopener noreferrer" class="btn-game btn-outline-g"><svg class="px" aria-hidden="true"><use href="#i-gamepad"/></svg> Play My Game</a>
-          <button id="btn-hero-download" class="btn-game btn-outline-g"><svg class="px" aria-hidden="true"><use href="#i-download"/></svg> Download CV</button>
+          <a href="Jonathan_Richard_CV_ATS.pdf" target="_blank" rel="noopener noreferrer" class="btn-game btn-outline-g"><svg class="px" aria-hidden="true"><use href="#i-download"/></svg> Download CV</a>
         </div>
         <div id="minigame-container" style="display: none; margin-top: 24px;">
           <button id="btn-play-minigame" class="btn-game btn-primary-g"><svg class="px" aria-hidden="true"><use href="#i-gamepad"/></svg> Play Mini-Game</button>
@@ -758,45 +781,58 @@
       <div class="section-head"><h2 class="section-title">Design</h2></div>
       <div class="design-list">
         <article class="project design-card">
-          <img class="project-shot" src="assets/design/chi-matcha-screens.jpg" width="948" height="570" loading="lazy" alt="Chi Matcha app design in Figma: the sign-in screen, the home screen with a cafe photo and Menu and Stores buttons, and the menu of matcha drinks with prices">
-          <div class="design-body">
-            <h3>Chi Matcha</h3>
-            <div class="project-type">Mobile cafe ordering app</div>
-            <p>Designed in Figma from wireframes to prototype, then built in Java for Android.</p>
-            <p class="design-screens"><b>Screens: login, register, home, menu, item details with ice and sugar customization, branch page.</b></p>
-            <!-- TODO(role): add your part in this project (screens or components you designed or built) and the team size, if you want to show them -->
-            <!-- TODO(problem): add one sentence on the problem this app solves for its users -->
-            <div class="inv-tags"><span class="inv-tag">Figma</span><span class="inv-tag">UX</span><span class="inv-tag">Android</span></div>
-            <p class="design-cta"><a class="btn-game btn-outline-g" href="https://www.figma.com/design/XXO1QciNuYQYSa0wpI8P0k/User-Experience---AOL-Project---KelompokE" target="_blank" rel="noopener noreferrer" aria-label="View Chi Matcha in Figma (opens in a new tab)"><svg class="px" aria-hidden="true"><use href="#i-external-link"/></svg> View in Figma</a></p>
+          <div class="design-shot">
+            <img class="project-shot" src="assets/design/cryplto.png" width="948" height="570" loading="lazy" alt="cryPlto landing page design in Figma: a dark page with the headline Simplify Your Crypto Journey and a Top Coins row for Bitcoin, Ethereum, Binance Coin, and Solana" onerror="this.parentNode.classList.add('shot-missing')">
+            <div class="shot-fallback" role="img" aria-label="Screenshot of cryPlto coming soon">Screenshot coming soon</div>
           </div>
-        </article>
-        <article class="project design-card">
-          <img class="project-shot" src="assets/design/b-eatery-screens.jpg" width="948" height="570" loading="lazy" alt="B-Eatery home page design in Figma: a photo banner of the BINUS Alam Sutera canteen above Main Dish, Beverage, and Dessert category buttons">
           <div class="design-body">
-            <h3>B-Eatery</h3>
-            <div class="project-type">Responsive food-court website</div>
-            <p>A food-court website with a hamburger menu and reusable vendor card components.</p>
-            <p class="design-screens"><b>Pages: Home, About, Main Dishes, Beverage, Dessert.</b></p>
-            <!-- TODO(role): add your part in this project and the team size, if you want to show them -->
-            <!-- TODO(problem): add one sentence on the problem this site solves for its users -->
-            <div class="inv-tags"><span class="inv-tag">Figma</span><span class="inv-tag">Web</span><span class="inv-tag">HCI</span></div>
-            <p class="design-cta"><a class="btn-game btn-outline-g" href="https://www.figma.com/design/ZVbmYB6AS1H4I5SGridRQO/hci-kelompok" target="_blank" rel="noopener noreferrer" aria-label="View B-Eatery in Figma (opens in a new tab)"><svg class="px" aria-hidden="true"><use href="#i-external-link"/></svg> View in Figma</a></p>
-          </div>
-        </article>
-        <article class="project design-card">
-          <img class="project-shot" src="assets/design/cryplto-screens.jpg" width="948" height="570" loading="lazy" alt="cryPlto landing page design in Figma: a dark page with the headline Simplify Your Crypto Journey and a Top Coins row for Bitcoin, Ethereum, Binance Coin, and Solana">
-          <div class="design-body">
+            <span class="design-label">Solo project</span>
             <h3>cryPlto</h3>
             <div class="project-type">Dark-themed crypto education and trading website</div>
             <p>A dark-themed website for learning about and trading crypto, with reusable FAQ components.</p>
-            <p class="design-screens"><b>Pages: Homepage, Cryptocurrencies, Learn, Benefits, Sign Up.</b></p>
-            <!-- TODO(role): add your part in this project and the team size, if you want to show them -->
-            <!-- TODO(problem): add one sentence on the problem this site solves for its users -->
-            <div class="inv-tags"><span class="inv-tag">Figma</span><span class="inv-tag">Web</span><span class="inv-tag">HCI</span></div>
+            <p class="design-screens"><b>Pages:</b> Homepage, Cryptocurrencies, Learn, Benefits, Sign Up.</p>
+            <p class="design-fact"><b>My role:</b> I designed all five pages and the reusable FAQ components in Figma.</p>
+            <p class="design-fact"><b>Problem:</b> Crypto feels confusing for beginners. The site gives a clear path from learning about coins to signing up.</p>
+            <div class="inv-tags"><span class="inv-tag">Figma</span> <span class="inv-tag">Web</span> <span class="inv-tag">HCI</span></div>
             <p class="design-cta"><a class="btn-game btn-outline-g" href="https://www.figma.com/design/JBIj8DtMzTHsI8AcZ13J5s/Project-Human-and-Computer-Interaction" target="_blank" rel="noopener noreferrer" aria-label="View cryPlto in Figma (opens in a new tab)"><svg class="px" aria-hidden="true"><use href="#i-external-link"/></svg> View in Figma</a></p>
           </div>
         </article>
+        <article class="project design-card">
+          <div class="design-shot">
+            <img class="project-shot" src="assets/design/chi-matcha.png" width="948" height="570" loading="lazy" alt="Chi Matcha app design in Figma: the sign-in screen, the home screen with a cafe photo and Menu and Stores buttons, and the menu of matcha drinks with prices" onerror="this.parentNode.classList.add('shot-missing')">
+            <div class="shot-fallback" role="img" aria-label="Screenshot of Chi Matcha coming soon">Screenshot coming soon</div>
+          </div>
+          <div class="design-body">
+            <span class="design-label">Team project</span>
+            <h3>Chi Matcha</h3>
+            <div class="project-type">Mobile cafe ordering app</div>
+            <p>Designed in Figma from wireframes to prototype, then built as an Android app in Java.</p>
+            <p class="design-screens"><b>Screens:</b> login, register, home, menu, item details with ice and sugar customization, branch page.</p>
+            <p class="design-fact"><b>My role:</b> I designed most of the app, from wireframes to the final prototype, and then built it in Java, working with my team.</p>
+            <p class="design-fact"><b>Problem:</b> Ordering a customized drink at a cafe is slow. The app lets people pick a branch, browse the menu, and set ice and sugar levels before ordering.</p>
+            <div class="inv-tags"><span class="inv-tag">Figma</span> <span class="inv-tag">UX</span> <span class="inv-tag">Android</span></div>
+            <p class="design-cta"><a class="btn-game btn-outline-g" href="https://www.figma.com/design/XXO1QciNuYQYSa0wpI8P0k/User-Experience---AOL-Project---KelompokE" target="_blank" rel="noopener noreferrer" aria-label="View Chi Matcha in Figma (opens in a new tab)"><svg class="px" aria-hidden="true"><use href="#i-external-link"/></svg> View in Figma</a> <a class="design-code" href="https://github.com/JohnnyIsCodingSomething/UX-AOL-ChiMatcha" target="_blank" rel="noopener noreferrer">View Code on GitHub</a></p>
+          </div>
+        </article>
+        <article class="project design-card">
+          <div class="design-shot">
+            <img class="project-shot" src="assets/design/b-eatery.png" width="948" height="570" loading="lazy" alt="B-Eatery home page design in Figma: a photo banner of a food court above Main Dish, Beverage, and Dessert category buttons" onerror="this.parentNode.classList.add('shot-missing')">
+            <div class="shot-fallback" role="img" aria-label="Screenshot of B-Eatery coming soon">Screenshot coming soon</div>
+          </div>
+          <div class="design-body">
+            <span class="design-label">Team project</span>
+            <h3>B-Eatery</h3>
+            <div class="project-type">Food-court website</div>
+            <p>A food-court website with a hamburger menu and reusable vendor card components.</p>
+            <p class="design-screens"><b>Pages:</b> Home, About, Main Dishes, Beverage, Dessert.</p>
+            <p class="design-fact"><b>My role:</b> I designed most of the pages and components in Figma, with feedback and help from my team.</p>
+            <p class="design-fact"><b>Problem:</b> Finding food at a food court means walking between stalls. The site lets visitors browse mains, beverages, and desserts in one place.</p>
+            <div class="inv-tags"><span class="inv-tag">Figma</span> <span class="inv-tag">Web</span> <span class="inv-tag">HCI</span></div>
+            <p class="design-cta"><a class="btn-game btn-outline-g" href="https://www.figma.com/design/ZVbmYB6AS1H4I5SGridRQO/hci-kelompok" target="_blank" rel="noopener noreferrer" aria-label="View B-Eatery in Figma (opens in a new tab)"><svg class="px" aria-hidden="true"><use href="#i-external-link"/></svg> View in Figma</a></p>
+          </div>
+        </article>
       </div>
+      <p class="design-note">Figma files are view-only.</p>
     </div>
   </section>
 
@@ -823,14 +859,14 @@
       <h3 class="project-group">Personal Projects</h3>
       <div class="project-grid">
         <article class="project">
-          <video class="project-shot pixel colony-clip" src="assets/projects/colony.mp4" poster="assets/projects/colony-poster.jpg" width="800" height="500" autoplay muted loop playsinline preload="metadata" aria-label="Close Enough Colony gameplay: a puddle duck is adopted and put to work on a pond plot while the foreman screen shows the colony"></video>
+          <video class="project-shot pixel colony-clip" src="assets/projects/colony.mp4" poster="assets/projects/colony-poster.jpg" width="800" height="500" controls autoplay muted loop playsinline preload="metadata" aria-label="Close Enough Colony gameplay: a puddle duck is adopted and put to work on a pond plot while the foreman screen shows the colony">Your browser cannot play this video.</video>
           <script>try{if(matchMedia('(prefers-reduced-motion: reduce)').matches){var v=document.querySelector('.colony-clip');v.removeAttribute('autoplay');v.pause();v.controls=true;}}catch(e){}</script>
           <span class="project-status done"><svg class="px" aria-hidden="true"><use href="#i-check"/></svg> Released</span>
           <h4>Close Enough Colony</h4>
           <div class="project-type">Indie idle game in Godot 4.7, playable in the browser</div>
           <p>A cozy idle colony sim where a scarecrow foreman runs the colony while you're away. I designed the game and directed the build, which was done with AI coding assistance (Claude Code), then tested and released it on itch.io: 8 critter types with terrain bonuses, scouting for new land, buildings and critter training, up to 12 hours of offline progress with a foreman report on return, a guided tutorial, and browser autosave.</p>
           <div class="inv-tags">
-            <span class="inv-tag">Godot</span><span class="inv-tag">HTML5</span><span class="inv-tag">itch.io</span>
+            <span class="inv-tag">Godot</span> <span class="inv-tag">HTML5</span> <span class="inv-tag">itch.io</span>
           </div>
           <p class="project-link"><a href="https://bonebit.itch.io/close-enough-colony" target="_blank" rel="noopener noreferrer">Play It on itch.io</a></p>
         </article>
@@ -842,7 +878,7 @@
           <p>I designed this project and direct its development, which is done with AI coding assistance (Claude Code). A local LLM assistant (Ollama) with semantic memory in ChromaDB, voice in and out (faster-whisper, Kokoro TTS), screen understanding (vision model + OCR), and an animated desktop avatar. One reply pipeline is shared by the desktop app, Discord, a Minecraft bot (HTTP bridge), and a phone web app (FastAPI with SSE streaming and swappable LLM backends).</p>
           <p>Under the hood: prompt budgeting to fit a 2K-token context, sandboxed self-written skills (AST checks, isolated tests, rollback), and 160+ test files.</p>
           <div class="inv-tags">
-            <span class="inv-tag">Python</span><span class="inv-tag">Ollama</span><span class="inv-tag">ChromaDB</span><span class="inv-tag">FastAPI</span>
+            <span class="inv-tag">Python</span> <span class="inv-tag">Ollama</span> <span class="inv-tag">ChromaDB</span> <span class="inv-tag">FastAPI</span>
           </div>
         </article>
       </div>
@@ -855,32 +891,22 @@
           <h4>Waste Classification System</h4>
           <div class="project-type">Machine learning, COMP6696 group research</div>
           <p>Trained an EfficientNet-B0 image classifier on TrashNet reaching 94% accuracy; written up as an IEEE-format paper with a research poster.</p>
+          <p class="metric-note">About the numbers: 94% is accuracy, the share of all test images classified correctly. 0.93 is the weighted F1 score, the average of each class&rsquo;s F1 (which balances precision and recall), weighted by class size.</p>
           <div class="inv-tags">
-            <span class="inv-tag">Python</span><span class="inv-tag">EfficientNet</span>
-            <span class="inv-tag">IEEE</span><span class="inv-tag">94% Accuracy</span>
+            <span class="inv-tag">Python</span> <span class="inv-tag">EfficientNet</span>
+            <span class="inv-tag">IEEE</span> <span class="inv-tag">94% Accuracy</span>
           </div>
-        </article>
-        <article class="project">
-          <a class="shot-link" href="assets/projects/chi-matcha.jpg" target="_blank" rel="noopener" title="Open Full Size"><img class="project-shot" src="assets/projects/chi-matcha.jpg" width="948" height="570" loading="lazy" alt="Chi Matcha app design in Figma: the sign-in screen, the home screen with a café photo and Menu and Stores buttons, and the menu of matcha drinks with prices"></a>
-          <span class="project-status done"><svg class="px" aria-hidden="true"><use href="#i-check"/></svg> Completed</span>
-          <h4>Chi Matcha</h4>
-          <div class="project-type">Android ordering app, User Experience course (team of 3)</div>
-          <p>A mobile ordering app for a matcha café, taken from wireframes in Figma to a working Android app in Java: login and registration with validation, a home page with an image carousel, menu browsing with item details, orders customized by ice and sweetness level, and a branch location page.</p>
-          <div class="inv-tags">
-            <span class="inv-tag">Figma</span><span class="inv-tag">Android Studio</span><span class="inv-tag">Java</span><span class="inv-tag">UX Design</span>
-          </div>
-          <p class="project-link"><a href="https://github.com/JohnnyIsCodingSomething/UX-AOL-ChiMatcha" target="_blank" rel="noopener noreferrer">View Code on GitHub</a></p>
         </article>
       </div>
+      <p class="design-pointer">Chi Matcha is in the Design section. <a href="#design">See Design section</a></p>
 
       <details class="more-projects">
-        <summary>More Projects (4)</summary>
+        <summary>More Projects (2)</summary>
         <ul class="more-list">
           <li><img src="assets/projects/spojefy.jpg" width="948" height="570" loading="lazy" alt="Spojefy home page: a featured-artist banner above a row of song cards"><div><h4>Spojefy</h4><div class="project-type">Music streaming web app, Multimedia Systems course (team project)</div><p>Vue.js web app with media delivered through a CDN (ImageKit): featured songs, an audio player, a music video list, and a profile page with a theme toggle. <a href="https://github.com/darrenkumala/Spojefy" target="_blank" rel="noopener noreferrer">View Code on GitHub</a></p></div></li>
           <li><img src="assets/projects/dna-classification-review.png" width="948" height="570" loading="lazy" alt="Title of the paper Machine Learning for DNA Sequence Classification: A Comprehensive Review, above a table comparing methods"><div><h4>ML for DNA Sequence Classification</h4><div class="project-type">Literature review, Computational Biology course (team of 3, first author)</div><p>A systematic review of machine learning for classifying DNA sequences: 200+ candidate papers screened down to 13 primary sources, comparing classical methods with deep learning (CNN, LSTM, DNABERT).</p></div></li>
-          <li><img src="assets/projects/b-eatery.jpg" width="948" height="570" loading="lazy" alt="B-Eatery home page design in Figma: a photo banner of the BINUS Alam Sutera canteen above Main Dish, Beverage, and Dessert category buttons"><div><h4>B-Eatery</h4><div class="project-type">Canteen website design, Human and Computer Interaction course (group project)</div><p>A Figma design for finding food at the BINUS @Alam Sutera canteen: home and About pages, Main Dish, Beverage, and Dessert pages built from a reusable vendor card, and a collapsible menu.</p></div></li>
-          <li><img src="assets/projects/cryplto.jpg" width="948" height="570" loading="lazy" alt="cryPlto landing page design in Figma: a dark page with the headline Simplify Your Crypto Journey and a Top Coins row"><div><h4>cryPlto</h4><div class="project-type">Crypto platform website design, Human and Computer Interaction course (group project)</div><p>A Figma design for a beginner-friendly cryptocurrency platform: landing, Cryptocurrencies, Learn, Benefits, and Sign Up pages in a dark theme with yellow accents.</p></div></li>
         </ul>
+        <p class="design-pointer">B-Eatery and cryPlto are in the Design section. <a href="#design">See Design section</a></p>
       </details>
     </div>
   </section>
@@ -1039,9 +1065,23 @@
     'Mending the fence…',
     'Almost ready to harvest…',
   ];
-  let progress = document.documentElement.classList.contains('pro') ? 100 : 0, tipIdx = 0;
+  let progress = document.documentElement.classList.contains('pro') ? 100 : 0, tipIdx = 0, finished = false;
+  const skipBtn = document.getElementById('loadSkip');
+  function finish() {
+    if (finished) return;
+    finished = true;
+    clearInterval(interval);
+    bar.style.width = '100%';
+    pct.textContent = 'Ready';
+    skipBtn.disabled = true;
+    setTimeout(() => {
+      screen.classList.add('hidden');
+      startEntrance();
+    }, 200);
+  }
+  // about one second in total; Skip, Enter, Space or Escape end it at once
   const interval = setInterval(() => {
-    progress += Math.random() * 15 + 3;
+    progress += Math.random() * 12 + 8;
     if (progress > 100) progress = 100;
     bar.style.width = progress + '%';
     pct.textContent = Math.floor(progress) + '%';
@@ -1049,15 +1089,13 @@
       tipIdx = (tipIdx + 1) % tips.length;
       tip.textContent = tips[tipIdx];
     }
-    if (progress >= 100) {
-      clearInterval(interval);
-      pct.textContent = 'Ready';
-      setTimeout(() => {
-        screen.classList.add('hidden');
-        startEntrance();
-      }, 400);
-    }
-  }, 100);
+    if (progress >= 100) finish();
+  }, 80);
+  skipBtn.addEventListener('click', finish);
+  document.addEventListener('keydown', e => {
+    if (!finished && (e.key === 'Escape' || e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); finish(); }
+  });
+  skipBtn.focus({ preventScroll: true });
 })();
 
 // The one orchestrated moment: the crops in the hero grow (CSS, paused until now).
@@ -1190,6 +1228,7 @@ function setIcon(host, name) {
   const el = document.getElementById('typed-text');
   const strings = [
     'Computer Science Student',
+    'UI/UX Designer',
     'Aspiring Game Developer',
     'Full-Stack Web Developer',
     'AI App Builder',
@@ -1461,7 +1500,6 @@ function downloadCV() {
   AudioSys.play('levelUp');
   showToast('Jonathan_Richard_CV_ATS.pdf', 'Downloading CV');
 }
-document.getElementById('btn-hero-download')?.addEventListener('click', downloadCV);
 document.getElementById('hud-download-btn')?.addEventListener('click', downloadCV);
 
 // ─── KONAMI CODE ─────────────────────────────────────
