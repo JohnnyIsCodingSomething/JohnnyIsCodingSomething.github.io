@@ -269,6 +269,9 @@
     :root[data-theme="dark"] .sun { display: none; }
     :root[data-theme="dark"] .moon, :root[data-theme="dark"] .sparkle { display: block; }
     .sparkle { position: absolute; animation: sparkle 4s steps(1) infinite; }
+    /* a star can drift behind text; a dark halo keeps the letters readable (not needed on cards, which have their own background) */
+    :root[data-theme="dark"] main { text-shadow: 0 0 2px #080d1c, 0 0 5px #080d1c, 0 0 9px #080d1c; }
+    :root[data-theme="dark"] main :is(.project, .char-card, .achievement, .design-card, .btn-game, .inv-tag, .skill-chip, .more-list li, #lightbox) { text-shadow: none; }
     @keyframes sparkle { 0% { opacity: 1; } 40% { opacity: .35; } 55% { opacity: 0; } 70% { opacity: 1; } }
     .flyer .f1, .flyer .f2 { animation: var(--flap, .4s) step-end infinite; }
     .flyer .f1 { animation-name: flapA; }
@@ -399,6 +402,7 @@
     /* project screenshots: framed like the other panels; pixel art stays crisp */
     .project-shot { display: block; width: 100%; height: auto; margin-bottom: var(--s3); border: 6px solid transparent; border-image: var(--fr-soft) 6 / 6px / 0 stretch; }
     .project-shot.pixel { image-rendering: pixelated; }
+    .colony-clip:focus-visible, .colony-clip:focus { outline: 3px solid var(--focus); outline-offset: 3px; }
     .shot-link { display: block; background: none; text-decoration: none; }
     .shot-link:hover { background: none; }
     .shot-link:hover .project-shot { border-image-source: var(--fr-panel); }
@@ -424,6 +428,7 @@
     .zoom-hint { display: block; margin-top: var(--s1); font-size: 14px; line-height: 20px; color: var(--dim); }
     .design-shot .project-shot { margin-bottom: 0; }
     .project-grid .design-shot { margin-bottom: var(--s3); }
+    .project-grid .design-shot ~ .metric-note { margin-bottom: var(--s3); }
     #lightbox { padding: var(--s3); max-width: min(1640px, 96vw); width: auto; max-height: 94vh; margin: auto; color: var(--ink); background: var(--page); border: 6px solid transparent; border-image: var(--fr-panel) 6 fill / 6px / 0 stretch; }
     #lightbox::backdrop { background: rgba(20, 16, 10, .82); }
     #lightbox img { display: block; max-width: 100%; max-height: calc(94vh - 130px); width: auto; height: auto; margin: 0 auto; }
@@ -554,6 +559,7 @@
     .smoke i:nth-child(3) { animation-delay: 2.4s; }
     @keyframes smoke { 0% { opacity: .9; transform: translate(0, 0); } 100% { opacity: 0; transform: translate(12px, -48px) scale(1.5); } }
     .footer-keys { display: flex; justify-content: center; flex-wrap: wrap; gap: var(--s2) var(--s5); }
+    @media (hover: none) and (pointer: coarse) { .footer-keys { display: none; } }
     kbd { font: 20px/24px var(--f-px); color: var(--ink); background: var(--tint); padding: 0 6px; clip-path: var(--notch); }
 
     /* ─── Snake modal ─── */
@@ -990,6 +996,12 @@
     <div class="container reveal">
       <div class="section-head"><h2 class="section-title">Skills</h2></div>
       <dl class="skill-groups">
+        <dt>Design</dt>
+        <dd>
+          <span class="skill-chip">Figma</span>
+          <span class="skill-chip">Canva</span>
+          <span class="skill-chip">Print &amp; Merchandise Design</span>
+        </dd>
         <dt>Languages and Frameworks</dt>
         <dd>
           <span class="skill-chip">Python</span>
@@ -1012,12 +1024,6 @@
           <span class="skill-chip">MariaDB / MySQL</span>
           <span class="skill-chip">ChromaDB</span>
           <span class="skill-chip">Image Classification (EfficientNet)</span>
-        </dd>
-        <dt>Design</dt>
-        <dd>
-          <span class="skill-chip">Figma</span>
-          <span class="skill-chip">Canva</span>
-          <span class="skill-chip">Print &amp; Merchandise Design</span>
         </dd>
         <dt>Other</dt>
         <dd>
