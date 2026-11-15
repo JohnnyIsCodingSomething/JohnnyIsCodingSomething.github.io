@@ -515,8 +515,10 @@
       display: flex; align-items: center; gap: var(--s3); padding: var(--s2) var(--s3);
       border: 6px solid transparent; border-image: var(--fr-panel) 6 fill / 6px / 0 stretch;
       transition: right .24s steps(4);
+      pointer-events: none;
     }
     .toast.show { right: var(--s4); }
+    @media (max-width: 599px) { .toast { display: none; } }
     .toast-icon { color: var(--wheat-ink); display: flex; }
     .toast-title { font: 20px/24px var(--f-px); color: var(--wheat-ink); }
     .toast-desc { font-size: 15px; line-height: 24px; font-weight: 600; color: var(--ink); }
