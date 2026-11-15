@@ -428,6 +428,13 @@
     #lightbox::backdrop { background: rgba(20, 16, 10, .82); }
     #lightbox img { display: block; max-width: 100%; max-height: calc(94vh - 130px); width: auto; height: auto; margin: 0 auto; }
     #lightbox .lb-bar { display: flex; align-items: center; justify-content: space-between; gap: var(--s3); margin-bottom: var(--s2); }
+    #lightbox .lb-scroll { max-width: 100%; }
+    #lightbox .lb-hint { display: none; font-size: 14px; line-height: 20px; color: var(--dim); margin: calc(var(--s1) * -1) 0 var(--s2); }
+    @media (max-width: 760px), (max-height: 520px) {
+      #lightbox .lb-hint { display: block; }
+      #lightbox .lb-scroll { overflow: auto; max-height: calc(100vh - 140px); max-height: calc(100dvh - 140px); overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
+      #lightbox img { max-width: none; max-height: none; width: auto; margin: 0; }
+    }
     #lightbox .lb-caption { font-size: 16px; line-height: 24px; color: var(--dim); }
     .design-fact { font-size: 16px; line-height: 24px; margin-top: var(--s2); }
     .todo { background: var(--wheat); color: #2e2419; padding: 0 var(--s1); outline: 2px dashed #2e2419; outline-offset: 0; }
@@ -687,7 +694,8 @@
 
 <dialog id="lightbox" aria-label="Screenshot viewer">
   <div class="lb-bar"><p class="lb-caption" id="lbCaption"></p><button type="button" class="btn-game btn-outline-g" id="lbClose" aria-label="Close screenshot viewer"><svg class="px" aria-hidden="true"><use href="#i-close"/></svg> Close</button></div>
-  <img id="lbImg" alt="">
+  <p class="lb-hint">Drag the image to look around.</p>
+  <div class="lb-scroll" id="lbScroll" tabindex="0" role="region" aria-label="Screenshot, scrollable"><img id="lbImg" alt=""></div>
 </dialog>
 <div id="scroll-progress"></div>
 
@@ -1563,6 +1571,7 @@ document.getElementById('hud-pro-btn').addEventListener('click', () => {
       img.alt = thumb ? thumb.alt : '';
       cap.textContent = (a.getAttribute('aria-label') || '').replace('Enlarge screenshot of ', '');
       box.showModal();
+      document.getElementById('lbScroll').scrollTo(0, 0);
       document.getElementById('lbClose').focus();
     });
   });
