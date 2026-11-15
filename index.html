@@ -423,6 +423,7 @@
     .shot-zoom:hover .project-shot { border-image-source: var(--fr-panel); }
     .zoom-hint { display: block; margin-top: var(--s1); font-size: 14px; line-height: 20px; color: var(--dim); }
     .design-shot .project-shot { margin-bottom: 0; }
+    .project-grid .design-shot { margin-bottom: var(--s3); }
     #lightbox { padding: var(--s3); max-width: min(1640px, 96vw); width: auto; max-height: 94vh; margin: auto; color: var(--ink); background: var(--page); border: 6px solid transparent; border-image: var(--fr-panel) 6 fill / 6px / 0 stretch; }
     #lightbox::backdrop { background: rgba(20, 16, 10, .82); }
     #lightbox img { display: block; max-width: 100%; max-height: calc(94vh - 130px); width: auto; height: auto; margin: 0 auto; }
@@ -917,6 +918,13 @@
       <h3 class="project-group">Course Projects</h3>
       <div class="project-grid">
         <article class="project">
+          <div class="design-shot">
+            <a class="shot-zoom" href="assets/projects/serenity-large.webp" aria-label="Enlarge screenshot of Serenity">
+              <picture><source srcset="assets/projects/serenity.webp" type="image/webp">
+              <img class="project-shot" src="assets/projects/serenity.png" width="948" height="570" loading="lazy" alt="Serenity pre-order site screenshots: the landing page with a pixel-art bakery scene, a product page for a grilled chicken quinoa salad with allergens and nutrition facts, and the phone version of the landing page" onerror="this.closest('.design-shot').classList.add('shot-missing')"></picture>
+              <span class="zoom-hint" aria-hidden="true">Click to enlarge</span></a>
+            <div class="shot-fallback" role="img" aria-label="Screenshot of Serenity coming soon">Screenshot coming soon</div>
+          </div>
           <span class="project-status"><svg class="px" aria-hidden="true"><use href="#i-edit"/></svg> In Development</span>
           <h4>Serenity</h4>
           <div class="project-type">Healthy food pre-order website, Venture Creation course (team project)</div>
@@ -927,6 +935,14 @@
           </div>
         </article>
         <article class="project">
+          <div class="design-shot">
+            <a class="shot-zoom" href="assets/projects/auto18-large.webp" aria-label="Enlarge screenshot of Auto18">
+              <picture><source srcset="assets/projects/auto18.webp" type="image/webp">
+              <img class="project-shot" src="assets/projects/auto18.png" width="948" height="570" loading="lazy" alt="Auto18 used-car showroom screenshots: the home page with a Mitsubishi Xpander, the staff dashboard, and the phone version of the home page" onerror="this.closest('.design-shot').classList.add('shot-missing')"></picture>
+              <span class="zoom-hint" aria-hidden="true">Click to enlarge</span></a>
+            <div class="shot-fallback" role="img" aria-label="Screenshot of Auto18 coming soon">Screenshot coming soon</div>
+          </div>
+          <p class="metric-note">Car photos: Wikimedia Commons, CC BY-SA 4.0 (author credits are listed in the project).</p>
           <span class="project-status"><svg class="px" aria-hidden="true"><use href="#i-edit"/></svg> In Development</span>
           <h4>Auto18</h4>
           <div class="project-type">Used-car showroom web app, Web Programming course (team project)</div>
