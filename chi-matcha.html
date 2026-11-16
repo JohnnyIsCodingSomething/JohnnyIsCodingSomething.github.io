@@ -217,10 +217,13 @@
       h1 { font-size: 80px; line-height: 72px; }
       .steps, .screens { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .slots { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .slot.empty:nth-child(n+7) { display: none; }
       .swatches { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     }
     @media (max-width: 640px) {
       .container { width: calc(100% - 32px); }
+      .cs-bar .cs-title { display: none; }
+      .cs-bar .container { flex-wrap: nowrap; }
       h1 { font-size: 64px; line-height: 60px; }
       h2 { font-size: 34px; line-height: 36px; }
       section { padding-top: var(--s7); }
