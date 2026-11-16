@@ -148,6 +148,7 @@ screens = ''.join([
 
 FIGMA = 'https://www.figma.com/design/XXO1QciNuYQYSa0wpI8P0k/User-Experience---AOL-Project---KelompokE'
 GITHUB = 'https://github.com/JohnnyIsCodingSomething/UX-AOL-ChiMatcha'
+PROTO = 'https://www.figma.com/proto/XXO1QciNuYQYSa0wpI8P0k/User-Experience---AOL-Project---KelompokE?node-id=14-20&amp;starting-point-node-id=14%3A20'
 
 HTML = '''<!DOCTYPE html>
 <html lang="en">
@@ -202,7 +203,8 @@ HTML = '''<!DOCTYPE html>
         <li class="chip">Figma</li><li class="chip">UX</li><li class="chip">Android</li><li class="chip">Java</li>
       </ul>
       <div class="cs-actions">
-        <a class="btn-game btn-primary-g" href="FIGMA" target="_blank" rel="noopener noreferrer" aria-label="View Chi Matcha in Figma (opens in a new tab)">View in Figma</a>
+        <a class="btn-game btn-primary-g" href="PROTO" target="_blank" rel="noopener noreferrer" aria-label="Try the Chi Matcha clickable prototype in Figma (opens in a new tab)">Try the prototype</a>
+        <a class="btn-game" href="FIGMA" target="_blank" rel="noopener noreferrer" aria-label="View Chi Matcha in Figma (opens in a new tab)">View in Figma</a>
         <a class="btn-game" href="GITHUB" target="_blank" rel="noopener noreferrer" aria-label="View the Chi Matcha code on GitHub (opens in a new tab)">View Code on GitHub</a>
       </div>
       <picture>
@@ -297,7 +299,7 @@ SCREENS      </ul>
       <p style="max-width:44em;margin-bottom:24px">I found these when I reviewed the file again for this page.</p>
       <ul class="ticks issues">
         <li><b>Prices do not match.</b> The item pages for the other four drinks still show Rp. 45.000, while the menu lists different prices (Matcha Affogato is Rp. 55.000 on the menu).</li>
-        <li><b>Typos in the copy.</b> The Home screen text has &ldquo;mmfor&rdquo; and &ldquo;yyou&rdquo;, and the sugar options say &ldquo;Suger&rdquo;.</li>
+        <li><b>Typos in the copy.</b> The Home screen text has &ldquo;mmfor&rdquo; and &ldquo;yyou&rdquo;.</li>
         <li><b>Low contrast on the grey labels.</b> Labels such as &ldquo;Ice Level&rdquo; use #8C8C8C on the sage background, about 2.8 to 1. The common guideline for small text is 4.5 to 1, so I would darken them.</li>
         <li><b>Dropdown positions.</b> The Ice and Sweet dropdowns sit at slightly different positions from one item page to the next.</li>
         <li><b>Empty space.</b> The Home and Our Stores screens leave a lot of unused space at the bottom.</li>
@@ -329,6 +331,6 @@ SCREENS      </ul>
 </body>
 </html>
 '''
-html = HTML.replace('ICONLINK', ICON).replace('/*TOKENS*/', TOKENS).replace('/*CSS*/', CSS).replace('SCREENS', screens).replace('href="FIGMA"', f'href="{FIGMA}"').replace('href="GITHUB"', f'href="{GITHUB}"')
+html = HTML.replace('ICONLINK', ICON).replace('/*TOKENS*/', TOKENS).replace('/*CSS*/', CSS).replace('SCREENS', screens).replace('href="FIGMA"', f'href="{FIGMA}"').replace('href="PROTO"', f'href="{PROTO}"').replace('href="GITHUB"', f'href="{GITHUB}"')
 open(os.path.join(root, 'chi-matcha.html'), 'w', encoding='utf-8').write(html)
 print('written', len(html) // 1024, 'KB')
