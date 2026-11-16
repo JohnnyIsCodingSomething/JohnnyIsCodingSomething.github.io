@@ -182,7 +182,8 @@
     .swatch i { display: block; height: 56px; margin-bottom: var(--s2); border: 2px solid var(--ink); }
     .swatch b { display: block; font: 20px/24px var(--f-px); color: var(--ink); font-weight: 400; }
     .type-demo { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s4); margin-bottom: var(--s5); }
-    .type-card { border: 6px solid transparent; border-image: var(--fr-soft) 6 fill / 6px / 0 stretch; padding: var(--s3) var(--s4); background: #ddede2; color: #000; }
+    /* these two boxes show the app's own light colours, so they must not take the theme's frame colour */
+    .type-card { border: 2px solid var(--ink); border-image: none; padding: var(--s3) var(--s4); background: #ddede2; color: #000; }
     .type-card p { margin: 0; }
     .type-card .big { font-size: 32px; line-height: 40px; }
     .type-card .meta { font: 14px/20px 'DM Sans', var(--f-body); color: #4d4d4d; margin-top: var(--s2); }
