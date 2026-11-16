@@ -484,6 +484,7 @@
     @keyframes cardIn { 0% { opacity: 0; transform: translateY(8px); } 100% { opacity: 1; transform: none; } }
     .project.pop-in, .more-list li.pop-in { animation: cardIn .3s steps(5) both; }
     .project-details-btn { margin-top: var(--s3); }
+    @media (pointer: coarse) { .project-link a, .design-code, .design-pointer a { display: inline-block; padding: var(--s2) 0; } }
     #projdetail { width: min(780px, 94vw); max-height: 90vh; margin: auto; padding: var(--s3); color: var(--ink); background: var(--page); border: 6px solid transparent; border-image: var(--fr-panel) 6 fill / 6px / 0 stretch; overflow: hidden; }
     #projdetail[open] { display: flex; flex-direction: column; }
     #projdetail::backdrop { background: rgba(20, 16, 10, .78); }
@@ -745,7 +746,7 @@
 
 <canvas id="click-burst"></canvas>
 
-<dialog id="projdetail" aria-label="Project details">
+<dialog id="projdetail" aria-labelledby="pdTitle">
   <div class="pd-bar"><span class="pd-title" id="pdTitle"></span><button type="button" class="btn-game btn-outline-g" id="pdClose" aria-label="Close project details"><svg class="px" aria-hidden="true"><use href="#i-close"/></svg> Close</button></div>
   <div class="pd-scroll" id="pdScroll" tabindex="0"><div class="pd-media" id="pdMedia"></div><div class="pd-content" id="pdContent"></div></div>
 </dialog>
@@ -1736,9 +1737,9 @@ document.getElementById('hud-pro-btn').addEventListener('click', () => {
 (function() {
   const NOTES = {
     all: '',
-    uiux: 'UI/UX view: the Design case studies and Serenity come first.',
+    uiux: 'UI/UX view: the Design case studies come first.',
     game: 'Game view: Projects come before Design, starting with Close Enough Colony.',
-    software: 'Software view: Projects and Skills come first, with the Java, Laravel and ML work leading.',
+    software: 'Software view: Projects and Skills come first.',
   };
   const SECTIONS = {
     game: ['hero', 'about', 'projects', 'design', 'experience', 'skills', 'achievements', 'education', 'contact'],
@@ -1810,20 +1811,20 @@ document.getElementById('hud-pro-btn').addEventListener('click', () => {
   const click = id => { const e = document.getElementById(id); if (e) e.click(); };
   function build() {
     items = [];
-    links.forEach(a => items.push({ group: 'Sections', label: a.textContent.trim(), tag: '', run: () => reveal(document.querySelector(a.getAttribute('href'))) }));
+    links.forEach(a => items.push({ group: 'Sections', nav: true, label: a.textContent.trim(), tag: '', run: () => reveal(document.querySelector(a.getAttribute('href'))) }));
     document.querySelectorAll('.design-card h3, #projects .project h4, .more-list h4').forEach(h => {
       const inDesign = !!h.closest('.design-card');
-      items.push({ group: 'Projects', label: h.textContent.trim(), tag: inDesign ? 'Design' : 'Projects', run: () => reveal(h.closest('article, li')) });
+      items.push({ group: 'Projects', nav: true, label: h.textContent.trim(), tag: inDesign ? 'Design' : 'Projects', run: () => reveal(h.closest('article, li')) });
     });
-    [['All projects', 'all'], ['Games', 'games'], ['Web', 'web'], ['AI and Research', 'ai'], ['UI/UX', 'uiux']].forEach(([label, f]) => items.push({ group: 'Filter', label: 'Filter projects: ' + label, tag: '', keys: 'filter projects ' + f, run: () => { const b = document.querySelector('.filter-bar [data-filter="' + f + '"]'); if (b) { b.click(); reveal(document.getElementById('projects')); } } }));
+    [['All projects', 'all'], ['Games', 'games'], ['Web', 'web'], ['AI and Research', 'ai'], ['UI/UX', 'uiux']].forEach(([label, f]) => items.push({ group: 'Filter', nav: true, label: 'Filter projects: ' + label, tag: '', keys: 'filter projects ' + f, run: () => { const b = document.querySelector('.filter-bar [data-filter="' + f + '"]'); if (b) { b.click(); reveal(document.getElementById('projects')); } } }));
     [['Everything', 'all', 'all both default'], ['UI/UX', 'uiux', 'uiux ux ui design'], ['Game', 'game', 'games gaming'], ['Software', 'software', 'dev developer web code']].forEach(([label, v, keys]) => items.push({ group: 'View', label: 'Show my work for: ' + label, tag: '', keys, run: () => window.setPortfolioView && window.setPortfolioView(v) }));
-    items.push({ group: 'Actions', label: 'Read the Chi Matcha case study', tag: 'Page', keys: 'chi matcha case study ux design', run: () => { location.href = 'chi-matcha.html'; } });
+    items.push({ group: 'Actions', nav: true, label: 'Read the Chi Matcha case study', tag: 'Page', keys: 'chi matcha case study ux design', run: () => { location.href = 'chi-matcha.html'; } });
     items.push({ group: 'Actions', label: 'Download CV', tag: 'PDF', run: () => click('hud-download-btn') });
     items.push({ group: 'Actions', label: 'Switch light and dark theme', tag: '', run: () => click('hud-theme-btn') });
     items.push({ group: 'Actions', label: 'Professional view (calmer page)', tag: '', run: () => click('hud-pro-btn') });
-    const mail = document.querySelector('a.big-mail'); if (mail) items.push({ group: 'Actions', label: 'Email me', tag: '', run: () => { location.href = mail.href; } });
+    const mail = document.querySelector('a.big-mail'); if (mail) items.push({ group: 'Actions', nav: true, label: 'Email me', tag: '', run: () => { location.href = mail.href; } });
     [['Play Close Enough Colony', 'a[href*="itch.io"]'], ['Open GitHub', 'a[href*="github.com/JohnnyIsCodingSomething"]'], ['Open LinkedIn', 'a[href*="linkedin.com"]']].forEach(([label, sel]) => {
-      const a = document.querySelector(sel); if (a) items.push({ group: 'Actions', label, tag: 'New tab', run: () => window.open(a.href, '_blank', 'noopener') });
+      const a = document.querySelector(sel); if (a) items.push({ group: 'Actions', nav: true, label, tag: 'New tab', run: () => window.open(a.href, '_blank', 'noopener') });
     });
   }
   function render() {
@@ -1850,10 +1851,18 @@ document.getElementById('hud-pro-btn').addEventListener('click', () => {
     input.setAttribute('aria-activedescendant', 'qm-o-' + active);
     const el = document.getElementById('qm-o-' + active); if (el) el.scrollIntoView({ block: 'nearest' });
   }
-  function choose(i) { const it = shown[i]; if (!it) return; opener = null; box.close(); setTimeout(it.run, 30); }
+  function choose(i) {
+    const it = shown[i]; if (!it) return;
+    if (it.nav) opener = null;   // navigating moves focus to the target; other actions return focus to where you were
+    ['projdetail', 'lightbox'].forEach(id => { const d = document.getElementById(id); if (d && d.open) d.close(); });
+    box.close(); setTimeout(it.run, 30);
+  }
   function open() {
     const nav = document.getElementById('navLinks'); if (nav && nav.classList.contains('open')) click('hamburger');
-    opener = document.activeElement; build(); input.value = ''; active = 0; render();
+    opener = document.activeElement;
+    // a control inside the closed hamburger menu is about to be hidden, so return focus to the hamburger button instead
+    if (!opener || opener === document.body || opener.closest('#navLinks')) opener = document.getElementById('hamburger') && getComputedStyle(document.getElementById('hamburger')).display !== 'none' ? document.getElementById('hamburger') : null;
+    build(); input.value = ''; active = 0; render();
     box.showModal(); input.focus();
   }
   input.addEventListener('input', () => { active = 0; render(); });

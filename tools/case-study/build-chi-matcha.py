@@ -86,6 +86,7 @@ CSS = r'''
     .ticks li::before { content: ''; position: absolute; left: 4px; top: 11px; width: 10px; height: 10px; background: var(--leaf-dot); }
     .ticks.issues li::before { background: var(--wheat); outline: 2px solid var(--ink); }
 
+    @media (pointer: coarse) { .cs-bar a.back, footer a { display: inline-block; padding: 10px 4px; } }
     footer { margin-top: var(--s8); padding: var(--s6) 0; background: var(--sky-2); }
     footer .container { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--s3); }
 
@@ -202,6 +203,7 @@ HTML = '''<!DOCTYPE html>
       <h2 id="problem-h">The problem</h2>
       <p class="lead-quote">Ordering a customized drink at a cafe is slow.</p>
       <p>The idea: the app lets people pick a branch, browse the menu, and set ice and sugar levels before ordering.</p>
+      <p class="note">This was the team's starting point. It is not something I measured with user research.</p>
     </section>
 
     <section class="container" aria-labelledby="flow-h">
