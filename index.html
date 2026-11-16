@@ -476,6 +476,26 @@
     .view-btn[aria-pressed="true"] { border-image-source: var(--fr-btn); color: var(--on-wheat); filter: drop-shadow(0 4px 0 var(--btn-drop)); }
     .view-note { margin-top: var(--s1); font-size: 16px; line-height: 24px; color: var(--dim); min-height: 24px; }
     html[data-view="game"] main, html[data-view="software"] main { display: flex; flex-direction: column; }
+    /* ─── Project filters and the details view ─── */
+    .filter-bar { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s1) var(--s2); margin-bottom: var(--s4); }
+    .filter-count { font-size: 16px; line-height: 24px; color: var(--dim); margin-left: var(--s2); }
+    .filter-hint { flex-basis: 100%; font-size: 16px; line-height: 24px; color: var(--dim); }
+    .project[hidden], .more-list li[hidden], .project-group[hidden], .project-grid[hidden], .more-projects[hidden], .design-pointer[hidden] { display: none; }
+    @keyframes cardIn { 0% { opacity: 0; transform: translateY(8px); } 100% { opacity: 1; transform: none; } }
+    .project.pop-in, .more-list li.pop-in { animation: cardIn .3s steps(5) both; }
+    .project-details-btn { margin-top: var(--s3); }
+    #projdetail { width: min(780px, 94vw); max-height: 90vh; margin: auto; padding: var(--s3); color: var(--ink); background: var(--page); border: 6px solid transparent; border-image: var(--fr-panel) 6 fill / 6px / 0 stretch; overflow: hidden; }
+    #projdetail[open] { display: flex; flex-direction: column; }
+    #projdetail::backdrop { background: rgba(20, 16, 10, .78); }
+    #projdetail .pd-bar { display: flex; align-items: center; justify-content: space-between; gap: var(--s3); margin-bottom: var(--s2); }
+    #projdetail .pd-scroll { overflow-y: auto; overscroll-behavior: contain; flex: 1 1 auto; padding-right: var(--s1); }
+    #projdetail .pd-title { font: 32px/36px var(--f-px); color: var(--ink); }
+    #projdetail .pd-media { margin: var(--s3) 0; }
+    #projdetail .pd-media img, #projdetail .pd-media video { display: block; width: 100%; height: auto; border: 6px solid transparent; border-image: var(--fr-soft) 6 / 6px / 0 stretch; }
+    #projdetail .pd-content p { margin-top: var(--s3); }
+    #projdetail .pd-content .project-type { margin: var(--s1) 0 0; }
+    #projdetail .pd-content .project-status { margin-top: var(--s2); display: inline-flex; }
+
     .more-projects { margin-top: var(--s5); }
     .more-projects summary { font: 20px/24px var(--f-px); color: var(--dim); cursor: pointer; padding: var(--s2) 0; }
     .more-projects summary:hover, .more-projects[open] summary { color: var(--ink); }
@@ -725,6 +745,11 @@
 
 <canvas id="click-burst"></canvas>
 
+<dialog id="projdetail" aria-label="Project details">
+  <div class="pd-bar"><span class="pd-title" id="pdTitle"></span><button type="button" class="btn-game btn-outline-g" id="pdClose" aria-label="Close project details"><svg class="px" aria-hidden="true"><use href="#i-close"/></svg> Close</button></div>
+  <div class="pd-scroll" id="pdScroll" tabindex="0"><div class="pd-media" id="pdMedia"></div><div class="pd-content" id="pdContent"></div></div>
+</dialog>
+
 <dialog id="quickmenu" aria-label="Quick menu">
   <div class="qm-head"><label class="qm-title" for="qmInput">Quick menu</label><button type="button" class="btn-game btn-outline-g" id="qmClose" aria-label="Close quick menu"><svg class="px" aria-hidden="true"><use href="#i-close"/></svg> Close</button></div>
   <input id="qmInput" type="search" role="combobox" aria-expanded="true" aria-controls="qmList" aria-autocomplete="list" autocomplete="off" spellcheck="false" placeholder="Search sections, projects, actions">
@@ -946,6 +971,16 @@
     <div class="container reveal">
       <div class="section-head"><h2 class="section-title">Projects and Research</h2></div>
 
+      <div class="filter-bar" role="group" aria-label="Filter projects">
+        <span class="view-label">Filter:</span>
+        <button type="button" class="btn-game btn-outline-g view-btn" data-filter="all" aria-pressed="true">All</button>
+        <button type="button" class="btn-game btn-outline-g view-btn" data-filter="games" aria-pressed="false">Games</button>
+        <button type="button" class="btn-game btn-outline-g view-btn" data-filter="web" aria-pressed="false">Web</button>
+        <button type="button" class="btn-game btn-outline-g view-btn" data-filter="ai" aria-pressed="false">AI &amp; Research</button>
+        <button type="button" class="btn-game btn-outline-g view-btn" data-filter="uiux" aria-pressed="false">UI/UX</button>
+        <span class="filter-count" id="filterCount" aria-live="polite"></span>
+        <p class="filter-hint" id="filterHint" hidden>The Figma case studies (cryPlto, Chi Matcha, B-Eatery) are in the <a href="#design">Design section</a>.</p>
+      </div>
       <h3 class="project-group">Personal Projects</h3>
       <div class="project-grid">
         <article class="project">
@@ -1631,6 +1666,72 @@ document.getElementById('hud-pro-btn').addEventListener('click', () => {
   box.addEventListener('close', () => { img.removeAttribute('src'); if (opener) opener.focus(); });
 })();
 
+// ─── PROJECT FILTERS AND DETAILS VIEW ───────────────
+(function() {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const CATS = {
+    'Close Enough Colony': ['games'], 'Lily': ['ai'], 'Serenity': ['web', 'uiux'], 'Auto18': ['web'],
+    'Waste Classification System': ['ai'], 'Spojefy': ['web'], 'ML for DNA Sequence Classification': ['ai'],
+  };
+  const cards = [...document.querySelectorAll('#projects .project-grid > article, #projects .more-list > li')];
+  const title = c => (c.querySelector('h4') || {}).textContent ? c.querySelector('h4').textContent.trim() : '';
+  cards.forEach(c => { c.dataset.cat = (CATS[title(c)] || []).join(' '); });
+  const buttons = [...document.querySelectorAll('.filter-bar [data-filter]')];
+  const count = document.getElementById('filterCount');
+  const hint = document.getElementById('filterHint');
+  function filter(cat) {
+    let n = 0;
+    cards.forEach(c => {
+      const show = cat === 'all' || c.dataset.cat.split(' ').includes(cat);
+      const was = !c.hidden;
+      c.hidden = !show;
+      if (show) { n++; if (!was && !reduce) { c.classList.remove('pop-in'); void c.offsetWidth; c.classList.add('pop-in'); } }
+    });
+    // hide group headings and grids that have nothing to show
+    document.querySelectorAll('#projects .project-grid').forEach(g => {
+      const any = [...g.children].some(c => !c.hidden);
+      g.hidden = !any; const h = g.previousElementSibling; if (h && h.classList.contains('project-group')) h.hidden = !any;
+    });
+    const more = document.querySelector('#projects .more-projects');
+    if (more) { const any = [...more.querySelectorAll('.more-list li')].some(l => !l.hidden); more.hidden = !any; if (cat !== 'all' && any) more.open = true; }
+    document.querySelectorAll('#projects .design-pointer').forEach(p => { p.hidden = cat !== 'all'; });
+    buttons.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.filter === cat)));
+    count.textContent = cat === 'all' ? '' : 'Showing ' + n + (n === 1 ? ' project' : ' projects');
+    if (hint) hint.hidden = cat !== 'uiux';
+  }
+  buttons.forEach(b => b.addEventListener('click', () => filter(b.dataset.filter)));
+
+  // details view: a larger, focused copy of the card (built from the card itself, so the text stays in one place)
+  const dlg = document.getElementById('projdetail');
+  if (!dlg || typeof dlg.showModal !== 'function') return;
+  const dTitle = document.getElementById('pdTitle'), dMedia = document.getElementById('pdMedia'), dContent = document.getElementById('pdContent'), dScroll = document.getElementById('pdScroll');
+  let opener = null;
+  function mediaFor(card) {
+    const v = card.querySelector('video');
+    if (v) { const c = v.cloneNode(true); c.removeAttribute('id'); c.controls = true; return c; }
+    const a = card.querySelector('a.shot-zoom, a.shot-link'); const im = card.querySelector('img');
+    if (!im) return null;
+    const out = document.createElement('img'); out.src = (a && a.getAttribute('href')) || im.currentSrc || im.src; out.alt = im.alt || ''; return out;
+  }
+  function openDetails(card, btn) {
+    opener = btn; dMedia.textContent = ''; dContent.textContent = '';
+    dTitle.textContent = title(card);
+    const m = mediaFor(card); if (m) dMedia.appendChild(m);
+    const clone = card.cloneNode(true);
+    clone.querySelectorAll('.design-shot, .shot-link, .shot-zoom, video, script, picture, img, .project-details-btn, .zoom-hint, h4').forEach(e => e.remove());
+    [...clone.children].forEach(ch => dContent.appendChild(ch));
+    dlg.showModal(); dScroll.scrollTo(0, 0); document.getElementById('pdClose').focus();
+  }
+  cards.forEach(c => {
+    const host = c.matches('li') ? (c.querySelector('div') || c) : c;
+    const b = document.createElement('button'); b.type = 'button'; b.className = 'btn-game btn-outline-g project-details-btn'; b.textContent = 'Details'; b.setAttribute('aria-haspopup', 'dialog'); b.setAttribute('aria-label', 'Details for ' + title(c));
+    b.addEventListener('click', () => openDetails(c, b)); host.appendChild(b);
+  });
+  document.getElementById('pdClose').addEventListener('click', () => dlg.close());
+  dlg.addEventListener('click', e => { if (e.target === dlg) dlg.close(); });
+  dlg.addEventListener('close', () => { const v = dMedia.querySelector('video'); if (v) v.pause(); if (opener && opener.focus) opener.focus(); });
+})();
+
 // ─── VIEW SWITCH (UI/UX, Game, Software) ─────────────
 (function() {
   const NOTES = {
@@ -1646,7 +1747,7 @@ document.getElementById('hud-pro-btn').addEventListener('click', () => {
   const CARDS = {
     software: ['Chi Matcha', 'cryPlto', 'B-Eatery', 'Lily', 'Close Enough Colony', 'Auto18', 'Serenity', 'Waste Classification System', 'Spojefy', 'ML for DNA Sequence Classification'],
   };
-  const buttons = [...document.querySelectorAll('.view-btn')];
+  const buttons = [...document.querySelectorAll('.view-switch .view-btn')];
   const note = document.getElementById('viewNote');
   if (!buttons.length) return;
   function titleOf(card) { const h = card.querySelector('h3, h4'); return h ? h.textContent.trim() : ''; }
@@ -1714,6 +1815,7 @@ document.getElementById('hud-pro-btn').addEventListener('click', () => {
       const inDesign = !!h.closest('.design-card');
       items.push({ group: 'Projects', label: h.textContent.trim(), tag: inDesign ? 'Design' : 'Projects', run: () => reveal(h.closest('article, li')) });
     });
+    [['All projects', 'all'], ['Games', 'games'], ['Web', 'web'], ['AI and Research', 'ai'], ['UI/UX', 'uiux']].forEach(([label, f]) => items.push({ group: 'Filter', label: 'Filter projects: ' + label, tag: '', keys: 'filter projects ' + f, run: () => { const b = document.querySelector('.filter-bar [data-filter="' + f + '"]'); if (b) { b.click(); reveal(document.getElementById('projects')); } } }));
     [['Everything', 'all', 'all both default'], ['UI/UX', 'uiux', 'uiux ux ui design'], ['Game', 'game', 'games gaming'], ['Software', 'software', 'dev developer web code']].forEach(([label, v, keys]) => items.push({ group: 'View', label: 'Show my work for: ' + label, tag: '', keys, run: () => window.setPortfolioView && window.setPortfolioView(v) }));
     items.push({ group: 'Actions', label: 'Download CV', tag: 'PDF', run: () => click('hud-download-btn') });
     items.push({ group: 'Actions', label: 'Switch light and dark theme', tag: '', run: () => click('hud-theme-btn') });
