@@ -469,6 +469,13 @@
     #quickmenu .qm-empty { padding: var(--s3); color: var(--dim); }
     #quickmenu .qm-foot { margin-top: var(--s2); font-size: 14px; line-height: 20px; color: var(--dim); }
     @media (max-width: 1080px) { #hud-quick-btn { display: none; } .nav-quick { display: block; } .nav-quick button { width: 100%; text-align: left; font: 20px/24px var(--f-px); color: var(--ink); background: none; border: 0; padding: var(--s2); cursor: pointer; } }
+    /* ─── View switch: the same page, ordered for the reader ─── */
+    .view-switch { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s1) var(--s2); margin-top: var(--s3); }
+    .view-label { font: 20px/24px var(--f-px); color: var(--dim); margin-right: var(--s1); }
+    .view-btn { padding: 2px 8px; margin-bottom: 4px; }
+    .view-btn[aria-pressed="true"] { border-image-source: var(--fr-btn); color: var(--on-wheat); filter: drop-shadow(0 4px 0 var(--btn-drop)); }
+    .view-note { margin-top: var(--s1); font-size: 16px; line-height: 24px; color: var(--dim); min-height: 24px; }
+    html[data-view="game"] main, html[data-view="software"] main { display: flex; flex-direction: column; }
     .more-projects { margin-top: var(--s5); }
     .more-projects summary { font: 20px/24px var(--f-px); color: var(--dim); cursor: pointer; padding: var(--s2) 0; }
     .more-projects summary:hover, .more-projects[open] summary { color: var(--ink); }
@@ -804,6 +811,14 @@
           <a href="https://bonebit.itch.io/close-enough-colony" target="_blank" rel="noopener noreferrer" class="btn-game btn-outline-g"><svg class="px" aria-hidden="true"><use href="#i-gamepad"/></svg> Play Colony</a>
           <a href="Jonathan%20Richard-CV.pdf" target="_blank" rel="noopener noreferrer" class="btn-game btn-outline-g"><svg class="px" aria-hidden="true"><use href="#i-download"/></svg> Download CV</a>
         </div>
+        <div class="view-switch" role="group" aria-label="Choose how my work is ordered">
+          <span class="view-label" id="viewLabel">Show my work for:</span>
+          <button type="button" class="btn-game btn-outline-g view-btn" data-view="all" aria-pressed="true">Everything</button>
+          <button type="button" class="btn-game btn-outline-g view-btn" data-view="uiux" aria-pressed="false">UI/UX</button>
+          <button type="button" class="btn-game btn-outline-g view-btn" data-view="game" aria-pressed="false">Game</button>
+          <button type="button" class="btn-game btn-outline-g view-btn" data-view="software" aria-pressed="false">Software</button>
+        </div>
+        <p class="view-note" id="viewNote" aria-live="polite"></p>
         <div id="minigame-container" style="display: none; margin-top: 24px;">
           <button id="btn-play-minigame" class="btn-game btn-primary-g"><svg class="px" aria-hidden="true"><use href="#i-gamepad"/></svg> Play Mini-Game</button>
         </div>
@@ -1616,6 +1631,51 @@ document.getElementById('hud-pro-btn').addEventListener('click', () => {
   box.addEventListener('close', () => { img.removeAttribute('src'); if (opener) opener.focus(); });
 })();
 
+// ─── VIEW SWITCH (UI/UX, Game, Software) ─────────────
+(function() {
+  const NOTES = {
+    all: '',
+    uiux: 'UI/UX view: the Design case studies and Serenity come first.',
+    game: 'Game view: Projects come before Design, starting with Close Enough Colony.',
+    software: 'Software view: Projects and Skills come first, with the Java, Laravel and ML work leading.',
+  };
+  const SECTIONS = {
+    game: ['hero', 'about', 'projects', 'design', 'experience', 'skills', 'achievements', 'education', 'contact'],
+    software: ['hero', 'about', 'projects', 'skills', 'design', 'experience', 'achievements', 'education', 'contact'],
+  };
+  const CARDS = {
+    software: ['Chi Matcha', 'cryPlto', 'B-Eatery', 'Lily', 'Close Enough Colony', 'Auto18', 'Serenity', 'Waste Classification System', 'Spojefy', 'ML for DNA Sequence Classification'],
+  };
+  const buttons = [...document.querySelectorAll('.view-btn')];
+  const note = document.getElementById('viewNote');
+  if (!buttons.length) return;
+  function titleOf(card) { const h = card.querySelector('h3, h4'); return h ? h.textContent.trim() : ''; }
+  function apply(view, save) {
+    if (!(view in NOTES)) view = 'all';
+    const root = document.documentElement;
+    if (view === 'all') root.removeAttribute('data-view'); else root.setAttribute('data-view', view);
+    // sections
+    document.querySelectorAll('main > section').forEach(sec => { sec.style.order = ''; });
+    (SECTIONS[view] || []).forEach((id, i) => { const sec = document.getElementById(id); if (sec) sec.style.order = String(i); });
+    // cards inside the grids
+    document.querySelectorAll('.design-list > article, .project-grid > article, .more-list > li').forEach(card => {
+      const list = CARDS[view]; card.style.order = '';
+      if (list) { const i = list.indexOf(titleOf(card)); card.style.order = String(i < 0 ? 99 : i); }
+    });
+    buttons.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.view === view)));
+    note.textContent = NOTES[view];
+    if (save) {
+      try { localStorage.setItem('view', view); } catch (e) {}
+      try { const u = new URL(location.href); if (view === 'all') u.searchParams.delete('view'); else u.searchParams.set('view', view); history.replaceState(null, '', u.pathname + u.search + u.hash); } catch (e) {}
+    }
+  }
+  buttons.forEach(b => b.addEventListener('click', () => apply(b.dataset.view, true)));
+  window.setPortfolioView = v => apply(v, true);
+  let start = 'all';
+  try { start = new URL(location.href).searchParams.get('view') || localStorage.getItem('view') || 'all'; } catch (e) {}
+  apply(start, false);
+})();
+
 // ─── QUICK MENU AND LIVE NAVIGATION ─────────────────
 (function() {
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -1654,6 +1714,7 @@ document.getElementById('hud-pro-btn').addEventListener('click', () => {
       const inDesign = !!h.closest('.design-card');
       items.push({ group: 'Projects', label: h.textContent.trim(), tag: inDesign ? 'Design' : 'Projects', run: () => reveal(h.closest('article, li')) });
     });
+    [['Everything', 'all', 'all both default'], ['UI/UX', 'uiux', 'uiux ux ui design'], ['Game', 'game', 'games gaming'], ['Software', 'software', 'dev developer web code']].forEach(([label, v, keys]) => items.push({ group: 'View', label: 'Show my work for: ' + label, tag: '', keys, run: () => window.setPortfolioView && window.setPortfolioView(v) }));
     items.push({ group: 'Actions', label: 'Download CV', tag: 'PDF', run: () => click('hud-download-btn') });
     items.push({ group: 'Actions', label: 'Switch light and dark theme', tag: '', run: () => click('hud-theme-btn') });
     items.push({ group: 'Actions', label: 'Professional view (calmer page)', tag: '', run: () => click('hud-pro-btn') });
@@ -1664,7 +1725,7 @@ document.getElementById('hud-pro-btn').addEventListener('click', () => {
   }
   function render() {
     const q = input.value.trim().toLowerCase().split(/\s+/).filter(Boolean);
-    shown = items.filter(it => q.every(w => (it.label + ' ' + it.group + ' ' + it.tag).toLowerCase().includes(w)));
+    shown = items.filter(it => q.every(w => (it.label + ' ' + it.group + ' ' + it.tag + ' ' + (it.keys || '')).toLowerCase().includes(w)));
     if (active >= shown.length) active = 0;
     list.textContent = '';
     if (!shown.length) { const li = document.createElement('li'); li.className = 'qm-empty'; li.setAttribute('role', 'presentation'); li.textContent = 'Nothing matches. Try a section or project name.'; list.appendChild(li); input.removeAttribute('aria-activedescendant'); return; }
