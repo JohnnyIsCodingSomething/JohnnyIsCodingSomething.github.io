@@ -663,6 +663,10 @@
       .skill-chip { white-space: normal; }
       .skill-groups dd { padding-top: 0; background: none; }
     }
+    @media (min-width: 961px) and (max-height: 800px) {
+      .hero { padding-top: 88px; }
+      .hero-name { font-size: 96px; line-height: 84px; margin-bottom: var(--s3); }
+    }
     @media (max-width: 768px) {
       .hud-bar { padding: 0 var(--s3); height: 56px; }
       .hud-right { flex-shrink: 0; gap: var(--s1); }
@@ -962,7 +966,7 @@
           <span class="entry-date">Jul – Sep 2023</span>
         </div>
         <div class="entry-sub">Printing &amp; merchandise studio, Pontianak</div>
-        <p>Designed and produced print and merchandise artwork — banners, booklets, and custom product designs such as personalized pens and red envelopes — and helped finish physical products by applying custom prints to tote bags, shirts, and mugs.</p>
+        <p>Designed and produced print and merchandise artwork: banners, booklets, and custom product designs such as personalized pens and red envelopes. Also helped finish physical products by applying custom prints to tote bags, shirts, and mugs.</p>
       </article>
     </div>
   </section>
@@ -1036,7 +1040,7 @@
               <span class="zoom-hint" aria-hidden="true">Click to enlarge</span></a>
             <div class="shot-fallback" role="img" aria-label="Screenshot of Auto18 coming soon">Screenshot coming soon</div>
           </div>
-          <p class="metric-note">Car photos: Wikimedia Commons, CC BY-SA 4.0 (author credits are listed in the project).</p>
+          <p class="metric-note">Car photo: &ldquo;Toyota Fortuner&rdquo; by Ethan Llamas, <a href="https://commons.wikimedia.org/wiki/Category:Toyota_Fortuner" target="_blank" rel="noopener noreferrer">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener noreferrer">CC BY-SA 4.0</a>. Resized and cropped. Other car photos are credited in the project.</p>
           <span class="project-status"><svg class="px" aria-hidden="true"><use href="#i-edit"/></svg> In Development</span>
           <h4>Auto18</h4>
           <div class="project-type">Used-car showroom web app, Web Programming course (team project)</div>
@@ -1461,6 +1465,7 @@ document.querySelectorAll('.btn-game').forEach(btn => {
 
 // ─── TOAST SYSTEM ────────────────────────────────────
 let toastTimeout, toastShowTimeout;
+try { window.__keysOff = localStorage.getItem('keys') === 'off'; } catch (e) { window.__keysOff = false; }
 function showToast(msg, title = 'Achievement Unlocked') {
   const toast = document.getElementById('toast');
   toast.querySelector('.toast-title').textContent = title;
@@ -1506,6 +1511,7 @@ document.addEventListener('keydown', e => {
   if (document.querySelector('dialog[open]')) return;
   const sections = ['hero','about','design','experience','projects','skills','achievements','education','contact'];
   const num = parseInt(e.key);
+  if (window.__keysOff) return;
   if (num >= 1 && num <= 8) {
     e.preventDefault();
     document.getElementById(sections[num])?.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
@@ -1816,14 +1822,15 @@ document.getElementById('hud-pro-btn').addEventListener('click', () => {
       const inDesign = !!h.closest('.design-card');
       items.push({ group: 'Projects', nav: true, label: h.textContent.trim(), tag: inDesign ? 'Design' : 'Projects', run: () => reveal(h.closest('article, li')) });
     });
-    [['All projects', 'all'], ['Games', 'games'], ['Web', 'web'], ['AI and Research', 'ai'], ['UI/UX', 'uiux']].forEach(([label, f]) => items.push({ group: 'Filter', nav: true, label: 'Filter projects: ' + label, tag: '', keys: 'filter projects ' + f, run: () => { const b = document.querySelector('.filter-bar [data-filter="' + f + '"]'); if (b) { b.click(); reveal(document.getElementById('projects')); } } }));
+    [['All projects', 'all'], ['Games', 'games'], ['Web', 'web'], ['AI & Research', 'ai'], ['UI/UX', 'uiux']].forEach(([label, f]) => items.push({ group: 'Filter', nav: true, label: 'Filter projects: ' + label, tag: '', keys: 'filter projects ' + f, run: () => { const b = document.querySelector('.filter-bar [data-filter="' + f + '"]'); if (b) { b.click(); reveal(document.getElementById('projects')); } } }));
     [['Everything', 'all', 'all both default'], ['UI/UX', 'uiux', 'uiux ux ui design'], ['Game', 'game', 'games gaming'], ['Software', 'software', 'dev developer web code']].forEach(([label, v, keys]) => items.push({ group: 'View', label: 'Show my work for: ' + label, tag: '', keys, run: () => window.setPortfolioView && window.setPortfolioView(v) }));
     items.push({ group: 'Actions', nav: true, label: 'Read the Chi Matcha case study', tag: 'Page', keys: 'chi matcha case study ux design', run: () => { location.href = 'chi-matcha.html'; } });
     items.push({ group: 'Actions', label: 'Download CV', tag: 'PDF', run: () => click('hud-download-btn') });
     items.push({ group: 'Actions', label: 'Switch light and dark theme', tag: '', run: () => click('hud-theme-btn') });
+    items.push({ group: 'Actions', label: 'Turn keyboard shortcuts off or on', tag: '1-8 and /', keys: 'keys keyboard hotkeys', run: () => { window.__keysOff = !window.__keysOff; try { localStorage.setItem('keys', window.__keysOff ? 'off' : 'on'); } catch (e) {} showToast(window.__keysOff ? 'Shortcuts off' : 'Shortcuts on', 'Keyboard'); } });
     items.push({ group: 'Actions', label: 'Professional view (calmer page)', tag: '', run: () => click('hud-pro-btn') });
     const mail = document.querySelector('a.big-mail'); if (mail) items.push({ group: 'Actions', nav: true, label: 'Email me', tag: '', run: () => { location.href = mail.href; } });
-    [['Play Close Enough Colony', 'a[href*="itch.io"]'], ['Open GitHub', 'a[href*="github.com/JohnnyIsCodingSomething"]'], ['Open LinkedIn', 'a[href*="linkedin.com"]']].forEach(([label, sel]) => {
+    [['Play Close Enough Colony', 'a[href*="itch.io"]'], ['Open GitHub', 'a[href="https://github.com/JohnnyIsCodingSomething"]'], ['Open LinkedIn', 'a[href*="linkedin.com"]']].forEach(([label, sel]) => {
       const a = document.querySelector(sel); if (a) items.push({ group: 'Actions', nav: true, label, tag: 'New tab', run: () => window.open(a.href, '_blank', 'noopener') });
     });
   }
@@ -1879,7 +1886,7 @@ document.getElementById('hud-pro-btn').addEventListener('click', () => {
   document.addEventListener('keydown', e => {
     if ((e.ctrlKey || e.metaKey) && !e.altKey && !e.shiftKey && e.key.toLowerCase() === 'k') { e.preventDefault(); if (!box.open) open(); else box.close(); return; }
     const t = e.target, typing = t && (/^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName) || t.isContentEditable);
-    if (e.key === '/' && !typing && !e.ctrlKey && !e.metaKey && !e.altKey && !document.querySelector('dialog[open]')) { e.preventDefault(); open(); }
+    if (e.key === '/' && !window.__keysOff && !typing && !e.ctrlKey && !e.metaKey && !e.altKey && !document.querySelector('dialog[open]')) { e.preventDefault(); open(); }
   });
 })();
 

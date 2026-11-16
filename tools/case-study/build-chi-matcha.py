@@ -151,6 +151,12 @@ HTML = '''<!DOCTYPE html>
   <meta property="og:description" content="A mobile cafe ordering app, designed in Figma and built in Java." />
   <meta property="og:image" content="https://johnnyiscodingsomething.github.io/assets/design/chi-matcha-large.webp" />
   <meta name="twitter:card" content="summary_large_image" />
+  <meta property="og:image:width" content="1600" />
+  <meta property="og:image:height" content="962" />
+  <meta property="og:image:alt" content="Chi Matcha app screens in the pixel-art portfolio style" />
+  <meta name="twitter:title" content="Chi Matcha case study | Jonathan Richard" />
+  <meta name="twitter:description" content="A mobile cafe ordering app, designed in Figma and built in Java." />
+  <meta name="twitter:image" content="https://johnnyiscodingsomething.github.io/assets/design/chi-matcha-large.webp" />
   ICONLINK
   <script>try { if (localStorage.getItem('theme') === 'dark') document.documentElement.setAttribute('data-theme', 'dark'); } catch (e) {}</script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
