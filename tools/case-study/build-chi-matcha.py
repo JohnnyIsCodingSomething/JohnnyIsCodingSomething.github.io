@@ -155,7 +155,7 @@ HTML = '''<!DOCTYPE html>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Chi Matcha case study | Jonathan Richard</title>
-  <meta name="description" content="Chi Matcha, a mobile cafe ordering app: designed in Figma from wireframes to prototype, then built as an Android app in Java. A case study by Jonathan Richard." />
+  <meta name="description" content="Chi Matcha, a mobile cafe ordering app: designed in Figma, then built as an Android app in Java. A case study by Jonathan Richard." />
   <meta name="author" content="Jonathan Richard" />
   <meta name="theme-color" content="#a6d3ee" />
   <link rel="canonical" href="https://johnnyiscodingsomething.github.io/chi-matcha.html" />
@@ -197,7 +197,7 @@ HTML = '''<!DOCTYPE html>
     <section class="cs-hero container" aria-labelledby="top">
       <p class="cs-kicker">Case study &middot; User Experience course &middot; Team project</p>
       <h1 id="top">Chi Matcha</h1>
-      <p class="cs-lede">A mobile cafe ordering app. I designed it in Figma from wireframes to prototype, then built it as an Android app in Java.</p>
+      <p class="cs-lede">A mobile cafe ordering app. I designed it in Figma, then built it as an Android app in Java.</p>
       <ul class="chips" aria-label="Tools and topics">
         <li class="chip">Figma</li><li class="chip">UX</li><li class="chip">Android</li><li class="chip">Java</li>
       </ul>
@@ -214,14 +214,14 @@ HTML = '''<!DOCTYPE html>
       <p class="sec-tag">Inventory</p>
       <h2 id="glance-h">At a glance</h2>
       <dl class="glance">
-        <div><dt>My role</dt><dd>I designed most of the app, from wireframes to the final prototype, and then built it in Java, working with my team.</dd></div>
+        <div><dt>My role</dt><dd>I designed most of the app's screens and components in Figma, and then built it in Java, working with my team.</dd></div>
         <div><dt>Team</dt><dd>Team project, team of 3.</dd></div>
         <div><dt>Course</dt><dd>User Experience, BINUS University.</dd></div>
         <div><dt>Tools</dt><dd>Figma for the design. Android Studio and Java for the build.</dd></div>
       </dl>
       <h3 class="slots-h">Tools in my bag</h3>
       <ul class="slots">
-        <li class="slot"><b>Figma</b>wireframes, design and prototype</li>
+        <li class="slot"><b>Figma</b>screens and components</li>
         <li class="slot"><b>Android Studio</b>the app build</li>
         <li class="slot"><b>Java</b>the app code</li>
         <li class="slot"><b>UX</b>the course</li>
