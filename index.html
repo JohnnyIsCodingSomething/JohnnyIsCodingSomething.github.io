@@ -449,6 +449,26 @@
     .hud-design { display: none; font: 20px/24px var(--f-px); color: #2e2419; background: var(--wheat); text-decoration: none; padding: var(--s1) var(--s2); white-space: nowrap; }
     .hud-design:hover { background: var(--wheat); color: #2e2419; }
     .load-skip { margin-top: var(--s3); }
+    /* ─── Quick menu (Ctrl+K) and live navigation ─── */
+    .hud-nav a[aria-current="true"] { box-shadow: inset 0 -4px 0 var(--wheat); }
+    .nav-quick { display: none; }
+    #quickmenu { width: min(580px, 92vw); max-height: min(78vh, 640px); margin: 9vh auto 0; padding: var(--s3); color: var(--ink); background: var(--page); border: 6px solid transparent; border-image: var(--fr-panel) 6 fill / 6px / 0 stretch; overflow: hidden; }
+    #quickmenu[open] { display: flex; flex-direction: column; }
+    #quickmenu::backdrop { background: rgba(20, 16, 10, .7); }
+    #quickmenu .qm-head { display: flex; align-items: center; justify-content: space-between; gap: var(--s3); margin-bottom: var(--s2); }
+    #quickmenu .qm-title { font: 28px/32px var(--f-px); color: var(--ink); }
+    #qmInput { width: 100%; padding: var(--s2) var(--s3); font: 17px/24px var(--f-body); color: var(--ink); background: var(--panel); border: 2px solid var(--ink); border-radius: 0; }
+    #qmInput::placeholder { color: var(--dim); opacity: 1; }
+    #qmList { list-style: none; margin: var(--s2) 0 0; padding: 0; overflow-y: auto; overscroll-behavior: contain; flex: 1 1 auto; }
+    #qmList .qm-group { font: 20px/24px var(--f-px); color: var(--dim); padding: var(--s2) var(--s2) var(--s1); }
+    #qmList [role="option"] { display: flex; justify-content: space-between; align-items: baseline; gap: var(--s3); padding: var(--s2) var(--s3); cursor: pointer; font-size: 17px; line-height: 24px; }
+    #qmList [role="option"] .qm-hint-tag { font-size: 14px; color: var(--dim); white-space: nowrap; }
+    #qmList [role="option"]:hover { background: var(--tint); }
+    #qmList [role="option"][aria-selected="true"] { background: var(--wheat); color: #2e2419; }
+    #qmList [role="option"][aria-selected="true"] .qm-hint-tag { color: #2e2419; }
+    #quickmenu .qm-empty { padding: var(--s3); color: var(--dim); }
+    #quickmenu .qm-foot { margin-top: var(--s2); font-size: 14px; line-height: 20px; color: var(--dim); }
+    @media (max-width: 1080px) { #hud-quick-btn { display: none; } .nav-quick { display: block; } .nav-quick button { width: 100%; text-align: left; font: 20px/24px var(--f-px); color: var(--ink); background: none; border: 0; padding: var(--s2); cursor: pointer; } }
     .more-projects { margin-top: var(--s5); }
     .more-projects summary { font: 20px/24px var(--f-px); color: var(--dim); cursor: pointer; padding: var(--s2) 0; }
     .more-projects summary:hover, .more-projects[open] summary { color: var(--ink); }
@@ -698,6 +718,13 @@
 
 <canvas id="click-burst"></canvas>
 
+<dialog id="quickmenu" aria-label="Quick menu">
+  <div class="qm-head"><label class="qm-title" for="qmInput">Quick menu</label><button type="button" class="btn-game btn-outline-g" id="qmClose" aria-label="Close quick menu"><svg class="px" aria-hidden="true"><use href="#i-close"/></svg> Close</button></div>
+  <input id="qmInput" type="search" role="combobox" aria-expanded="true" aria-controls="qmList" aria-autocomplete="list" autocomplete="off" spellcheck="false" placeholder="Search sections, projects, actions">
+  <ul id="qmList" role="listbox" aria-label="Results"></ul>
+  <p class="qm-foot">Up and down arrows to move, Enter to go, Esc to close.</p>
+</dialog>
+
 <dialog id="lightbox" aria-label="Screenshot viewer">
   <div class="lb-bar"><p class="lb-caption" id="lbCaption"></p><button type="button" class="btn-game btn-outline-g" id="lbClose" aria-label="Close screenshot viewer"><svg class="px" aria-hidden="true"><use href="#i-close"/></svg> Close</button></div>
   <p class="lb-hint">Drag the image to look around.</p>
@@ -738,9 +765,11 @@
         <li><a href="#achievements">Awards</a></li>
         <li><a href="#education">Education</a></li>
         <li><a href="#contact">Contact</a></li>
+        <li class="nav-quick"><button type="button" id="nav-quick-btn">Quick menu</button></li>
       </ul></nav>
       <a class="hud-design" href="#design">Design</a>
       <div class="hud-tools">
+        <button class="hud-icon-btn" id="hud-quick-btn" aria-haspopup="dialog" title="Quick menu (Ctrl+K)" aria-label="Open quick menu"><svg class="px" aria-hidden="true"><use href="#i-sliders"/></svg></button>
         <button class="hud-icon-btn" id="hud-pro-btn" aria-pressed="false" title="Professional View (Minimal Effects)" aria-label="Toggle professional view"><svg class="px" aria-hidden="true"><use href="#i-briefcase"/></svg></button>
         <button class="hud-icon-btn" id="hud-download-btn" title="Download CV" aria-label="Download CV"><svg class="px" aria-hidden="true"><use href="#i-download"/></svg></button>
         <button class="hud-icon-btn" id="hud-sound-btn" aria-pressed="false" title="Toggle Sound" aria-label="Toggle sound"><svg class="px" aria-hidden="true"><use href="#i-volume-x"/></svg></button>
@@ -1107,6 +1136,7 @@
     <div>Designed and built by Jonathan Richard in Tangerang, 2026.</div>
     <div class="footer-keys">
       <span>Press <kbd>1</kbd>–<kbd>8</kbd> to jump between sections</span>
+      <span>Press <kbd>Ctrl</kbd> + <kbd>K</kbd> for the quick menu</span>
       <span>Click anywhere for a burst</span>
       <span id="konami-hint">Try the Konami Code…</span>
     </div>
@@ -1584,6 +1614,100 @@ document.getElementById('hud-pro-btn').addEventListener('click', () => {
   document.getElementById('lbClose').addEventListener('click', () => box.close());
   box.addEventListener('click', e => { if (e.target === box) box.close(); });   // click on the dark backdrop
   box.addEventListener('close', () => { img.removeAttribute('src'); if (opener) opener.focus(); });
+})();
+
+// ─── QUICK MENU AND LIVE NAVIGATION ─────────────────
+(function() {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // live nav: the link of the section you are reading gets a wheat underline
+  const links = [...document.querySelectorAll('#navLinks a')];
+  const byId = new Map(links.map(a => [a.getAttribute('href').slice(1), a]));
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(en => {
+        if (!en.isIntersecting) return;
+        links.forEach(l => l.removeAttribute('aria-current'));
+        const a = byId.get(en.target.id); if (a) a.setAttribute('aria-current', 'true');
+      });
+    }, { rootMargin: '-35% 0px -60% 0px' });
+    byId.forEach((a, id) => { const sec = document.getElementById(id); if (sec) io.observe(sec); });
+  }
+
+  const box = document.getElementById('quickmenu');
+  if (!box || typeof box.showModal !== 'function') return;
+  const input = document.getElementById('qmInput');
+  const list = document.getElementById('qmList');
+  let items = [], shown = [], active = 0, opener = null;
+
+  function reveal(target) {
+    if (!target) return;
+    const det = target.closest('details'); if (det) det.open = true;
+    target.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+    const h = target.matches('h1,h2,h3,h4') ? target : target.querySelector('h2,h3,h4');
+    if (h) { h.setAttribute('tabindex', '-1'); h.focus({ preventScroll: true }); }
+  }
+  const click = id => { const e = document.getElementById(id); if (e) e.click(); };
+  function build() {
+    items = [];
+    links.forEach(a => items.push({ group: 'Sections', label: a.textContent.trim(), tag: '', run: () => reveal(document.querySelector(a.getAttribute('href'))) }));
+    document.querySelectorAll('.design-card h3, #projects .project h4, .more-list h4').forEach(h => {
+      const inDesign = !!h.closest('.design-card');
+      items.push({ group: 'Projects', label: h.textContent.trim(), tag: inDesign ? 'Design' : 'Projects', run: () => reveal(h.closest('article, li')) });
+    });
+    items.push({ group: 'Actions', label: 'Download CV', tag: 'PDF', run: () => click('hud-download-btn') });
+    items.push({ group: 'Actions', label: 'Switch light and dark theme', tag: '', run: () => click('hud-theme-btn') });
+    items.push({ group: 'Actions', label: 'Professional view (calmer page)', tag: '', run: () => click('hud-pro-btn') });
+    const mail = document.querySelector('a.big-mail'); if (mail) items.push({ group: 'Actions', label: 'Email me', tag: '', run: () => { location.href = mail.href; } });
+    [['Play Close Enough Colony', 'a[href*="itch.io"]'], ['Open GitHub', 'a[href*="github.com/JohnnyIsCodingSomething"]'], ['Open LinkedIn', 'a[href*="linkedin.com"]']].forEach(([label, sel]) => {
+      const a = document.querySelector(sel); if (a) items.push({ group: 'Actions', label, tag: 'New tab', run: () => window.open(a.href, '_blank', 'noopener') });
+    });
+  }
+  function render() {
+    const q = input.value.trim().toLowerCase().split(/\s+/).filter(Boolean);
+    shown = items.filter(it => q.every(w => (it.label + ' ' + it.group + ' ' + it.tag).toLowerCase().includes(w)));
+    if (active >= shown.length) active = 0;
+    list.textContent = '';
+    if (!shown.length) { const li = document.createElement('li'); li.className = 'qm-empty'; li.setAttribute('role', 'presentation'); li.textContent = 'Nothing matches. Try a section or project name.'; list.appendChild(li); input.removeAttribute('aria-activedescendant'); return; }
+    let last = '';
+    shown.forEach((it, i) => {
+      if (it.group !== last) { const g = document.createElement('li'); g.className = 'qm-group'; g.setAttribute('role', 'presentation'); g.textContent = it.group; list.appendChild(g); last = it.group; }
+      const li = document.createElement('li'); li.id = 'qm-o-' + i; li.setAttribute('role', 'option'); li.setAttribute('aria-selected', i === active ? 'true' : 'false');
+      const a = document.createElement('span'); a.textContent = it.label; li.appendChild(a);
+      if (it.tag) { const t = document.createElement('span'); t.className = 'qm-hint-tag'; t.textContent = it.tag; li.appendChild(t); }
+      li.addEventListener('click', () => choose(i));
+      list.appendChild(li);
+    });
+    input.setAttribute('aria-activedescendant', 'qm-o-' + active);
+  }
+  function move(d) {
+    if (!shown.length) return;
+    active = (active + d + shown.length) % shown.length;
+    list.querySelectorAll('[role=option]').forEach((li, i) => li.setAttribute('aria-selected', i === active ? 'true' : 'false'));
+    input.setAttribute('aria-activedescendant', 'qm-o-' + active);
+    const el = document.getElementById('qm-o-' + active); if (el) el.scrollIntoView({ block: 'nearest' });
+  }
+  function choose(i) { const it = shown[i]; if (!it) return; opener = null; box.close(); setTimeout(it.run, 30); }
+  function open() {
+    const nav = document.getElementById('navLinks'); if (nav && nav.classList.contains('open')) click('hamburger');
+    opener = document.activeElement; build(); input.value = ''; active = 0; render();
+    box.showModal(); input.focus();
+  }
+  input.addEventListener('input', () => { active = 0; render(); });
+  input.addEventListener('keydown', e => {
+    if (e.key === 'ArrowDown') { e.preventDefault(); move(1); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); move(-1); }
+    else if (e.key === 'Enter') { e.preventDefault(); choose(active); }
+    else if (e.key === 'Escape') { e.preventDefault(); box.close(); }
+  });
+  document.getElementById('qmClose').addEventListener('click', () => box.close());
+  box.addEventListener('click', e => { if (e.target === box) box.close(); });
+  box.addEventListener('close', () => { if (opener && opener.focus) opener.focus(); });
+  ['hud-quick-btn', 'nav-quick-btn'].forEach(id => { const b = document.getElementById(id); if (b) b.addEventListener('click', open); });
+  document.addEventListener('keydown', e => {
+    if ((e.ctrlKey || e.metaKey) && !e.altKey && !e.shiftKey && e.key.toLowerCase() === 'k') { e.preventDefault(); if (!box.open) open(); else box.close(); return; }
+    const t = e.target, typing = t && (/^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName) || t.isContentEditable);
+    if (e.key === '/' && !typing && !e.ctrlKey && !e.metaKey && !e.altKey && !document.querySelector('dialog[open]')) { e.preventDefault(); open(); }
+  });
 })();
 
 // ─── aria-pressed on the toggle buttons ──────────────
