@@ -83,6 +83,10 @@ CSS = r'''
     .components .shot { width: 100%; }
     .components figcaption { margin-top: var(--s3); font-size: 16px; line-height: 24px; color: var(--dim); max-width: 46em; }
 
+    .decision { max-width: 44em; margin-top: var(--s5); }
+    .decision:first-of-type { margin-top: var(--s4); }
+    .decision h3 { font-size: 24px; line-height: 28px; }
+    .decision p { margin-top: var(--s1); }
     .ticks { list-style: none; display: grid; gap: var(--s3); max-width: 46em; }
     .ticks li { position: relative; padding-left: var(--s5); }
     .ticks li::before { content: ''; position: absolute; left: 4px; top: 11px; width: 10px; height: 10px; background: var(--leaf-dot); }
@@ -252,6 +256,26 @@ HTML = '''<!DOCTYPE html>
       <p class="note">Our Stores is a separate branch page with the address and opening hours.</p>
     </section>
 
+    <section class="container" aria-labelledby="why-h">
+      <h2 id="why-h">Why it works this way</h2>
+      <div class="decision">
+        <h3>Ice and sugar on every drink page</h3>
+        <p>People often ask for less sugar or less ice. Setting it in the app, right on the drink, means fewer mistakes than telling the staff at the counter. The course brief also asked for drink customization, so we made each option a dropdown component with its own states.</p>
+      </div>
+      <div class="decision">
+        <h3>A page for the branches</h3>
+        <p>An order for pickup needs a place, and a branch can have different items or stock. Real cafe ordering apps we looked at show their branches, and the brief asked for it too, so Our Stores lists each branch with its address and opening hours.</p>
+      </div>
+      <div class="decision">
+        <h3>A calm green style</h3>
+        <p>Green is the color of matcha, the cafe's main product. The team picked the look from a moodboard: a soft sage background, white cards, and green only for buttons and prices, so the important parts stand out and the page feels calm, like a cafe.</p>
+      </div>
+      <div class="decision">
+        <h3>What was hard</h3>
+        <p>Agreeing on the order of the screens, from sign-in to placing an order. Keeping buttons, cards and spacing the same on every screen. Fitting the drink options on a small phone screen without clutter. And linking every screen in Figma so the prototype can be clicked through.</p>
+      </div>
+    </section>
+
     <section class="container" aria-labelledby="screens-h">
       <p class="sec-tag">Chest</p>
       <h2 id="screens-h">The screens</h2>
@@ -303,6 +327,7 @@ SCREENS      </ul>
         <li><b>Low contrast on the grey labels.</b> Labels such as &ldquo;Ice Level&rdquo; use #8C8C8C on the sage background, about 2.8 to 1. The common guideline for small text is 4.5 to 1, so I would darken them.</li>
         <li><b>Dropdown positions.</b> The Ice and Sweet dropdowns sit at slightly different positions from one item page to the next.</li>
         <li><b>Empty space.</b> The Home and Our Stores screens leave a lot of unused space at the bottom.</li>
+        <li><b>Branch before the menu.</b> Since items and stock can differ by branch, I would ask for the branch first, so the menu always matches the store you pick up from.</li>
         <li><b>Real users.</b> I have not tested the ordering flow with real users yet. That would be the first thing I do next.</li>
       </ul>
     </section>
