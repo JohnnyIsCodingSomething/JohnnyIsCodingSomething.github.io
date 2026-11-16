@@ -25,6 +25,7 @@
 
   <script>
     try {
+      if (localStorage.getItem('theme') === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
       var p = localStorage.getItem('pro');
       if (p === '1' || (p === null && matchMedia('(prefers-reduced-motion: reduce)').matches)) {
         document.documentElement.classList.add('pro');
@@ -1089,6 +1090,7 @@
         <dt>Design</dt>
         <dd>
           <span class="skill-chip">Figma</span>
+          <span class="skill-chip">Prototyping</span>
           <span class="skill-chip">Canva</span>
           <span class="skill-chip">Print &amp; Merchandise Design</span>
         </dd>
@@ -1511,6 +1513,13 @@ hamburger.addEventListener('click', () => {
   hamburger.setAttribute('aria-expanded', open);
   setIcon(hamburger, open ? 'close' : 'menu');
 });
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Escape' || !navLinks.classList.contains('open') || document.querySelector('dialog[open]')) return;
+  navLinks.classList.remove('open');
+  hamburger.setAttribute('aria-expanded', false);
+  setIcon(hamburger, 'menu');
+  hamburger.focus();
+});
 navLinks.querySelectorAll('a').forEach(link => {
   link.addEventListener('click', () => {
     navLinks.classList.remove('open');
@@ -1659,7 +1668,7 @@ themeBtn.addEventListener('click', () => {
 document.getElementById('hud-pro-btn').addEventListener('click', () => {
   const on = document.documentElement.classList.toggle('pro');
   try { localStorage.setItem('pro', on ? '1' : '0'); } catch (e) {}
-  if (on) { AudioSys.muted = true; applySoundState(); }
+  if (on) { AudioSys.muted = true; try { localStorage.setItem('muted', 'true'); } catch (e) {} applySoundState(); }
   showToast(on ? 'Professional view on' : 'Game view on', 'View Changed');
 });
 
@@ -1814,6 +1823,7 @@ document.getElementById('hud-pro-btn').addEventListener('click', () => {
       });
     }, { rootMargin: '-35% 0px -60% 0px' });
     byId.forEach((a, id) => { const sec = document.getElementById(id); if (sec) io.observe(sec); });
+    const hero = document.getElementById('hero'); if (hero && !byId.has('hero')) io.observe(hero);
   }
 
   const box = document.getElementById('quickmenu');
@@ -1824,6 +1834,7 @@ document.getElementById('hud-pro-btn').addEventListener('click', () => {
 
   function reveal(target) {
     if (!target) return;
+    if (target.closest('[hidden]')) { const all = document.querySelector('.filter-bar [data-filter="all"]'); if (all) all.click(); }
     const det = target.closest('details'); if (det) det.open = true;
     target.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
     const h = target.matches('h1,h2,h3,h4') ? target : target.querySelector('h2,h3,h4');
