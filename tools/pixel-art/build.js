@@ -490,7 +490,7 @@ function buildSky() {
     (i % 3 === 0 ? twinkle : small).push(`${x}vw ${y}vh 0 ${big ? '1px' : '0'} var(--star)`);
   }
   // a few larger sparkle stars (night only), each twinkling on its own beat
-  const sparkles = [[14, 16, 0], [41, 9, 1.1], [57, 31, 2.3], [81, 20, 0.6], [30, 44, 1.7], [90, 52, 2.9]]
+  const sparkles = [[4, 34, 0], [41, 9, 1.1], [94, 42, 2.3], [81, 20, 0.6], [4, 70, 1.7], [91, 58, 2.9]]
     .map(([x, y, d]) => `<span class="sparkle" style="left:${x}vw; top:${y}vh; animation-delay:-${d}s">${buildSparkle()}</span>`).join('');
   const templates = `<template id="tpl-bird">${flyerSvg(SKY_SPRITES.bird, 'flyer-art', 4)}</template>`;
   return `<div class="sky" id="sky" aria-hidden="true"><div class="stars" style="box-shadow:${small.join(',')}"></div>`

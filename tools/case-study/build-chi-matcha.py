@@ -35,10 +35,11 @@ CSS = r'''
 
     .cs-bar { position: sticky; top: 0; z-index: 50; background: var(--sky-1); border-bottom: 4px solid var(--page); }
     .cs-bar .container { display: flex; align-items: center; justify-content: space-between; gap: var(--s3); min-height: 60px; flex-wrap: wrap; padding: var(--s1) 0; }
-    .cs-bar a.back { font: 22px/28px var(--f-px); text-decoration: none; padding: var(--s1) var(--s2); }
+    .cs-bar a.back { font: 22px/28px var(--f-px); text-decoration: none; padding: var(--s1) var(--s2); margin-left: calc(-1 * var(--s2)); }
     .cs-bar a.back:hover { background: var(--wheat); }
     .cs-bar .cs-title { font: 20px/24px var(--f-px); color: var(--dim); }
     .cs-bar-tools { display: flex; align-items: center; gap: var(--s2); }
+    .cs-bar-tools .btn-game { padding-top: 4px; padding-bottom: 4px; margin-bottom: 0; }
 
     .cs-hero { padding-top: var(--s7); }
     .cs-kicker { font: 24px/28px var(--f-px); color: var(--wheat-ink); margin-bottom: var(--s2); }
@@ -93,18 +94,21 @@ CSS = r'''
     .slot { border: 6px solid transparent; border-image: var(--fr-soft) 6 fill / 6px / 0 stretch; padding: var(--s2); min-height: 96px; text-align: center; font-size: 14px; line-height: 20px; color: var(--dim); }
     .slot b { display: block; font: 24px/28px var(--f-px); font-weight: 400; color: var(--ink); }
     .slot.empty { opacity: .45; }
-    @media (pointer: coarse) { .cs-bar a.back, footer a { display: inline-block; padding: 10px 4px; } }
+    @media (pointer: coarse) { .cs-bar a.back, footer a { display: inline-block; padding: 10px 4px; } .cs-bar a.back { margin-left: -4px; } }
     footer { margin-top: var(--s8); padding: var(--s6) 0; background: var(--sky-2); }
-    footer .container { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--s3); }
+    footer .container { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: var(--s3); }
+    footer .container > p { margin: 0; }
 
     @media (max-width: 960px) {
       h1 { font-size: 80px; line-height: 72px; }
       .steps, .screens { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .slots { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .slot.empty:nth-child(n+7) { display: none; }
+      .slot.empty { display: none; }
       .swatches { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     }
     @media (max-width: 640px) {
+      .screens .shot { max-width: 260px; }
+      .cs-lede { font-size: 19px; line-height: 30px; margin-top: var(--s3); }
       .container { width: calc(100% - 32px); }
       .cs-bar .cs-title { display: none; }
       .cs-bar .container { flex-wrap: nowrap; }
