@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex" />
+  <title>Page not found | Jonathan Richard</title>
+  <script>try { var t = localStorage.getItem('theme'); if (t === 'dark' || (t === null && matchMedia('(prefers-color-scheme: dark)').matches)) document.documentElement.setAttribute('data-theme', 'dark'); } catch (e) {}</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Golos+Text:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root { --bg: #a6d3ee; --panel: #fbf7ec; --ink: #2e2419; --dim: #5b4a38; --btn: #efc24e; --btn-drop: #b8892a; --link: #2f5f8a; }
+    :root[data-theme="dark"] { --bg: #16213a; --panel: #22304d; --ink: #f3ead6; --dim: #c9bfa8; --btn: #efc24e; --btn-drop: #a07a22; --link: #a9d4ff; }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; display: grid; place-items: center; padding: 16px; background: var(--bg); color: var(--ink); font: 17px/28px 'Golos Text', system-ui, sans-serif; }
+    main { max-width: 480px; width: 100%; background: var(--panel); border: 4px solid var(--ink); padding: 32px 24px; text-align: center; }
+    h1 { font: 48px/48px 'Jersey 10', 'Arial Narrow', sans-serif; margin: 0 0 8px; }
+    p { margin: 0 0 24px; color: var(--dim); }
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+    a.btn { display: inline-block; min-height: 44px; padding: 8px 20px; font: 22px/28px 'Jersey 10', 'Arial Narrow', sans-serif; color: #2e2419; background: var(--btn); box-shadow: 0 4px 0 var(--btn-drop); text-decoration: none; }
+    a.btn.alt { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 3px var(--ink); }
+    a.btn:focus-visible { outline: 3px solid var(--link); outline-offset: 3px; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Page not found</h1>
+    <p>This page does not exist, or its link has changed.</p>
+    <div class="actions">
+      <a class="btn" href="/">Go to my portfolio</a>
+      <a class="btn alt" href="/Jonathan%20Richard-CV.pdf" download="Jonathan Richard-CV.pdf">Download CV</a>
+    </div>
+  </main>
+</body>
+</html>
