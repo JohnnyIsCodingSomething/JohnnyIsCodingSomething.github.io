@@ -10,7 +10,7 @@ ICON = re.search(r'<link rel="icon"[^>]*>', idx).group(0)
 
 CSS = r'''
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; scroll-padding-top: 72px; }
     body { font-family: var(--f-body); font-size: 17px; line-height: 28px; color: var(--text); background: var(--page); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
     a { color: var(--ink); text-decoration: underline; text-decoration-color: var(--wheat); text-decoration-thickness: 3px; text-underline-offset: 4px; }
     a:hover { background: var(--wheat); color: #2e2419; }
@@ -164,16 +164,16 @@ HTML = '''<!DOCTYPE html>
   <meta property="og:url" content="https://johnnyiscodingsomething.github.io/chi-matcha.html" />
   <meta property="og:title" content="Chi Matcha case study | Jonathan Richard" />
   <meta property="og:description" content="A mobile cafe ordering app, designed in Figma and built in Java." />
-  <meta property="og:image" content="https://johnnyiscodingsomething.github.io/assets/design/chi-matcha-large.webp" />
+  <meta property="og:image" content="https://johnnyiscodingsomething.github.io/assets/design/chi-matcha-og.png" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta property="og:image:width" content="1600" />
-  <meta property="og:image:height" content="962" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="722" />
   <meta property="og:image:alt" content="Chi Matcha app screens in the pixel-art portfolio style" />
   <meta name="twitter:title" content="Chi Matcha case study | Jonathan Richard" />
   <meta name="twitter:description" content="A mobile cafe ordering app, designed in Figma and built in Java." />
-  <meta name="twitter:image" content="https://johnnyiscodingsomething.github.io/assets/design/chi-matcha-large.webp" />
+  <meta name="twitter:image" content="https://johnnyiscodingsomething.github.io/assets/design/chi-matcha-og.png" />
   ICONLINK
-  <script>try { if (localStorage.getItem('theme') === 'dark') document.documentElement.setAttribute('data-theme', 'dark'); } catch (e) {}</script>
+  <script>try { var t = localStorage.getItem('theme'); if (t === 'dark' || (t === null && matchMedia('(prefers-color-scheme: dark)').matches)) document.documentElement.setAttribute('data-theme', 'dark'); } catch (e) {}</script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Golos+Text:wght@400;500;600&family=Playfair+Display:wght@700&family=DM+Sans:wght@400;700&display=swap" rel="stylesheet" />
@@ -189,7 +189,7 @@ HTML = '''<!DOCTYPE html>
       <a class="back" href="index.html#design">&larr; Back to my portfolio</a>
       <div class="cs-bar-tools">
         <span class="cs-title">Case study</span>
-        <button type="button" class="btn-game" id="themeBtn" aria-pressed="false">Dark mode</button>
+        <button type="button" class="btn-game" id="themeBtn">Dark mode</button>
       </div>
     </div>
   </header>
@@ -318,7 +318,7 @@ SCREENS      </ul>
   <script>
     (function () {
       var btn = document.getElementById('themeBtn');
-      function paint() { var d = document.documentElement.getAttribute('data-theme') === 'dark'; btn.textContent = d ? 'Light mode' : 'Dark mode'; btn.setAttribute('aria-pressed', String(d)); }
+      function paint() { var d = document.documentElement.getAttribute('data-theme') === 'dark'; btn.textContent = d ? 'Light mode' : 'Dark mode'; }
       btn.addEventListener('click', function () {
         var d = document.documentElement.getAttribute('data-theme') === 'dark';
         if (d) document.documentElement.removeAttribute('data-theme'); else document.documentElement.setAttribute('data-theme', 'dark');
