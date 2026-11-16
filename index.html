@@ -927,7 +927,7 @@
             <p class="design-fact"><b>My role:</b> I designed most of the app, from wireframes to the final prototype, and then built it in Java, working with my team.</p>
             <p class="design-fact"><b>Problem:</b> Ordering a customized drink at a cafe is slow. The app lets people pick a branch, browse the menu, and set ice and sugar levels before ordering.</p>
             <div class="inv-tags"><span class="inv-tag">Figma</span> <span class="inv-tag">UX</span> <span class="inv-tag">Android</span></div>
-            <p class="design-cta"><a class="btn-game btn-outline-g" href="https://www.figma.com/design/XXO1QciNuYQYSa0wpI8P0k/User-Experience---AOL-Project---KelompokE" target="_blank" rel="noopener noreferrer" aria-label="View Chi Matcha in Figma (opens in a new tab)"><svg class="px" aria-hidden="true"><use href="#i-external-link"/></svg> View in Figma</a> <a class="design-code" href="https://github.com/JohnnyIsCodingSomething/UX-AOL-ChiMatcha" target="_blank" rel="noopener noreferrer">View Code on GitHub</a></p>
+            <p class="design-cta"><a class="btn-game btn-primary-g" href="chi-matcha.html">Read the case study</a> <a class="btn-game btn-outline-g" href="https://www.figma.com/design/XXO1QciNuYQYSa0wpI8P0k/User-Experience---AOL-Project---KelompokE" target="_blank" rel="noopener noreferrer" aria-label="View Chi Matcha in Figma (opens in a new tab)"><svg class="px" aria-hidden="true"><use href="#i-external-link"/></svg> View in Figma</a> <a class="design-code" href="https://github.com/JohnnyIsCodingSomething/UX-AOL-ChiMatcha" target="_blank" rel="noopener noreferrer">View Code on GitHub</a></p>
           </div>
         </article>
         <article class="project design-card">
@@ -1817,6 +1817,7 @@ document.getElementById('hud-pro-btn').addEventListener('click', () => {
     });
     [['All projects', 'all'], ['Games', 'games'], ['Web', 'web'], ['AI and Research', 'ai'], ['UI/UX', 'uiux']].forEach(([label, f]) => items.push({ group: 'Filter', label: 'Filter projects: ' + label, tag: '', keys: 'filter projects ' + f, run: () => { const b = document.querySelector('.filter-bar [data-filter="' + f + '"]'); if (b) { b.click(); reveal(document.getElementById('projects')); } } }));
     [['Everything', 'all', 'all both default'], ['UI/UX', 'uiux', 'uiux ux ui design'], ['Game', 'game', 'games gaming'], ['Software', 'software', 'dev developer web code']].forEach(([label, v, keys]) => items.push({ group: 'View', label: 'Show my work for: ' + label, tag: '', keys, run: () => window.setPortfolioView && window.setPortfolioView(v) }));
+    items.push({ group: 'Actions', label: 'Read the Chi Matcha case study', tag: 'Page', keys: 'chi matcha case study ux design', run: () => { location.href = 'chi-matcha.html'; } });
     items.push({ group: 'Actions', label: 'Download CV', tag: 'PDF', run: () => click('hud-download-btn') });
     items.push({ group: 'Actions', label: 'Switch light and dark theme', tag: '', run: () => click('hud-theme-btn') });
     items.push({ group: 'Actions', label: 'Professional view (calmer page)', tag: '', run: () => click('hud-pro-btn') });
