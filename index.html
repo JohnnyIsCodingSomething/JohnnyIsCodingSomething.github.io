@@ -260,6 +260,8 @@
     .stars-twinkle { animation: twinkle 3.2s steps(1) infinite; }
     @keyframes twinkle { 50% { opacity: .2; } }
     .flyers { position: absolute; inset: 0; }
+    .sky .cloud-art, .flyers { transition: opacity .6s steps(4); }
+    .past-hero .sky .cloud-art, .past-hero .flyers { opacity: 0; }
     .flyer { position: absolute; left: 0; top: 0; }
     .flyer-art { display: block; }
     .flyer .k-uk { fill: var(--flyer); }
@@ -328,8 +330,6 @@
     .hero-name { font: 120px/104px var(--f-px); font-weight: 400; color: var(--ink); margin-bottom: var(--s4); }
     .hero-name span { display: block; }
     .hero-roles { font: 30px/32px var(--f-px); color: var(--wheat-ink); margin-bottom: var(--s2); }
-    .hero-class { font: 24px/32px var(--f-px); color: var(--dim); min-height: 32px; margin-bottom: var(--s3); }
-    .typed-cursor { display: inline-block; width: 12px; height: 3px; background: var(--ink); margin-left: 4px; vertical-align: baseline; animation: blink 1s steps(1) infinite; }
     @keyframes blink { 50% { opacity: 0; } }
     .hero-desc { font-size: 18px; line-height: 28px; max-width: 32em; margin-bottom: var(--s5); }
     .hero-actions { display: flex; gap: var(--s3); flex-wrap: wrap; }
@@ -433,7 +433,7 @@
     .shot-zoom { display: block; background: none; text-decoration: none; cursor: zoom-in; }
     .shot-zoom:hover { background: none; }
     .shot-zoom:hover .project-shot { border-image-source: var(--fr-panel); }
-    .zoom-hint { display: block; margin-top: var(--s1); font-size: 14px; line-height: 20px; color: var(--dim); }
+    .zoom-hint { display: block; margin: var(--s1) 0 var(--s2); font-size: 14px; line-height: 20px; color: var(--dim); }
     .design-shot .project-shot { margin-bottom: 0; }
     .project-grid .design-shot { margin-bottom: var(--s3); }
     .project-grid .design-shot ~ .metric-note { margin-bottom: var(--s3); }
@@ -617,7 +617,6 @@
     @keyframes smoke { 0% { opacity: .9; transform: translate(0, 0); } 100% { opacity: 0; transform: translate(12px, -48px) scale(1.5); } }
     .footer-keys { display: flex; justify-content: center; flex-wrap: wrap; gap: var(--s2) var(--s5); }
     @media (hover: none) and (pointer: coarse) { .footer-keys { display: none; } }
-    .pro .footer-burst { display: none; }
     kbd { font: 20px/24px var(--f-px); color: var(--ink); background: var(--tint); padding: 0 6px; clip-path: var(--notch); }
 
     /* ─── Snake modal ─── */
@@ -687,7 +686,6 @@
     @media (max-width: 560px) {
       .container, .hero-grid { width: calc(100% - 32px); }
       .hero-name { font-size: 80px; line-height: 72px; }
-      .hero-class { font-size: 18px; line-height: 24px; min-height: 24px; }
       .hero-roles { font-size: 20px; line-height: 24px; }
       .farm { width: 312px; height: 228px; }
       .hero-world { justify-self: stretch; }
@@ -723,7 +721,6 @@
     @media (max-width: 560px) and (max-height: 720px) {
       .hero { padding-top: 80px; }
       .hero-name { font-size: 64px; line-height: 58px; margin-bottom: var(--s3); }
-      .hero-class { font-size: 16px; line-height: 20px; min-height: 20px; margin-bottom: var(--s2); }
       .hero-roles { font-size: 18px; line-height: 22px; }
       .hero-desc { font-size: 15px; line-height: 22px; margin-bottom: var(--s3); }
       .hero-available { font-size: 14px; line-height: 20px; margin-bottom: var(--s2); }
@@ -845,7 +842,6 @@
         <p class="hero-available">Available full-time from February 2027, for 12 months (BINUS internship)</p>
         <h1 class="hero-name"><span>Jonathan</span> <span>Richard</span></h1>
         <p class="hero-roles">UI/UX Design · Web &amp; App Building · Game Dev</p>
-        <div class="hero-class"><span class="sr-only">Computer Science Student</span><span id="typed-text" aria-hidden="true">Computer Science Student</span><span class="typed-cursor"></span></div>
         <p class="hero-desc">
           Computer Science student at BINUS University (Semester 5). I design interfaces and prototypes in Figma,
           and I build software, including a released indie game made with AI coding assistance.
@@ -855,7 +851,6 @@
           <a href="#design" class="btn-game btn-primary-g"><svg class="px" aria-hidden="true"><use href="#i-paint-bucket"/></svg> See Design Work</a>
           <a href="Jonathan%20Richard-CV.pdf" download="Jonathan Richard-CV.pdf" class="btn-game btn-outline-g"><svg class="px" aria-hidden="true"><use href="#i-download"/></svg> Download CV</a>
           <a href="#contact" class="btn-game btn-outline-g"><svg class="px" aria-hidden="true"><use href="#i-mail"/></svg> Get in Touch</a>
-          <a href="https://bonebit.itch.io/close-enough-colony" target="_blank" rel="noopener noreferrer" class="btn-game btn-outline-g" aria-label="Play my game, Close Enough Colony, on itch.io (opens in a new tab)"><svg class="px" aria-hidden="true"><use href="#i-gamepad"/></svg> Play My Game</a>
         </div>
         <div class="view-switch" role="group" aria-label="Choose how my work is ordered">
           <span class="view-label" id="viewLabel">Show my work for:</span>
@@ -1217,7 +1212,6 @@
     <div class="footer-keys">
       <span>Press <kbd>1</kbd>–<kbd>8</kbd> to jump between sections</span>
       <span>Press <kbd class="mod-key">Ctrl</kbd> + <kbd>K</kbd> to search the page</span>
-      <span class="footer-burst">Click anywhere for pixel confetti</span>
       <span id="konami-hint">Secret: press <kbd>↑</kbd><kbd>↑</kbd><kbd>↓</kbd><kbd>↓</kbd><kbd>←</kbd><kbd>→</kbd><kbd>←</kbd><kbd>→</kbd><kbd>B</kbd><kbd>A</kbd></span>
     </div>
   </footer>
@@ -1372,7 +1366,7 @@ function setIcon(host, name) {
   const layer = document.getElementById('sky-flyers');
   if (!layer || !layer.animate) return;
   const root = document.documentElement;
-  const still = () => document.hidden || root.classList.contains('pro') ||
+  const still = () => document.hidden || root.classList.contains('pro') || root.classList.contains('past-hero') ||
     matchMedia('(prefers-reduced-motion: reduce)').matches;
   const snap = v => Math.round(v / 4) * 4;              // stay on the 4px pixel grid
 
@@ -1411,51 +1405,6 @@ function setIcon(host, name) {
     setTimeout(loop, 6000 + Math.random() * 10000);
   }
   setTimeout(loop, 3500);                               // first flock shortly after the loader
-})();
-
-// ─── TYPED TEXT ───────────────────────────────────────
-(function() {
-  const el = document.getElementById('typed-text');
-  const strings = [
-    'Computer Science Student',
-    'UI/UX Design Student',
-    'Game Dev in Godot',
-    'Web and App Builder',
-    'UI/UX & Graphic Designer',
-  ];
-  // The first line is already in the HTML; start by deleting it. Professional view holds the line still.
-  let strIdx = 0, charIdx = strings[0].length, deleting = false;
-
-  function type() {
-    const current = strings[strIdx];
-    if (document.documentElement.classList.contains('pro') || matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      el.textContent = current; charIdx = current.length; deleting = false;
-      setTimeout(() => { deleting = true; type(); }, 2000);
-      return;
-    }
-    if (!deleting) {
-      AudioSys.play('typing');
-      el.textContent = current.substring(0, charIdx + 1);
-      charIdx++;
-      if (charIdx === current.length) {
-        setTimeout(() => { deleting = true; type(); }, 2000);
-        return;
-      }
-      setTimeout(type, 70 + Math.random() * 30);
-    } else {
-      AudioSys.play('typing');
-      el.textContent = current.substring(0, charIdx - 1);
-      charIdx--;
-      if (charIdx === 0) {
-        deleting = false;
-        strIdx = (strIdx + 1) % strings.length;
-        setTimeout(type, 500);
-        return;
-      }
-      setTimeout(type, 30);
-    }
-  }
-  setTimeout(() => { deleting = true; type(); }, 4000);
 })();
 
 // ─── SCROLL PROGRESS BAR ─────────────────────────────
@@ -1510,9 +1459,13 @@ function showToast(msg, title = 'Achievement Unlocked') {
 
 // ─── NAV SCROLL ──────────────────────────────────────
 const hud = document.querySelector('.hud-bar');
-window.addEventListener('scroll', () => {
+const heroSec = document.getElementById('hero');
+function skyState() {
   hud.classList.toggle('scrolled', window.scrollY > 50);
-});
+  document.documentElement.classList.toggle('past-hero', window.scrollY > heroSec.offsetHeight * .6);
+}
+window.addEventListener('scroll', skyState, { passive: true });
+skyState();
 
 // ─── HAMBURGER ───────────────────────────────────────
 const hamburger = document.getElementById('hamburger');
